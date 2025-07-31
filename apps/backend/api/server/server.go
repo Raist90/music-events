@@ -21,7 +21,6 @@ func Listen() {
 func create() *http.Server {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /", middleware.Logger(handler.Root))
-	mux.HandleFunc("GET /api/post/{name}", middleware.Logger(handler.Post))
 
 	return &http.Server{
 		Addr:           port,

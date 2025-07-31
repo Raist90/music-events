@@ -8,7 +8,6 @@ import (
 
 type config struct {
 	Api         Api
-	ContentDir  string
 	Environment Environment
 	Port        string
 }
@@ -24,7 +23,6 @@ func Initialize() *config {
 
 	return &config{
 		Api:         *newApi(),
-		ContentDir:  "content/",
 		Environment: environment(os.Getenv("ENVIRONMENT")),
 		Port:        os.Getenv("PORT"),
 	}
