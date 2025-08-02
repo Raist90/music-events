@@ -16,7 +16,7 @@ var Config *config = Initialize()
 
 func Initialize() *config {
 	// TODO: Handle this in a different way
-	err := godotenv.Load("../../.env")
+	err := godotenv.Load(".env")
 	if err != nil {
 		panic("Error loading .env file")
 	}

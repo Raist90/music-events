@@ -21,6 +21,7 @@ func Listen() {
 func create() *http.Server {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /", middleware.Logger(handler.Root))
+	mux.HandleFunc("GET /events", middleware.Logger(handler.GetEvents))
 
 	return &http.Server{
 		Addr:           port,
