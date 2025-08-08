@@ -23,7 +23,7 @@ func Initialize() *config {
 
 	return &config{
 		Api:         *newApi(),
-		Environment: environment(os.Getenv("ENVIRONMENT")),
+		Environment: mustEnvironment(os.Getenv("ENVIRONMENT")),
 		Port:        os.Getenv("PORT"),
 	}
 }
@@ -37,7 +37,7 @@ const (
 	Testing     Environment = "testing"
 )
 
-func environment(env string) Environment {
+func mustEnvironment(env string) Environment {
 	switch env {
 	case "development", "production", "staging", "testing":
 		return Environment(env)
