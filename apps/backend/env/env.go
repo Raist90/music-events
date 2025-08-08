@@ -2,15 +2,15 @@ package env
 
 import "os"
 
-func GetEnv(key string) string {
+func MustGetenv(key string) string {
 	val, ok := os.LookupEnv(key)
 
 	if !ok {
-		panic(key + " environment variable is not set")
+		panic(key + " env variable is not set")
 	}
 
 	if val == "" {
-		panic(key + " environment variable is empty")
+		panic(key + " env variable is empty")
 	}
 
 	return val

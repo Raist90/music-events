@@ -1,14 +1,14 @@
 package config
 
 import (
-	"os"
+	"md-api/env"
 
 	"github.com/joho/godotenv"
 )
 
 type config struct {
 	Api         Api
-	Environment Environment
+	Environment string
 	Port        string
 }
 
@@ -23,27 +23,7 @@ func Initialize() *config {
 
 	return &config{
 		Api:         *newApi(),
-		Environment: mustEnvironment(os.Getenv("ENVIRONMENT")),
-		Port:        os.Getenv("PORT"),
-	}
-}
-
-type Environment string
-
-const (
-	Development Environment = "development"
-	Production  Environment = "production"
-	Staging     Environment = "staging"
-	Testing     Environment = "testing"
-)
-
-func mustEnvironment(env string) Environment {
-	switch env {
-	case "development", "production", "staging", "testing":
-		return Environment(env)
-	case "":
-		panic("Environment variable ENVIRONMENT is not set")
-	default:
-		panic("Invalid environment: " + env)
+		Environment: mustEnvironment(env.MustGetenv("ENVIRONMENT")),
+		Port:        env.MustGetenv("PORT"),
 	}
 }
