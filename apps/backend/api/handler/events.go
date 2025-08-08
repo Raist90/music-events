@@ -10,7 +10,7 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain")
 	// w.Header().Set("Content-Type", "application/json")
 
-	body, err := service.GetMusicEvents()
+	body, err := service.MusicEvents()
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error fetching events: %v", err), http.StatusInternalServerError)
 		return
