@@ -2,15 +2,12 @@ package service
 
 import (
 	"fmt"
-	"md-api/client"
 	"md-api/config"
 )
 
-func MusicEvents() ([]byte, error) {
-	s := NewService()
-
+func MusicEvents(s Service) ([]byte, error) {
 	url := config.Config.Api.Ticketmaster.URL + "/events.json?classificationName=music" + "&apikey=" + config.Config.Api.Ticketmaster.Key
-	res, err := s.Fetch(url, client.Opts{
+	res, err := s.Fetch(url, fetchOpts{
 		Headers: map[string]string{
 			"Authorization": "Bearer " + config.Config.Api.Ticketmaster.Key,
 		},

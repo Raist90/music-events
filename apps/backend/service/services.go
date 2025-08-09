@@ -2,27 +2,26 @@ package service
 
 import (
 	"fmt"
-	"md-api/client"
 )
 
 type Service interface {
 	Fetcher
 }
 
-func NewService() Service {
+func New() Service {
 	return service{}
 }
 
 type Fetcher interface {
-	Fetch(url string, opts client.Opts) ([]byte, error)
+	Fetch(url string, opts fetchOpts) ([]byte, error)
 }
 
 type service struct{}
 
-func (s service) Fetch(url string, opts client.Opts) ([]byte, error) {
+func (s service) Fetch(url string, opts fetchOpts) ([]byte, error) {
 	if url == "" {
 		return nil, fmt.Errorf("URL cannot be empty")
 	}
 
-	return client.Fetch(url, opts)
+	return fetch(url, opts)
 }

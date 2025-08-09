@@ -1,4 +1,4 @@
-package client
+package service
 
 import (
 	"errors"
@@ -7,11 +7,11 @@ import (
 	"net/http"
 )
 
-type Opts struct {
+type fetchOpts struct {
 	Headers map[string]string
 }
 
-func Fetch(url string, opts Opts) ([]byte, error) {
+func fetch(url string, opts fetchOpts) ([]byte, error) {
 	if url == "" {
 		return nil, errors.New("URL cannot be empty")
 	}
