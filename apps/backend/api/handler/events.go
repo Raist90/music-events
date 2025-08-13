@@ -1,23 +1,39 @@
 package handler
 
 import (
+	"encoding/json"
 	"fmt"
+	"md-api/model"
 	"md-api/service"
 	"net/http"
 )
 
+type data struct {
+	Data model.TicketmasterResponse `json:"events"`
+}
+
 func GetEvents(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain")
-	// w.Header().Set("Content-Type", "application/json")
 
 	s := service.New()
 	body, err := service.MusicEvents(s)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error fetching events: %v", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("fetching events: %v", err), http.StatusInternalServerError)
 		return
 	}
-	if _, err = w.Write(body); err != nil {
-		http.Error(w, fmt.Sprintf("Error writing response: %v", err), http.StatusInternalServerError)
+	if len(body) == 0 {
+		http.Error(w, "no events found", http.StatusNotFound)
 		return
 	}
+
+	var data = data{}
+	if err := json.Unmarshal(body, &data.Data); err != nil {
+		http.Error(w, fmt.Sprintf("unmarshalling response: %v", err), http.StatusInternalServerError)
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Length", fmt.Sprintf("%d", len(body)))
+	w.Write(body)
+	fmt.Println(data.Data)
 }
