@@ -35,5 +35,4 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Content-Length", fmt.Sprintf("%d", len(body)))
 	w.Write(body)
-	fmt.Println(data.Data)
 }
