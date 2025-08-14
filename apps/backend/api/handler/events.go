@@ -13,7 +13,10 @@ type data struct {
 }
 
 func GetEvents(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/plain")
+	if r.Method != http.MethodGet {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
 
 	s := service.New()
 	body, err := service.MusicEvents(s)
@@ -29,6 +32,7 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 	var data = data{}
 	if err := json.Unmarshal(body, &data.Data); err != nil {
 		http.Error(w, fmt.Sprintf("unmarshalling response: %v", err), http.StatusInternalServerError)
+		return
 	}
 
 	w.WriteHeader(http.StatusOK)
