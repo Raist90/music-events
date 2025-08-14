@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	config.Initialize()
+	config.MustLoad()
 
 	server.Listen()
 }

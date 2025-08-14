@@ -12,9 +12,9 @@ type config struct {
 	Port        string
 }
 
-var Config *config = Initialize()
+var Config *config = MustLoad()
 
-func Initialize() *config {
+func MustLoad() *config {
 	// TODO: Handle this in a different way
 	err := godotenv.Load(".env")
 	if err != nil {
