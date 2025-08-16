@@ -1,9 +1,10 @@
 'use client'
 
 import { useQuery } from "@tanstack/react-query"
-import { getEvents } from "../page";
+import { getEvents } from "../lib/events"
 
 export default function Events() {
+  // TODO: handle loading and error states
   const { data } = useQuery({
     queryKey: ['events'],
     queryFn: () => getEvents()
