@@ -1,3 +1,6 @@
+import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import Events from "./components/events";
+
 type Event = {
   classifications: Classification[];
   dates: Dates;
@@ -22,25 +25,31 @@ type Dates = {
   }
 }
 
-type Res = {
+type Ticketmaster = {
   _embedded: {
     events: Event[];
   }
 }
 
+export async function getEvents() {
+  const res = await fetch("http://localhost:8080/events");
+  if (!res.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return res.json() as Promise<Ticketmaster>;
+}
+
 export default async function Home() {
-  const data = await fetch("http://localhost:8080/events")
-  const res = await data.json() as Res
+  const queryClient = new QueryClient()
+
+  await queryClient.prefetchQuery({
+    queryKey: ['events'],
+    queryFn: () => getEvents(),
+  })
 
   return (
-    <div>
-      <ul className="grid grid-cols-3">{res._embedded.events.map((event) => (
-        <li key={event.id}>
-          <h2>{event.name}</h2>
-          <p>{event.dates.start.localTime}</p>
-        </li>
-      ))}
-      </ul>
-    </div>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Events />
+    </HydrationBoundary>
   );
 }
