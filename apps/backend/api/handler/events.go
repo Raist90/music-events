@@ -19,7 +19,13 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 	}
 
 	s := service.New()
-	body, err := service.MusicEvents(s)
+	body, err := service.MusicEvents(s, []string{
+		"classificationName=music",
+		"countryCode=IT",
+		"locale=it-it",
+		"city=Milano",
+		"sort=date,asc",
+	})
 	if err != nil {
 		http.Error(w, fmt.Sprintf("fetching events: %v", err), http.StatusInternalServerError)
 		return

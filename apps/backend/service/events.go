@@ -5,8 +5,19 @@ import (
 	"md-api/config"
 )
 
-func MusicEvents(s Service) ([]byte, error) {
-	url := config.Config.Api.Ticketmaster.URL + "/events.json?classificationName=music" + "&apikey=" + config.Config.Api.Ticketmaster.Key
+type opts []string
+
+func MusicEvents(s Service, _opts opts) ([]byte, error) {
+	var opts string
+	for i, opt := range _opts {
+		if i > 0 {
+			opts += "&" + opt
+		} else {
+			opts += opt
+		}
+	}
+
+	url := config.Config.Api.Ticketmaster.URL + "/events.json?" + opts + "&apikey=" + config.Config.Api.Ticketmaster.Key
 	res, err := s.Fetch(url, fetchOpts{
 		Headers: map[string]string{
 			"Authorization": "Bearer " + config.Config.Api.Ticketmaster.Key,

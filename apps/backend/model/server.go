@@ -2,6 +2,14 @@ package model
 
 type TicketmasterResponse struct {
 	Embedded embeddedResponse `json:"_embedded"`
+	Page     pageResponse     `json:"page"`
+}
+
+type pageResponse struct {
+	Size          int `json:"size"`
+	TotalElements int `json:"totalElements"`
+	TotalPages    int `json:"totalPages"`
+	Number        int `json:"number"`
 }
 
 type embeddedResponse struct {
