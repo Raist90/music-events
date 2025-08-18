@@ -1,5 +1,5 @@
 import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import Events from "./components/events";
+import Events from "@/components/events";
 import { getEvents } from "./lib/events";
 
 
