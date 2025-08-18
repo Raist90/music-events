@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${redditMono.className} antialiased`}
+        className={`${redditMono.className} antialiased dark`}
       >
         <Providers>
           {children}
