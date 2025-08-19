@@ -18,6 +18,14 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	page := r.URL.Query().Get("page")
+	var p string
+	if page == "" {
+		p = "0"
+	} else {
+		p = page
+	}
+
 	s := service.New()
 	body, err := service.MusicEvents(s, []string{
 		"classificationName=music",
@@ -25,6 +33,7 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 		"locale=it-it",
 		"city=Milano",
 		"sort=date,asc",
+		"page=" + p,
 	})
 	if err != nil {
 		http.Error(w, fmt.Sprintf("fetching events: %v", err), http.StatusInternalServerError)

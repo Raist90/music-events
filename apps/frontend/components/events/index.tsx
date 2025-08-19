@@ -36,7 +36,7 @@ export default function Events() {
       )}
 
       {data?.page && (
-        <footer className="border-t pt-8">
+        <footer className="border-t pt-4">
           <Pagination pagination={data.page} />
         </footer>
       )}
