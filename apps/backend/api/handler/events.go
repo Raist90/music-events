@@ -26,12 +26,14 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 		p = page
 	}
 
+	city := r.URL.Query().Get("city")
+
 	s := service.New()
 	body, err := service.MusicEvents(s, []string{
 		"classificationName=music",
 		"countryCode=IT",
 		"locale=it-it",
-		"city=Milano",
+		"city=" + city,
 		"sort=date,asc",
 		"page=" + p,
 	})

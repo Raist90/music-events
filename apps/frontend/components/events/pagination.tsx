@@ -1,23 +1,28 @@
+'use client'
+
 import { getEvents } from '@/app/lib/events';
 import { Pagination as UIPagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, PaginationEllipsis } from '../ui/pagination';
+import { useSearchParams } from 'next/navigation';
 
 type Props = {
   pagination: Awaited<ReturnType<typeof getEvents>>['page']
 }
 
 export default function Pagination({ pagination }: Props) {
+  const searchParams = useSearchParams()
+  const city = searchParams.get('city') || "";
   return (
     <UIPagination>
       <PaginationContent>
         {(pagination.number !== 0) && (
           <PaginationItem>
-            <PaginationPrevious href={`/search?page=${pagination.number - 1}`} />
+            <PaginationPrevious href={`/search?city=${city}&page=${pagination.number - 1}`} />
           </PaginationItem>
         )}
 
         {pagination.number - 1 > 0 && (
           <PaginationItem>
-            <PaginationLink href={`/search?page=0`}>
+            <PaginationLink href={`/search?city=${city}&page=0`}>
               0
             </PaginationLink>
           </PaginationItem>
@@ -33,7 +38,7 @@ export default function Pagination({ pagination }: Props) {
             case pagination.number + 1:
               return (
                 <PaginationItem key={index}>
-                  <PaginationLink href={`/search?page=${index}`} isActive={pagination.number === index}>
+                  <PaginationLink href={`/search?city=${city}&page=${index}`} isActive={pagination.number === index}>
                     {index}
                   </PaginationLink>
                 </PaginationItem>
@@ -46,7 +51,7 @@ export default function Pagination({ pagination }: Props) {
         )}
         {pagination.number < (pagination.totalPages - 2) && (
           <PaginationItem>
-            <PaginationLink href={`/search?page=${pagination.totalPages - 1}`}>
+            <PaginationLink href={`/search?city=${city}&page=${pagination.totalPages - 1}`}>
               {pagination.totalPages - 1}
             </PaginationLink>
           </PaginationItem>
@@ -54,7 +59,7 @@ export default function Pagination({ pagination }: Props) {
 
         {!(pagination.number === pagination.totalPages - 1) && (
           <PaginationItem>
-            <PaginationNext href={`/search?page=${pagination.number + 1}`} />
+            <PaginationNext href={`/search?city=${city}&page=${pagination.number + 1}`} />
           </PaginationItem>
         )}
       </PaginationContent>

@@ -69,8 +69,45 @@ type VenueResponse struct {
 	URL        string           `json:"url"`
 }
 
+type classificationAttractionResponse struct {
+	Family bool `json:"family"`
+	Genre  struct {
+		Id   string `json:"id"`   // e.g. "KZFzniwnZsFSw"
+		Name string `json:"name"` // e.g. "Pop"
+	}
+	Primary bool `json:"primary"`
+	Segment struct {
+		Id   string `json:"id"`   // e.g. "KZFzniwnZsFSw"
+		Name string `json:"name"` // e.g. "Music"
+	}
+	Subgenre struct {
+		Id   string `json:"id"`   // e.g. "KZFzniwnZsFSw"
+		Name string `json:"name"` // e.g. "Pop"
+	}
+	Subtype struct {
+		Id   string `json:"id"`   // e.g. "KZFzniwnZsFSw"
+		Name string `json:"name"` // e.g. "Festival"
+	}
+	Type struct {
+		Id   string `json:"id"`   // e.g. "KZFzniwnZsFSw"
+		Name string `json:"name"` // e.g. "Stile evento"
+	}
+}
+
+type Attraction struct {
+	Classification []classificationAttractionResponse `json:"classifications"`
+	Id             string                             `json:"id"`
+	Images         []imageResponse                    `json:"images"`
+	Locale         string                             `json:"locale"`
+	Name           string                             `json:"name"`
+	Test           bool                               `json:"test"`
+	Type           string                             `json:"type"` // e.g. "attraction"
+	URL            string                             `json:"url"`
+}
+
 type eventEmbeddedResponse struct {
-	Venues []VenueResponse `json:"venues"`
+	Attractions []Attraction    `json:"attractions"`
+	Venues      []VenueResponse `json:"venues"`
 }
 
 type imageResponse struct {

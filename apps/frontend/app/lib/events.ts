@@ -10,6 +10,40 @@ type Ticketmaster = {
   };
 }
 
+type Attraction = {
+  classifications: {
+    genre: {
+      id: string;
+      name: string;
+    };
+    family: boolean;
+    primary: boolean;
+    segment: {
+      id: string;
+      name: string;
+    };
+    subgenre: {
+      id: string;
+      name: string;
+    };
+    subtype: {
+      id: string;
+      name: string;
+    };
+    type: {
+      id: string;
+      name: string;
+    };
+  }[];
+  id: string;
+  images: Image[];
+  locale: string;
+  name: string;
+  test: boolean;
+  type: string;
+  url: string;
+}
+
 type Event = {
   dates: Dates;
   _embedded: EventEmbedded;
@@ -20,6 +54,7 @@ type Event = {
 }
 
 type EventEmbedded = {
+  attractions: Attraction[];
   venues: Venue[];
 }
 
@@ -75,12 +110,13 @@ type Image = {
 }
 
 type opts = {
+  city?: string;
   page?: string;
 }
 
 export async function getEvents(opts: opts = { page: "0" }) {
   try {
-    return await fetch(`http://localhost:8080/events?page=${opts.page}`).then(res => res.json()) as Promise<Ticketmaster>;
+    return await fetch(`http://localhost:8080/events?city=${opts.city || ""}&page=${opts.page}`).then(res => res.json()) as Promise<Ticketmaster>;
   } catch (err) {
     throw new Error('fetching events', err as Error);
   }
