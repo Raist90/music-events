@@ -6,6 +6,7 @@ import (
 	"md-api/model"
 	"md-api/service"
 	"net/http"
+	"strings"
 )
 
 type data struct {
@@ -26,14 +27,26 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 		p = page
 	}
 
-	city := r.URL.Query().Get("city")
+	// city := r.URL.Query().Get("city")
+
+	country := r.URL.Query().Get("country")
+	if country == "" {
+		country = "IT"
+	}
+
+	var locale string
+	if country == "GB" || country == "US" {
+		locale = "en"
+	} else {
+		locale = strings.ToLower(country)
+	}
 
 	s := service.New()
 	body, err := service.MusicEvents(s, []string{
 		"classificationName=music",
-		"countryCode=IT",
-		"locale=it-it",
-		"city=" + city,
+		"countryCode=" + country,
+		"locale=" + locale,
+		// "city=" + city,
 		"sort=date,asc",
 		"page=" + p,
 	})

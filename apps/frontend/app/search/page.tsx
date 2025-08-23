@@ -2,7 +2,7 @@ import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query
 import Events from "@/components/events";
 import { getEvents } from "../lib/events";
 import Filters from "@/components/events/filters";
-import CityFilter from "@/components/events/filters/city";
+import CountryFilter from "@/components/events/filters/country";
 import { Suspense } from "react";
 import EventsSkeleton from "@/components/events/skeleton";
 
@@ -10,20 +10,20 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
   const queryClient = new QueryClient()
 
   const page = (await searchParams).page
-  const city = (await searchParams).city
+  const country = (await searchParams).country
   const params = {
-    ...(typeof city === 'string' ? { city } : {}),
+    ...(typeof country === 'string' ? { country } : {}),
     ...(typeof page === 'string' ? { page } : { page: '0' })
   }
   await queryClient.prefetchQuery({
-    queryKey: ['events', params.city || '', params.page],
+    queryKey: ['events', params.country || '', params.page],
     queryFn: () => getEvents(params),
   })
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Filters>
-        <CityFilter initialValue={params.city} />
+        <CountryFilter initialValue={params.country} />
       </Filters>
 
       <Suspense fallback={<EventsSkeleton />}>
