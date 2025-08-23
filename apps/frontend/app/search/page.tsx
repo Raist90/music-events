@@ -1,21 +1,9 @@
 import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import Events from "@/components/events";
 import { getEvents } from "../lib/events";
-import Menu from "@/components/events/menu";
-import { redirect } from "next/navigation";
-
-const cities: string[] = [
-  "Bologna",
-  "Catania",
-  "Firenze",
-  "Genova",
-  "Milano",
-  "Napoli",
-  "Palermo",
-  "Roma",
-  "Torino",
-  "Venezia"
-];
+import Filters from "@/components/events/filters";
+import CityFilter from "@/components/events/filters/city";
+import { Suspense } from "react";
 
 export default async function Search({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const queryClient = new QueryClient()
@@ -27,20 +15,19 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
     ...(typeof page === 'string' ? { page } : { page: '0' })
   }
   await queryClient.prefetchQuery({
-    queryKey: ['events'],
-    queryFn: () => getEvents(params)
+    queryKey: ['events', params.city || '', params.page],
+    queryFn: () => getEvents(params),
   })
-
-  const onSelect = async (val: string) => {
-    'use server'
-    redirect(`/search?city=${val}&page=0`);
-  }
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Menu initialValue={params.city} items={cities} onSelect={onSelect} />
+      <Filters>
+        <CityFilter initialValue={params.city} />
+      </Filters>
 
-      <Events />
+      <Suspense fallback={<div className="p-8">Caricamento eventi...</div>}>
+        <Events />
+      </Suspense>
     </HydrationBoundary>
   );
 }

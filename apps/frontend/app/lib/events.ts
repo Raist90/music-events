@@ -44,7 +44,7 @@ type Attraction = {
   url: string;
 }
 
-type Event = {
+export type Event = {
   dates: Dates;
   _embedded: EventEmbedded;
   id: string;
