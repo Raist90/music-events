@@ -4,6 +4,7 @@ import { getEvents } from "../lib/events";
 import Filters from "@/components/events/filters";
 import CityFilter from "@/components/events/filters/city";
 import { Suspense } from "react";
+import EventsSkeleton from "@/components/events/skeleton";
 
 export default async function Search({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const queryClient = new QueryClient()
@@ -25,7 +26,7 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
         <CityFilter initialValue={params.city} />
       </Filters>
 
-      <Suspense fallback={<div className="p-8">Caricamento eventi...</div>}>
+      <Suspense fallback={<EventsSkeleton />}>
         <Events />
       </Suspense>
     </HydrationBoundary>

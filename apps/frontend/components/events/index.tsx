@@ -5,6 +5,7 @@ import { getEvents } from "@/app/lib/events"
 import Pagination from "./pagination"
 import EventCard from "./eventCard"
 import { useSearchParams } from "next/navigation"
+import EventsSkeleton from "./skeleton"
 
 export default function Events() {
   const searchParams = useSearchParams()
@@ -12,10 +13,12 @@ export default function Events() {
   const page = searchParams.get('page') || "0";
 
   // TODO: handle loading and error states
-  const { data } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ['events', city, page],
     queryFn: () => getEvents({ city, page }),
   })
+
+  if (isFetching) return (<EventsSkeleton />)
 
   return (
     <section className="space-y-12">
