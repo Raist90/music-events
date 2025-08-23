@@ -27,7 +27,7 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 		p = page
 	}
 
-	// city := r.URL.Query().Get("city")
+	city := r.URL.Query().Get("city")
 
 	country := r.URL.Query().Get("country")
 	if country == "" {
@@ -46,7 +46,7 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 		"classificationName=music",
 		"countryCode=" + country,
 		"locale=" + locale,
-		// "city=" + city,
+		"city=" + city,
 		"sort=date,asc",
 		"page=" + p,
 	})

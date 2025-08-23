@@ -110,13 +110,14 @@ type Image = {
 }
 
 type opts = {
+  city?: string[];
   country?: string;
   page?: string;
 }
 
 export async function getEvents(opts: opts = { page: "0" }) {
   try {
-    return await fetch(`http://localhost:8080/events?country=${opts.country || ""}&page=${opts.page}`).then(res => res.json()) as Promise<Ticketmaster>;
+    return await fetch(`http://localhost:8080/events?country=${opts.country || ""}&city=${opts.city || ""}&page=${opts.page}`).then(res => res.json()) as Promise<Ticketmaster>;
   } catch (err) {
     throw new Error('fetching events', err as Error);
   }

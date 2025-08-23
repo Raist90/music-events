@@ -11,11 +11,12 @@ export default function Events() {
   const searchParams = useSearchParams()
   const country = searchParams.get('country') || "";
   const page = searchParams.get('page') || "0";
+  const city = searchParams.getAll('city') || "";
 
   // TODO: handle loading and error states
   const { data, isFetching } = useQuery({
-    queryKey: ['events', country, page],
-    queryFn: () => getEvents({ country, page }),
+    queryKey: ['events', city, country, page],
+    queryFn: () => getEvents({ city, country, page }),
   })
 
   if (isFetching) return (<EventsSkeleton />)
