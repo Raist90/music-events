@@ -6,6 +6,8 @@ import CountryFilter from "@/components/events/filters/country";
 import { Suspense } from "react";
 import EventsSkeleton from "@/components/events/skeleton";
 import CitiesFilter from "@/components/events/filters/cities";
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import { Plus } from "lucide-react";
 
 export default async function Search({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const queryClient = new QueryClient()
@@ -25,10 +27,26 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Filters>
-        <CountryFilter initialValue={params.country} />
-        <CitiesFilter />
-      </Filters>
+      <div className="flex gap-x-2 items-center mt-8 px-8 py-4 text-sm sticky top-0 bg-background/85 backdrop-blur-md border-b border-input">
+        <Drawer>
+          <DrawerTrigger className="ml-auto" asChild>
+            <button className="font-semibold flex gap-x-1 items-center cursor-pointer">
+              Filtri
+              <Plus className="size-4" />
+            </button>
+          </DrawerTrigger>
+          <DrawerContent className="!rounded-none">
+            <DrawerHeader>
+              <DrawerTitle>Filtri</DrawerTitle>
+              <DrawerDescription>Seleziona i filtri per la ricerca</DrawerDescription>
+            </DrawerHeader>
+            <Filters>
+              <CountryFilter initialValue={params.country} />
+              <CitiesFilter />
+            </Filters>
+          </DrawerContent>
+        </Drawer>
+      </div>
 
       <Suspense fallback={<EventsSkeleton />}>
         <Events />

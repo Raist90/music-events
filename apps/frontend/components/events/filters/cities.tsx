@@ -92,7 +92,7 @@ export default function CitiesFilter() {
   }
 
   return (
-    <div className="flex gap-x-2">
+    <div className="flex flex-wrap gap-2">
       {country && citiesMap[country]?.length && citiesMap[country].map((city) => (
         <div className="flex gap-x-2 items-center" key={city}>
           <Checkbox checked={cities.includes(city.toLowerCase())} onCheckedChange={(checked) => onChecked(city.toLowerCase(), checked as boolean)} id={city} />
