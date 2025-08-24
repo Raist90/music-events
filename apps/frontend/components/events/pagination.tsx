@@ -8,7 +8,6 @@ type Props = {
   pagination: Awaited<ReturnType<typeof getEvents>>['page']
 }
 
-// TODO: Handle city query param as well
 export default function Pagination({ pagination }: Props) {
   const searchParams = useSearchParams()
   const city = searchParams.getAll('city') || [];
