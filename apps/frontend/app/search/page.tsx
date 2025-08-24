@@ -27,7 +27,7 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="flex gap-x-2 items-center mt-8 px-8 py-4 text-sm sticky top-0 bg-background/85 backdrop-blur-md border-b border-input">
+      <div className="flex gap-x-2 items-center px-8 py-4 text-sm sticky top-0 bg-background/85 backdrop-blur-md border-b border-input">
         <Drawer>
           <DrawerTrigger className="ml-auto" asChild>
             <button className="font-semibold flex gap-x-1 items-center cursor-pointer">
