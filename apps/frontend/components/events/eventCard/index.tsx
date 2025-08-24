@@ -40,7 +40,7 @@ export default function EventCard({ event }: Props) {
               </div>
             )}
 
-            {event._embedded.attractions?.[0].classifications[0].genre?.name && event._embedded.attractions?.[0].classifications[0].genre.name !== 'Undefined' && (
+            {event._embedded.attractions?.[0].classifications?.[0].genre?.name && event._embedded.attractions?.[0].classifications[0].genre.name !== 'Undefined' && (
               <div>
                 <p className="text-xs">Genere</p>
                 <p className="text-xs uppercase font-semibold">{event._embedded.attractions[0].classifications[0].genre.name}</p>
