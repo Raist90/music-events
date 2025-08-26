@@ -1,6 +1,7 @@
 import type { Event } from "@/app/lib/events"
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
+import { useRouter, useSearchParams } from "next/navigation"
 
 type Props = Readonly<{
   event: Event
@@ -9,6 +10,14 @@ type Props = Readonly<{
 export default function EventCard({ event }: Props) {
   dayjs.extend(utc)
   const format = (dateTime: string) => dayjs(dateTime).utc().format('MMM D, YYYY h:mm A')
+
+  const router = useRouter()
+  const params = new URLSearchParams(useSearchParams())
+  const onAttractionClick = (attractionId: string) => {
+    params.set('attractionId', attractionId)
+    params.set('page', '0')
+    router.push(`/search?${params.toString()}`)
+  }
 
   return (
     <li className="flex flex-col gap-y-4">
@@ -31,7 +40,7 @@ export default function EventCard({ event }: Props) {
                 <p>Feat</p>
 
                 {event._embedded.attractions.filter((_, index) => index < 2).map(({ id, name }) => (
-                  <p className="uppercase font-semibold" key={id}>{name}</p>
+                  <button onClick={() => onAttractionClick(id)} className="uppercase font-semibold hover:text-blue-300 hover:underline cursor-pointer block" key={id}>{name}</button>
                 ))}
 
                 {event._embedded.attractions.length > 2 && (

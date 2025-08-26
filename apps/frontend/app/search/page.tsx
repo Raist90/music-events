@@ -15,13 +15,15 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
   const page = (await searchParams).page
   const country = (await searchParams).country
   const city = (await searchParams).city
+  const attractionId = (await searchParams).attractionId
   const params = {
     ...(Array.isArray(city) ? { city } : {}),
     ...(typeof country === 'string' ? { country } : {}),
     ...(typeof page === 'string' ? { page } : { page: '0' }),
+    ...(typeof attractionId === 'string' ? { attractionId } : {}),
   }
   await queryClient.prefetchQuery({
-    queryKey: ['events', params.country || '', params.city || '', params.page],
+    queryKey: ['events', params.country || '', params.city || '', params.page, params.attractionId],
     queryFn: () => getEvents(params),
   })
 

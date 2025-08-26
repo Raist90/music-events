@@ -41,8 +41,11 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 		locale = strings.ToLower(country)
 	}
 
+	attractionId := r.URL.Query().Get("attractionId")
+
 	s := service.New()
 	body, err := service.MusicEvents(s, []string{
+		"attractionId=" + attractionId,
 		"classificationName=music",
 		"countryCode=" + country,
 		"locale=" + locale,
