@@ -16,12 +16,7 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
   const country = (await searchParams).country
   const city = (await searchParams).city
   const attractionId = (await searchParams).attractionId
-  const params = {
-    ...(Array.isArray(city) ? { city } : {}),
-    ...(typeof country === 'string' ? { country } : {}),
-    ...(typeof page === 'string' ? { page } : { page: '0' }),
-    ...(typeof attractionId === 'string' ? { attractionId } : {}),
-  }
+
   await queryClient.prefetchQuery({
     queryKey: ['events',
       {
@@ -31,7 +26,12 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
         attractionId: attractionId || null,
       }
     ],
-    queryFn: () => getEvents(params),
+    queryFn: () => getEvents({
+      ...(Array.isArray(city) ? { city } : {}),
+      ...(typeof country === 'string' ? { country } : {}),
+      ...(typeof page === 'string' ? { page } : { page: '0' }),
+      ...(typeof attractionId === 'string' ? { attractionId } : {}),
+    }),
   })
 
   return (
@@ -50,7 +50,7 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
               <DrawerDescription>Seleziona i filtri per la ricerca</DrawerDescription>
             </DrawerHeader>
             <Filters>
-              <CountryFilter initialValue={params.country} />
+              <CountryFilter {...(typeof country === 'string' && { initialValue: country })} />
               <CitiesFilter />
             </Filters>
           </DrawerContent>
