@@ -13,19 +13,20 @@ export default function Pagination({ pagination }: Props) {
   const city = searchParams.getAll('city') || [];
   const country = searchParams.get('country') || "";
 
-  const cityParam = city.map((c) => `&city=${c}`).join('')
+  const cityParam = city.map((c) => `city=${c}`).join('')
+  const countryParam = country ? `&country=${country}` : ''
   return (
     <UIPagination>
       <PaginationContent>
         {(pagination.number !== 0) && (
           <PaginationItem>
-            <PaginationPrevious href={`/search?country=${country}${cityParam}&page=${pagination.number - 1}`} />
+            <PaginationPrevious href={`/search?${cityParam}${countryParam}&page=${pagination.number - 1}`} />
           </PaginationItem>
         )}
 
         {pagination.number - 1 > 0 && (
           <PaginationItem>
-            <PaginationLink href={`/search?country=${country}${cityParam}&page=0`}>
+            <PaginationLink href={`/search?${cityParam}${countryParam}&page=0`}>
               0
             </PaginationLink>
           </PaginationItem>
@@ -41,7 +42,7 @@ export default function Pagination({ pagination }: Props) {
             case pagination.number + 1:
               return (
                 <PaginationItem key={index}>
-                  <PaginationLink href={`/search?country=${country}${cityParam}&page=${index}`} isActive={pagination.number === index}>
+                  <PaginationLink href={`/search?${cityParam}${countryParam}&page=${index}`} isActive={pagination.number === index}>
                     {index}
                   </PaginationLink>
                 </PaginationItem>
@@ -54,7 +55,7 @@ export default function Pagination({ pagination }: Props) {
         )}
         {pagination.number < (pagination.totalPages - 2) && (
           <PaginationItem>
-            <PaginationLink href={`/search?country=${country}${cityParam}&page=${pagination.totalPages - 1}`}>
+            <PaginationLink href={`/search?${cityParam}${countryParam}&page=${pagination.totalPages - 1}`}>
               {pagination.totalPages - 1}
             </PaginationLink>
           </PaginationItem>
@@ -62,7 +63,7 @@ export default function Pagination({ pagination }: Props) {
 
         {!(pagination.number === pagination.totalPages - 1) && (
           <PaginationItem>
-            <PaginationNext href={`/search?country=${country}${cityParam}&page=${pagination.number + 1}`} />
+            <PaginationNext href={`/search?${cityParam}${countryParam}&page=${pagination.number + 1}`} />
           </PaginationItem>
         )}
       </PaginationContent>

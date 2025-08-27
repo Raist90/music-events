@@ -23,7 +23,14 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
     ...(typeof attractionId === 'string' ? { attractionId } : {}),
   }
   await queryClient.prefetchQuery({
-    queryKey: ['events', params.country || '', params.city || '', params.page, params.attractionId],
+    queryKey: ['events',
+      {
+        city: city || [],
+        country: country || null,
+        page: page || "0",
+        attractionId: attractionId || null,
+      }
+    ],
     queryFn: () => getEvents(params),
   })
 

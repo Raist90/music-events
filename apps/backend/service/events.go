@@ -10,7 +10,6 @@ type opts []string
 func MusicEvents(s Service, _opts opts) ([]byte, error) {
 	var opts string
 	for i, opt := range _opts {
-		println(opt)
 		if opt == "attractionId=" {
 			continue
 		}

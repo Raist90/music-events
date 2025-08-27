@@ -9,15 +9,20 @@ import EventsSkeleton from "./skeleton"
 
 export default function Events() {
   const searchParams = useSearchParams()
-  const country = searchParams.get('country') || "";
-  const page = searchParams.get('page') || "0";
-  const city = searchParams.getAll('city') || "";
-  const attractionId = searchParams.get('attractionId') || "";
+  const country = searchParams.get('country');
+  const page = searchParams.get('page');
+  const city = searchParams.getAll('city');
+  const attractionId = searchParams.get('attractionId');
 
   // TODO: handle loading and error states
   const { data, isFetching } = useQuery({
-    queryKey: ['events', city, country, page, attractionId],
-    queryFn: () => getEvents({ city, country, page, attractionId }),
+    queryKey: ['events', { city, country, page: page || "0", attractionId }],
+    queryFn: () => getEvents({
+      ...(Array.isArray(city) ? { city } : {}),
+      ...(typeof country === 'string' ? { country } : {}),
+      ...(typeof page === 'string' ? { page } : { page: '0' }),
+      ...(typeof attractionId === 'string' ? { attractionId } : {}),
+    }),
   })
 
   if (isFetching) return (<EventsSkeleton />)
