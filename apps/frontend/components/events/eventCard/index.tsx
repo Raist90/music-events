@@ -1,7 +1,8 @@
 import type { Event } from "@/app/lib/events"
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
+import Link from "next/link"
 
 type Props = Readonly<{
   event: Event
@@ -11,13 +12,13 @@ export default function EventCard({ event }: Props) {
   dayjs.extend(utc)
   const format = (dateTime: string) => dayjs(dateTime).utc().format('MMM D, YYYY h:mm A')
 
-  const router = useRouter()
-  const params = new URLSearchParams(useSearchParams())
-  const onAttractionClick = (attractionId: string) => {
-    params.set('attractionId', attractionId)
-    params.set('page', '0')
-    router.push(`/search?${params.toString()}`)
-  }
+  const searchParams = useSearchParams()
+  const city = searchParams.getAll('city');
+  const country = searchParams.get('country');
+
+  const cityParam = city.length ? city.map((c) => `city=${c}`).join('') : ''
+  const countryParam = country ? `&country=${country}` : ''
+  const params = `${cityParam}${countryParam}`
 
   return (
     <li className="flex flex-col gap-y-4">
@@ -40,7 +41,7 @@ export default function EventCard({ event }: Props) {
                 <p>Feat</p>
 
                 {event._embedded.attractions.filter((_, index) => index < 2).map(({ id, name }) => (
-                  <button onClick={() => onAttractionClick(id)} className="uppercase font-semibold hover:text-blue-300 hover:underline cursor-pointer block" key={id}>{name}</button>
+                  <Link href={`/search?${params}&attractionId=${id}`} className="uppercase font-semibold hover:text-blue-300 hover:underline cursor-pointer block" key={id}>{name}</Link>
                 ))}
 
                 {event._embedded.attractions.length > 2 && (

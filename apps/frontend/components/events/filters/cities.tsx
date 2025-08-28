@@ -88,7 +88,8 @@ export default function CitiesFilter() {
     }
 
     params.set('page', '0')
-    router.push(`/search?${params.toString()}`)
+    router.prefetch(`/search?${params.toString()}`)
+    router.push(`/search?${params.toString()}`, { scroll: false })
   }
 
   return (
