@@ -14,7 +14,7 @@ export default function Pagination({ pagination }: Props) {
   const country = searchParams.get('country');
   const attractionId = searchParams.get('attractionId');
 
-  const cityParam = city.length ? city.map((c) => `city=${c}`).join('') : ''
+  const cityParam = city.length ? city.map((c) => `city=${c}`).join('&') : ''
   const countryParam = country ? `&country=${country}` : ''
   const attractionIdParam = attractionId ? `&attractionId=${attractionId}` : ''
   const params = `${cityParam}${countryParam}${attractionIdParam}`
