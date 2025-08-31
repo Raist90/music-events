@@ -43,6 +43,9 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 
 	attractionId := r.URL.Query().Get("attractionId")
 
+	startDate := r.URL.Query().Get("startDateTime")
+	endDate := r.URL.Query().Get("endDateTime")
+
 	s := service.New()
 	body, err := service.MusicEvents(s, []string{
 		"attractionId=" + attractionId,
@@ -50,6 +53,8 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 		"countryCode=" + country,
 		"locale=" + locale,
 		"city=" + city,
+		"startDateTime=" + startDate,
+		"endDateTime=" + endDate,
 		"sort=date,asc",
 		"page=" + p,
 	})

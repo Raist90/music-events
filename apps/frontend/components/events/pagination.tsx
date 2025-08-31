@@ -13,11 +13,15 @@ export default function Pagination({ pagination }: Props) {
   const city = searchParams.getAll('city');
   const country = searchParams.get('country');
   const attractionId = searchParams.get('attractionId');
+  const startDateTime = searchParams.get('startDateTime');
+  const endDateTime = searchParams.get('endDateTime');
 
   const cityParam = city.length ? city.map((c) => `city=${c}`).join('&') : ''
   const countryParam = country ? `&country=${country}` : ''
   const attractionIdParam = attractionId ? `&attractionId=${attractionId}` : ''
-  const params = `${cityParam}${countryParam}${attractionIdParam}`
+  const startDateTimeParam = startDateTime ? `&startDateTime=${startDateTime}` : ''
+  const endDateTimeParam = endDateTime ? `&endDateTime=${endDateTime}` : ''
+  const params = `${cityParam}${countryParam}${attractionIdParam}${startDateTimeParam}${endDateTimeParam}`
   return (
     <UIPagination>
       <PaginationContent>

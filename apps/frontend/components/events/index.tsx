@@ -13,15 +13,19 @@ export default function Events() {
   const page = searchParams.get('page');
   const city = searchParams.getAll('city');
   const attractionId = searchParams.get('attractionId');
+  const startDateTime = searchParams.get('startDateTime');
+  const endDateTime = searchParams.get('endDateTime');
 
   // TODO: handle loading and error states
   const { data, isFetching } = useQuery({
-    queryKey: ['events', { city, country, page: page || "0", attractionId }],
+    queryKey: ['events', { city, country, page: page || "0", attractionId, startDateTime, endDateTime }],
     queryFn: () => getEvents({
       ...(Array.isArray(city) ? { city } : {}),
       ...(typeof country === 'string' ? { country } : {}),
       ...(typeof page === 'string' ? { page } : { page: '0' }),
       ...(typeof attractionId === 'string' ? { attractionId } : {}),
+      ...(typeof startDateTime === 'string' ? { startDateTime } : {}),
+      ...(typeof endDateTime === 'string' ? { endDateTime } : {})
     }),
   })
 

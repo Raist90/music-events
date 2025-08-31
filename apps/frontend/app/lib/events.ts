@@ -114,14 +114,28 @@ type opts = {
   country?: string;
   page?: string;
   attractionId?: string;
+  startDateTime?: string;
+  endDateTime?: string;
 }
 
+import dayjs from 'dayjs'
 export async function getEvents(opts: opts = { page: "0" }) {
-  const city = opts.city?.length ? `city=${opts.city}` : ''
-  const country = opts.country ? `&country=${opts.country}` : ''
-  const attractionId = opts.attractionId ? `&attractionId=${opts.attractionId}` : ''
+  const format = () => {
+    const query: string[] = []
+    Object.entries(opts).forEach(([key, val]) => {
+      if (Array.isArray(val) && val.length) {
+        val.forEach(v => query.push(`${key}=${v}`))
+      }
+      query.push(`${key}=${val}`)
+    })
+    if (!('startDateTime' in opts)) query.push(`startDateTime=${dayjs().format('YYYY-MM-DDTHH:mm:ss[Z]')}`)
+
+    return query.join('&')
+  }
+
+  const params = format()
   try {
-    return await fetch(`http://localhost:8080/events?${city}${country}${attractionId}&page=${opts.page}`).then(res => res.json()) as Promise<Ticketmaster>;
+    return await fetch(`http://localhost:8080/events?${params}`).then(res => res.json()) as Promise<Ticketmaster>;
   } catch (err) {
     throw new Error('fetching events', err as Error);
   }

@@ -8,6 +8,7 @@ import EventsSkeleton from "@/components/events/skeleton";
 import CitiesFilter from "@/components/events/filters/cities";
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { Plus } from "lucide-react";
+import DatesFilter from "@/components/events/filters/dates";
 
 export default async function Search({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const queryClient = new QueryClient()
@@ -16,6 +17,8 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
   const country = (await searchParams).country
   const city = (await searchParams).city
   const attractionId = (await searchParams).attractionId
+  const startDateTime = (await searchParams).startDateTime
+  const endDateTime = (await searchParams).endDateTime
 
   await queryClient.prefetchQuery({
     queryKey: ['events',
@@ -24,6 +27,8 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
         country: country || null,
         page: page || "0",
         attractionId: attractionId || null,
+        startDateTime: startDateTime || null,
+        endDateTime: endDateTime || null,
       }
     ],
     queryFn: () => getEvents({
@@ -31,6 +36,8 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
       ...(typeof country === 'string' ? { country } : {}),
       ...(typeof page === 'string' ? { page } : { page: '0' }),
       ...(typeof attractionId === 'string' ? { attractionId } : {}),
+      ...(typeof startDateTime === 'string' ? { startDateTime } : {}),
+      ...(typeof endDateTime === 'string' ? { endDateTime } : {})
     }),
   })
 
@@ -50,8 +57,12 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
               <DrawerDescription>Seleziona i filtri per la ricerca</DrawerDescription>
             </DrawerHeader>
             <Filters>
-              <CountryFilter {...(typeof country === 'string' && { initialValue: country })} />
-              <CitiesFilter />
+              <DatesFilter />
+
+              <div className="flex flex-col lg:flex-row gap-x-8 gap-y-4 lg:items-center">
+                <CountryFilter {...(typeof country === 'string' && { initialValue: country })} />
+                <CitiesFilter />
+              </div>
             </Filters>
           </DrawerContent>
         </Drawer>

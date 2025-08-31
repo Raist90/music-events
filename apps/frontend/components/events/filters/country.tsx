@@ -27,14 +27,17 @@ const countries: string[] = [
 
 export default function CountryFilter({ initialValue }: Props) {
   const router = useRouter();
-  const onSelect = async (val: string) => router.push(`/search?country=${val}&page=0`)
+  const onSelect = async (val: string) => {
+    router.prefetch(`/search?country=${val}&page=0`)
+    router.push(`/search?country=${val}&page=0`)
+  }
 
   return (
     <Select onValueChange={onSelect}>
-      <SelectTrigger>
+      <SelectTrigger className="min-w-40">
         <SelectValue placeholder={initialValue ? countriesMap[initialValue] : 'Seleziona nazione'} />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="w-40">
         <SelectGroup>
           <SelectLabel>Nazione</SelectLabel>
           {countries.map((country) => (

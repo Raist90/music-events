@@ -3,21 +3,23 @@ package service
 import (
 	"fmt"
 	"md-api/config"
+	"strings"
 )
 
 type opts []string
 
 func MusicEvents(s Service, _opts opts) ([]byte, error) {
 	var opts string
-	for i, opt := range _opts {
-		if opt == "attractionId=" {
+	for _, opt := range _opts {
+		s := strings.Split(opt, "=")
+		if s[1] == "" {
 			continue
 		}
 
-		if i > 0 {
-			opts += "&" + opt
-		} else {
+		if len(opts) == 0 {
 			opts += opt
+		} else {
+			opts += "&" + opt
 		}
 	}
 
