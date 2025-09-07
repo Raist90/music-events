@@ -1,6 +1,6 @@
 'use client'
 
-import { getEvents } from '@/app/lib/events';
+import { getEvents } from '@/events/getEvents';
 import { Pagination as UIPagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, PaginationEllipsis } from '../ui/pagination';
 import { useSearchParams } from 'next/navigation';
 
@@ -15,13 +15,15 @@ export default function Pagination({ pagination }: Props) {
   const attractionId = searchParams.get('attractionId');
   const startDateTime = searchParams.get('startDateTime');
   const endDateTime = searchParams.get('endDateTime');
+  const genreId = searchParams.get('genreId');
 
   const cityParam = city.length ? city.map((c) => `city=${c}`).join('&') : ''
   const countryParam = country ? `&country=${country}` : ''
   const attractionIdParam = attractionId ? `&attractionId=${attractionId}` : ''
   const startDateTimeParam = startDateTime ? `&startDateTime=${startDateTime}` : ''
   const endDateTimeParam = endDateTime ? `&endDateTime=${endDateTime}` : ''
-  const params = `${cityParam}${countryParam}${attractionIdParam}${startDateTimeParam}${endDateTimeParam}`
+  const genreIdParam = genreId ? `&genreId=${genreId}` : ''
+  const params = `${cityParam}${countryParam}${attractionIdParam}${startDateTimeParam}${endDateTimeParam}${genreIdParam}`
   return (
     <UIPagination>
       <PaginationContent>

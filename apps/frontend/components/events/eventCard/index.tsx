@@ -1,8 +1,8 @@
-import type { Event } from "@/app/lib/events"
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
+import type { Event } from "@/events/types"
 
 type Props = Readonly<{
   event: Event
@@ -42,7 +42,7 @@ export default function EventCard({ event }: Props) {
                 <p>Feat</p>
 
                 {event._embedded.attractions.filter((_, index) => index < 2).map(({ id, name }) => (
-                  <Link href={`/search?${params}&attractionId=${id}`} className="uppercase font-semibold hover:text-blue-300 hover:underline cursor-pointer block" key={id}>{name}</Link>
+                  <Link href={`/search?${params}&attractionId=${id}`} className="uppercase font-semibold hover:text-blue-300 hover:underline block" key={id}>{name}</Link>
                 ))}
 
                 {event._embedded.attractions.length > 2 && (
@@ -54,7 +54,7 @@ export default function EventCard({ event }: Props) {
             {event._embedded.attractions?.[0].classifications?.[0].genre?.name && event._embedded.attractions?.[0].classifications[0].genre.name !== 'Undefined' && (
               <div>
                 <p className="text-xs">Genere</p>
-                <p className="text-xs uppercase font-semibold">{event._embedded.attractions[0].classifications[0].genre.name}</p>
+                <Link href={`/search?${params}&genreId=${event._embedded.attractions[0].classifications[0].genre.id}`} className="text-xs hover:text-blue-300 hover:underline uppercase font-semibold">{event._embedded.attractions[0].classifications[0].genre.name}</Link>
               </div>
             )}
           </div>

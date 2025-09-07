@@ -7,7 +7,7 @@ export default function HomeLayout({
 }>) {
   return (
     <div>
-      <Navigation transparent />
+      <Navigation />
 
       {children}
     </div>

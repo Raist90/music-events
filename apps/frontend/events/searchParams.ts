@@ -3,7 +3,7 @@ import { ReadonlyURLSearchParams } from "next/navigation"
 type SearchParams = Record<string, string | string[] | undefined>
 
 export function getParams(searchParams: SearchParams): Record<string, string | string[] | null> {
-  const { page, country, city, attractionId, startDateTime, endDateTime } = searchParams
+  const { page, country, city, attractionId, startDateTime, endDateTime, genreId } = searchParams
 
   return {
     city: Array.isArray(city) ? city : city ? [city] : [],
@@ -12,6 +12,7 @@ export function getParams(searchParams: SearchParams): Record<string, string | s
     attractionId: attractionId || null,
     startDateTime: startDateTime || null,
     endDateTime: endDateTime || null,
+    genreId: genreId || null,
   }
 }
 
@@ -22,6 +23,7 @@ export function getReadonlyParams(searchParams: ReadonlyURLSearchParams): Record
   const attractionId = searchParams.get('attractionId');
   const startDateTime = searchParams.get('startDateTime');
   const endDateTime = searchParams.get('endDateTime');
+  const genreId = searchParams.get('genreId');
 
   return {
     city,
@@ -30,5 +32,6 @@ export function getReadonlyParams(searchParams: ReadonlyURLSearchParams): Record
     attractionId,
     startDateTime,
     endDateTime,
+    genreId,
   }
 }
