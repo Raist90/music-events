@@ -23,6 +23,7 @@ export default function EventCard({ event }: Props) {
   return (
     <li className="flex flex-col gap-y-4">
       <div className="aspect-video w-full">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="object-fill size-full rounded-md" src={event.images.find(({ ratio, width }) => ratio === "16_9" && width > 1000)?.url} alt={event.name} />
       </div>
 

@@ -1,32 +1,26 @@
 'use client'
 
 import { useQuery } from "@tanstack/react-query"
-import { getEvents } from "@/app/lib/events"
+import { getEvents } from "@/events/getEvents"
 import Pagination from "./pagination"
 import EventCard from "./eventCard"
 import { useSearchParams } from "next/navigation"
 import EventsSkeleton from "./skeleton"
+import { getReadonlyParams } from "@/events/searchParams"
 
-export default function Events() {
+type Props = {
+  paginated?: boolean
+  params?: Record<string, string | string[] | null>
+}
+
+export default function Events({ paginated = true, params }: Props) {
   const searchParams = useSearchParams()
-  const country = searchParams.get('country');
-  const page = searchParams.get('page');
-  const city = searchParams.getAll('city');
-  const attractionId = searchParams.get('attractionId');
-  const startDateTime = searchParams.get('startDateTime');
-  const endDateTime = searchParams.get('endDateTime');
+  const query = params || getReadonlyParams(searchParams)
 
   // TODO: handle loading and error states
   const { data, isFetching } = useQuery({
-    queryKey: ['events', { city, country, page: page || "0", attractionId, startDateTime, endDateTime }],
-    queryFn: () => getEvents({
-      ...(Array.isArray(city) ? { city } : {}),
-      ...(typeof country === 'string' ? { country } : {}),
-      ...(typeof page === 'string' ? { page } : { page: '0' }),
-      ...(typeof attractionId === 'string' ? { attractionId } : {}),
-      ...(typeof startDateTime === 'string' ? { startDateTime } : {}),
-      ...(typeof endDateTime === 'string' ? { endDateTime } : {})
-    }),
+    queryKey: ['events', query],
+    queryFn: () => getEvents(query),
   })
 
   if (isFetching) return (<EventsSkeleton />)
@@ -44,7 +38,7 @@ export default function Events() {
         )}
       </div>
 
-      {data?.page && (
+      {data?.page && paginated && (
         <footer className="border-t p-4">
           <Pagination pagination={data.page} />
         </footer>

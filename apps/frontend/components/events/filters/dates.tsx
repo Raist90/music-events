@@ -21,6 +21,7 @@ export default function DatesFilter() {
   const [start, setStart] = React.useState<Date | undefined>(_start ? dayjs(_start).toDate() : undefined)
   const [end, setEnd] = React.useState<Date | undefined>(_end ? dayjs(_end).toDate() : undefined)
 
+  // TODO: Find a way to reuse this
   const format = (dateTime: Date) => dayjs(dateTime).format('YYYY-MM-DDTHH:mm:ss[Z]')
 
   const onSelectStart = (start: Date) => {

@@ -46,6 +46,8 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 	startDate := r.URL.Query().Get("startDateTime")
 	endDate := r.URL.Query().Get("endDateTime")
 
+	size := r.URL.Query().Get("size")
+
 	s := service.New()
 	body, err := service.MusicEvents(s, []string{
 		"attractionId=" + attractionId,
@@ -57,6 +59,7 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 		"endDateTime=" + endDate,
 		"sort=date,asc",
 		"page=" + p,
+		"size=" + size,
 	})
 	if err != nil {
 		http.Error(w, fmt.Sprintf("fetching events: %v", err), http.StatusInternalServerError)
