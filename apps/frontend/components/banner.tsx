@@ -21,6 +21,8 @@ export default function Banner({ className, media: _media, title }: Props) {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={media.src} alt="Home banner" className='object-cover size-full' />
       </div>
+
+      <div className="absolute inset-0 bg-conic/decreasing from-violet-700 -z-[2] via-lime-300 to-violet-700 opacity-10"></div>
     </section>
   )
 }
