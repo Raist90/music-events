@@ -1,30 +1,39 @@
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-import { useSearchParams } from "next/navigation"
-import Link from "next/link"
-import type { Event } from "@/events/types"
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import type { Event } from "@/events/types";
 
 type Props = Readonly<{
-  event: Event
-}>
+  event: Event;
+}>;
 
 export default function EventCard({ event }: Props) {
-  dayjs.extend(utc)
-  const format = (dateTime: string) => dayjs(dateTime).utc().format('MMM D, YYYY h:mm A')
+  dayjs.extend(utc);
+  const format = (dateTime: string) =>
+    dayjs(dateTime).utc().format("MMM D, YYYY h:mm A");
 
-  const searchParams = useSearchParams()
-  const city = searchParams.getAll('city');
-  const country = searchParams.get('country');
+  const searchParams = useSearchParams();
+  const city = searchParams.getAll("city");
+  const country = searchParams.get("country");
 
-  const cityParam = city.length ? city.map((c) => `city=${c}`).join('') : ''
-  const countryParam = country ? `&country=${country}` : ''
-  const params = `${cityParam}${countryParam}`
+  const cityParam = city.length ? city.map((c) => `city=${c}`).join("") : "";
+  const countryParam = country ? `&country=${country}` : "";
+  const params = `${cityParam}${countryParam}`;
 
   return (
     <li className="flex flex-col gap-y-4">
       <div className="aspect-video w-full">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="object-fill size-full rounded-md" src={event.images.find(({ ratio, width }) => ratio === "16_9" && width > 1000)?.url} alt={event.name} />
+        <img
+          className="object-fill size-full rounded-md"
+          src={
+            event.images.find(
+              ({ ratio, width }) => ratio === "16_9" && width > 1000,
+            )?.url
+          }
+          alt={event.name}
+        />
       </div>
 
       <div className="flex flex-col">
@@ -33,7 +42,10 @@ export default function EventCard({ event }: Props) {
         </a>
 
         <p className="text-xs mt-1">{format(event.dates.start.dateTime)}</p>
-        <p className="text-sm mt-1">{event._embedded.venues[0].city.name}, {event._embedded.venues[0].name}</p>
+        <p className="text-sm mt-1">
+          {event._embedded.venues[0].city.name},{" "}
+          {event._embedded.venues[0].name}
+        </p>
 
         {event._embedded?.attractions?.length && (
           <div className="flex justify-between mt-2 pt-2 border-t">
@@ -41,25 +53,46 @@ export default function EventCard({ event }: Props) {
               <div className="text-xs">
                 <p>Feat</p>
 
-                {event._embedded.attractions.filter((_, index) => index < 2).map(({ id, name }) => (
-                  <Link href={`/search?${params}&attractionId=${id}`} className="uppercase font-semibold hover:text-blue-300 hover:underline block" key={id}>{name}</Link>
-                ))}
+                {event._embedded.attractions
+                  .filter((_, index) => index < 2)
+                  .map(({ id, name }) => (
+                    <Link
+                      href={`/search?${params}&attractionId=${id}`}
+                      className="uppercase font-semibold hover:text-blue-300 hover:underline block"
+                      key={id}
+                    >
+                      {name}
+                    </Link>
+                  ))}
 
                 {event._embedded.attractions.length > 2 && (
-                  <p>e altri {event._embedded.attractions.length - 2} artisti</p>
+                  <p>
+                    e altri {event._embedded.attractions.length - 2} artisti
+                  </p>
                 )}
               </div>
             )}
 
-            {event._embedded.attractions?.[0].classifications?.[0].genre?.name && event._embedded.attractions?.[0].classifications[0].genre.name !== 'Undefined' && (
-              <div>
-                <p className="text-xs">Genere</p>
-                <Link href={`/search?${params}&genreId=${event._embedded.attractions[0].classifications[0].genre.id}`} className="text-xs hover:text-blue-300 hover:underline uppercase font-semibold">{event._embedded.attractions[0].classifications[0].genre.name}</Link>
-              </div>
-            )}
+            {event._embedded.attractions?.[0].classifications?.[0].genre
+              ?.name &&
+              event._embedded.attractions?.[0].classifications[0].genre.name !==
+                "Undefined" && (
+                <div>
+                  <p className="text-xs">Genere</p>
+                  <Link
+                    href={`/search?${params}&genreId=${event._embedded.attractions[0].classifications[0].genre.id}`}
+                    className="text-xs hover:text-blue-300 hover:underline uppercase font-semibold"
+                  >
+                    {
+                      event._embedded.attractions[0].classifications[0].genre
+                        .name
+                    }
+                  </Link>
+                </div>
+              )}
           </div>
         )}
       </div>
     </li>
-  )
+  );
 }

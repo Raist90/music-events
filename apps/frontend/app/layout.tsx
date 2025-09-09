@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import { Reddit_Mono } from "next/font/google";
 import "./globals.css";
-import Providers from './providers'
+import Providers from "./providers";
 
 const redditMono = Reddit_Mono({
   variable: "--font-reddit-mono",
   subsets: ["latin"],
-})
+});
 
 const spaceGrotesk = Reddit_Mono({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
-})
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,9 +28,7 @@ export default function RootLayout({
       <body
         className={`${redditMono.className} ${spaceGrotesk.className} antialiased dark`}
       >
-        <Providers>
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
