@@ -14,6 +14,7 @@ type Props = Readonly<{
 
 const links: Record<'href' | 'label', string>[] = [
   { href: '/', label: 'Home' },
+  { href: '/search', label: 'Esplora' },
 ]
 
 export default function Navigation({ country }: Props) {
