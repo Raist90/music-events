@@ -1,4 +1,4 @@
-export const genresMap = {
-  Pop: "KnvZfZ7vAev",
-  Rock: "KnvZfZ7vAeA",
-};
+export enum Genre {
+  Pop = "KnvZfZ7vAev",
+  Rock = "KnvZfZ7vAeA",
+}

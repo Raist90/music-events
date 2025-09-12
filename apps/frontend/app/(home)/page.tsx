@@ -9,7 +9,7 @@ import Banner from "@/components/banner";
 import { Suspense } from "react";
 import EventsSkeleton from "@/components/events/skeleton";
 import dayjs from "dayjs";
-import { genresMap } from "@/lib/events/genres";
+import { Genre } from "@/lib/events/genres";
 
 export default async function Home() {
   // TODO: Find a way to reuse this
@@ -26,61 +26,43 @@ export default async function Home() {
 
   const popQuery = {
     ...basicQuery,
-    genreId: genresMap.Pop,
+    genreId: Genre.Pop,
   };
 
   const rockQuery = {
     ...basicQuery,
-    genreId: genresMap.Rock,
+    genreId: Genre.Rock,
   };
 
+  const sections = [
+    { title: "Prossimi eventi", query: nextMonthQuery },
+    { title: "Eventi Pop", query: popQuery },
+    { title: "Eventi Rock", query: rockQuery },
+  ] satisfies Record<string, string | Record<string, string>>[];
+
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: ["events", nextMonthQuery],
-    queryFn: () => getEvents(nextMonthQuery),
-  });
-
-  await queryClient.prefetchQuery({
-    queryKey: ["events", rockQuery],
-    queryFn: () => getEvents(rockQuery),
-  });
-
-  await queryClient.prefetchQuery({
-    queryKey: ["events", rockQuery],
-    queryFn: () => getEvents(rockQuery),
-  });
+  await Promise.all(
+    sections.map(({ query }) =>
+      queryClient.prefetchQuery({
+        queryKey: ["events", query],
+        queryFn: () => getEvents(query),
+      }),
+    ),
+  );
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Banner title="Trova il tuo prossimo evento" />
 
       <div className="space-y-12 my-12">
-        <section className="space-y-4">
-          <h3 className="font-title font-semibold px-8 uppercase">
-            Prossimi eventi
-          </h3>
-          <Suspense fallback={<EventsSkeleton />}>
-            <Events paginated={false} params={nextMonthQuery} />
-          </Suspense>
-        </section>
-
-        <section className="space-y-4">
-          <h3 className="font-title font-semibold px-8 uppercase">
-            Eventi Pop
-          </h3>
-          <Suspense fallback={<EventsSkeleton />}>
-            <Events paginated={false} params={popQuery} />
-          </Suspense>
-        </section>
-
-        <section className="space-y-4">
-          <h3 className="font-title font-semibold px-8 uppercase">
-            Eventi Rock
-          </h3>
-          <Suspense fallback={<EventsSkeleton />}>
-            <Events paginated={false} params={rockQuery} />
-          </Suspense>
-        </section>
+        {sections.map(({ title, query }) => (
+          <section key={title} className="space-y-4">
+            <h3 className="font-title font-semibold px-8 uppercase">{title}</h3>
+            <Suspense fallback={<EventsSkeleton />}>
+              <Events paginated={false} params={query} />
+            </Suspense>
+          </section>
+        ))}
       </div>
     </HydrationBoundary>
   );
