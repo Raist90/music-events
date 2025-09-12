@@ -4,11 +4,11 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import Events from "@/components/events";
-import { getEvents } from "@/events/getEvents";
+import { getEvents } from "@/lib/events/getEvents";
 import { Suspense } from "react";
 import EventsSkeleton from "@/components/events/skeleton";
 import Navigation from "@/components/navigation";
-import { getParams } from "@/events/searchParams";
+import { getParams } from "@/lib/events/searchParams";
 
 export default async function Search({
   searchParams,

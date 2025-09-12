@@ -1,12 +1,12 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { getEvents } from "@/events/getEvents";
+import { getEvents } from "@/lib/events/getEvents";
 import Pagination from "./pagination";
 import EventCard from "./eventCard";
 import { useSearchParams } from "next/navigation";
 import EventsSkeleton from "./skeleton";
-import { getReadonlyParams } from "@/events/searchParams";
+import { getReadonlyParams } from "@/lib/events/searchParams";
 
 type Props = {
   paginated?: boolean;

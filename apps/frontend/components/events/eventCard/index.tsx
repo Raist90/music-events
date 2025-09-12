@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import type { Event } from "@/events/types";
+import type { Event } from "@/lib/events/types";
 
 type Props = Readonly<{
   event: Event;

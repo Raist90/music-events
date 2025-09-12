@@ -1,6 +1,6 @@
 "use client";
 
-import { getEvents } from "@/events/getEvents";
+import { getEvents } from "@/lib/events/getEvents";
 import {
   Pagination as UIPagination,
   PaginationContent,

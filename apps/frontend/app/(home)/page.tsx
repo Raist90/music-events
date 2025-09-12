@@ -4,12 +4,12 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import Events from "@/components/events";
-import { getEvents } from "@/events/getEvents";
+import { getEvents } from "@/lib/events/getEvents";
 import Banner from "@/components/banner";
 import { Suspense } from "react";
 import EventsSkeleton from "@/components/events/skeleton";
 import dayjs from "dayjs";
-import { genresMap } from "@/events/genres";
+import { genresMap } from "@/lib/events/genres";
 
 export default async function Home() {
   // TODO: Find a way to reuse this

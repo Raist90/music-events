@@ -8,7 +8,7 @@ export type Ticketmaster = {
     totalPages: number;
     number: number;
   };
-}
+};
 
 type Attraction = {
   classifications: {
@@ -42,7 +42,7 @@ type Attraction = {
   test: boolean;
   type: string;
   url: string;
-}
+};
 
 export type Event = {
   dates: Dates;
@@ -51,12 +51,12 @@ export type Event = {
   images: Image[];
   name: string;
   url: string;
-}
+};
 
 type EventEmbedded = {
   attractions: Attraction[];
   venues: Venue[];
-}
+};
 
 type Venue = {
   address: {
@@ -81,13 +81,13 @@ type Venue = {
     country: {
       countryCode: string;
       name: string;
-    }
+    };
   };
   test: boolean;
   timezone: string;
   type: string;
   url: string;
-}
+};
 
 type Dates = {
   start: {
@@ -98,8 +98,8 @@ type Dates = {
     localTime: string;
     noSpecificTime: boolean;
     timeTBA: boolean;
-  }
-}
+  };
+};
 
 type Image = {
   fallback: boolean;
@@ -107,4 +107,4 @@ type Image = {
   width: number;
   ratio: string;
   url: string;
-}
+};
