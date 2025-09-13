@@ -10,6 +10,7 @@ import { Suspense } from "react";
 import EventsSkeleton from "@/components/events/skeleton";
 import dayjs from "dayjs";
 import { Genre } from "@/lib/events/genres";
+import { translate } from "@/lib/translate";
 
 export default async function Home() {
   // TODO: Find a way to reuse this
@@ -34,15 +35,21 @@ export default async function Home() {
     genreId: Genre.Rock,
   };
 
-  const sections = [
-    { title: "Prossimi eventi", query: nextMonthQuery },
-    { title: "Eventi Pop", query: popQuery },
-    { title: "Eventi Rock", query: rockQuery },
-  ] satisfies Record<string, string | Record<string, string>>[];
+  enum Section {
+    NextMonth = "nextMonth",
+    PopEvents = "pop",
+    RockEvents = "rock",
+  }
+
+  const queries: Record<Section, Record<string, string>> = {
+    [Section.NextMonth]: nextMonthQuery,
+    [Section.PopEvents]: popQuery,
+    [Section.RockEvents]: rockQuery,
+  };
 
   const queryClient = new QueryClient();
   await Promise.all(
-    sections.map(({ query }) =>
+    Object.values(queries).map((query) =>
       queryClient.prefetchQuery({
         queryKey: ["events", query],
         queryFn: () => getEvents(query),
@@ -50,16 +57,20 @@ export default async function Home() {
     ),
   );
 
+  const { t } = translate("it");
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Banner title="Trova il tuo prossimo evento" />
+      <Banner title={t("home.banner")} />
 
       <div className="space-y-12 my-12">
-        {sections.map(({ title, query }) => (
-          <section key={title} className="space-y-4">
-            <h3 className="font-title font-semibold px-8 uppercase">{title}</h3>
+        {Object.values(Section).map((section) => (
+          <section key={section} className="space-y-4">
+            <h3 className="font-title font-semibold px-8 uppercase">
+              {t(`home.sections.${section}.title`)}
+            </h3>
             <Suspense fallback={<EventsSkeleton />}>
-              <Events paginated={false} params={query} />
+              <Events paginated={false} params={queries[section]} />
             </Suspense>
           </section>
         ))}

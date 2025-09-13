@@ -1,0 +1,16 @@
+{
+  "home": {
+    "banner": "Trova il tuo prossimo evento",
+    "sections": {
+      "nextMonth": {
+        "title": "Prossimi eventi"
+      },
+      "pop": {
+        "title": "Eventi Pop"
+      },
+      "rock": {
+        "title": "Eventi Rock"
+      }
+    }
+  }
+}
