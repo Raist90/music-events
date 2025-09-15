@@ -1,8 +1,9 @@
 {
   "home": {
     "banner": "Trova il tuo prossimo evento",
-    "sections": {
+    "boards": {
       "nextMonth": {
+        "description": "Scopri gli eventi in programma il prossimo mese.",
         "title": "Prossimi eventi"
       },
       "pop": {

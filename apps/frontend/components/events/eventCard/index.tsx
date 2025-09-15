@@ -3,12 +3,14 @@ import utc from "dayjs/plugin/utc";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import type { Event } from "@/lib/events/types";
+import EventImage from "./eventImage";
 
 type Props = Readonly<{
   event: Event;
+  variant?: "landscape" | "portrait" | "square";
 }>;
 
-export default function EventCard({ event }: Props) {
+export default function EventCard({ event, variant = "landscape" }: Props) {
   dayjs.extend(utc);
   const format = (dateTime: string) =>
     dayjs(dateTime).utc().format("MMM D, YYYY h:mm A");
@@ -23,18 +25,7 @@ export default function EventCard({ event }: Props) {
 
   return (
     <li className="flex flex-col gap-y-4">
-      <div className="aspect-video w-full">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          className="object-fill size-full rounded-md"
-          src={
-            event.images.find(
-              ({ ratio, width }) => ratio === "16_9" && width > 1000,
-            )?.url
-          }
-          alt={event.name}
-        />
-      </div>
+      <EventImage event={event} variant={variant} />
 
       <div className="flex flex-col">
         <a className="group" href={event.url} target="_blank">

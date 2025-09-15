@@ -11,17 +11,20 @@ import EventsSkeleton from "@/components/events/skeleton";
 import dayjs from "dayjs";
 import { Genre } from "@/lib/events/genres";
 import { translate } from "@/lib/translate";
+import Board from "@/components/board";
 
 export default async function Home() {
   // TODO: Find a way to reuse this
   const format = (dateTime: ReturnType<typeof dayjs>) =>
     dayjs(dateTime).format("YYYY-MM-DDTHH:mm:ss[Z]");
   const basicQuery = {
-    size: "4",
+    size: "6",
+    country: "US",
   };
 
   const nextMonthQuery = {
     ...basicQuery,
+    size: "3",
     startDateTime: format(dayjs().add(1, "month")),
   };
 
@@ -35,16 +38,16 @@ export default async function Home() {
     genreId: Genre.Rock,
   };
 
-  enum Section {
+  enum BoardEnum {
     NextMonth = "nextMonth",
     PopEvents = "pop",
     RockEvents = "rock",
   }
 
-  const queries: Record<Section, Record<string, string>> = {
-    [Section.NextMonth]: nextMonthQuery,
-    [Section.PopEvents]: popQuery,
-    [Section.RockEvents]: rockQuery,
+  const queries: Record<BoardEnum, Record<string, string>> = {
+    [BoardEnum.NextMonth]: nextMonthQuery,
+    [BoardEnum.PopEvents]: popQuery,
+    [BoardEnum.RockEvents]: rockQuery,
   };
 
   const queryClient = new QueryClient();
@@ -64,15 +67,24 @@ export default async function Home() {
       <Banner title={t("home.banner")} />
 
       <div className="space-y-12 my-12">
-        {Object.values(Section).map((section) => (
-          <section key={section} className="space-y-4">
-            <h3 className="font-title font-semibold px-8 uppercase">
-              {t(`home.sections.${section}.title`)}
-            </h3>
+        {Object.values(BoardEnum).map((board) => (
+          <Board
+            key={board}
+            {...(board === BoardEnum.NextMonth && {
+              description: t("home.boards.nextMonth.description"),
+            })}
+            title={t(`home.boards.${board}.title`)}
+            variant={board === BoardEnum.NextMonth ? "featured" : "base"}
+          >
             <Suspense fallback={<EventsSkeleton />}>
-              <Events paginated={false} params={queries[section]} />
+              <Events
+                paginated={false}
+                params={queries[board]}
+                cols={board === BoardEnum.NextMonth ? 3 : 6}
+                variant={board === BoardEnum.NextMonth ? "portrait" : "square"}
+              />
             </Suspense>
-          </section>
+          </Board>
         ))}
       </div>
     </HydrationBoundary>

@@ -19,7 +19,9 @@ export default function Banner({ className, media: _media, title }: Props) {
       )}
     >
       <header className="place-self-center w-11/12 lg:w-4/12 text-center text-balance">
-        <h2 className="text-4xl md:text-5xl font-bold font-title">{title}</h2>
+        <h2 className="text-4xl md:text-5xl font-bold font-title bg-clip-text bg-linear-to-b from-white to-blue-300 text-transparent">
+          {title}
+        </h2>
       </header>
 
       <div className="absolute inset-0 -z-[2]">
