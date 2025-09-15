@@ -7,17 +7,18 @@ import EventCard from "./eventCard";
 import { useSearchParams } from "next/navigation";
 import EventsSkeleton from "./skeleton";
 import { getReadonlyParams } from "@/lib/events/searchParams";
-import { cva } from "class-variance-authority";
+import { tv } from "tailwind-variants";
 
 type Props = {
   className?: string;
-  cols?: number;
+  cols?: 3 | 4 | 5 | 6;
   paginated?: boolean;
   params?: Record<string, string | string[] | null>;
   variant?: "landscape" | "portrait" | "square";
 };
 
-const layoutVariants = cva("grid gap-12", {
+const events = tv({
+  base: "grid gap-12",
   variants: {
     cols: {
       3: "md:grid-cols-3",
@@ -59,8 +60,8 @@ export default function Events({
       <div className="px-8">
         {data?._embedded?.events.length && (
           <ul
-            className={layoutVariants({
-              cols: String(cols) as keyof typeof layoutVariants,
+            className={events({
+              cols,
               variant,
             })}
           >

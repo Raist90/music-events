@@ -1,4 +1,4 @@
-import { cva } from "class-variance-authority";
+import { tv } from "tailwind-variants";
 
 type Props = Readonly<{
   children: React.ReactNode;
@@ -7,7 +7,7 @@ type Props = Readonly<{
   variant?: "base" | "compact" | "featured";
 }>;
 
-const boardVariants = cva("", {
+const board = tv({
   variants: {
     variant: {
       base: "space-y-4",
@@ -27,7 +27,7 @@ export default function Board({
   variant = "base",
 }: Props) {
   return (
-    <section className={boardVariants({ variant })}>
+    <section className={board({ variant })}>
       {variant === "base" ? (
         <h3 className="font-title font-semibold px-8 uppercase">{title}</h3>
       ) : (
