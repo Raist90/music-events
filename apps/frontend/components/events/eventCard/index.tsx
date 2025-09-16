@@ -7,10 +7,9 @@ import EventImage from "./eventImage";
 
 type Props = Readonly<{
   event: Event;
-  variant?: "landscape" | "portrait" | "square";
 }>;
 
-export default function EventCard({ event, variant = "landscape" }: Props) {
+export default function EventCard({ event }: Props) {
   dayjs.extend(utc);
   const format = (dateTime: string) =>
     dayjs(dateTime).utc().format("MMM D, YYYY h:mm A");
@@ -25,7 +24,7 @@ export default function EventCard({ event, variant = "landscape" }: Props) {
 
   return (
     <li className="flex flex-col gap-y-4">
-      <EventImage event={event} variant={variant} />
+      <EventImage event={event} />
 
       <div className="flex flex-col">
         <a className="group" href={event.url} target="_blank">

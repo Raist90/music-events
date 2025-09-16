@@ -1,9 +1,9 @@
 import type { Event } from "@/lib/events/types";
 import { tv } from "tailwind-variants";
+import { EventVariant, useEvent } from "../eventContext";
 
 type Props = Readonly<{
   event: Event;
-  variant?: "landscape" | "portrait" | "square";
 }>;
 
 const eventImage = tv({
@@ -25,11 +25,13 @@ const eventImage = tv({
         wrapper: "aspect-square",
         img: "object-cover",
       },
-    },
+    } satisfies Record<EventVariant, Record<string, string>>,
   },
 });
 
-export default function EventImage({ event, variant = "landscape" }: Props) {
+export default function EventImage({ event }: Props) {
+  const { variant } = useEvent();
+
   return (
     <div className={eventImage({ variant }).wrapper()}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
