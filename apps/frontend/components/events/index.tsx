@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation";
 import EventsSkeleton from "./skeleton";
 import { getReadonlyParams } from "@/lib/events/searchParams";
 import { tv } from "tailwind-variants";
-import { EventContext } from "./eventContext";
+import { EventProvider } from "./eventContext";
 
 type Props = {
   className?: string;
@@ -60,20 +60,20 @@ export default function Events({
     <section className="space-y-12">
       <div className="px-8">
         {data?._embedded?.events.length && (
-          <EventContext.Provider value={variant}>
-            <ul
-              className={events({
-                cols,
-                variant,
-              })}
-            >
-              {data._embedded.events.map((event) => (
-                <div key={event.id}>
-                  <EventCard event={event} />
-                </div>
-              ))}
-            </ul>
-          </EventContext.Provider>
+          <ul
+            className={events({
+              cols,
+              variant,
+            })}
+          >
+            {data._embedded.events.map((event) => (
+              <div key={event.id}>
+                <EventProvider event={event} variant={variant}>
+                  <EventCard />
+                </EventProvider>
+              </div>
+            ))}
+          </ul>
         )}
       </div>
 

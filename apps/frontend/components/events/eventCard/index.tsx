@@ -2,14 +2,12 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import type { Event } from "@/lib/events/types";
 import EventImage from "./eventImage";
+import { useEvent } from "../eventContext";
 
-type Props = Readonly<{
-  event: Event;
-}>;
+export default function EventCard() {
+  const { event } = useEvent();
 
-export default function EventCard({ event }: Props) {
   dayjs.extend(utc);
   const format = (dateTime: string) =>
     dayjs(dateTime).utc().format("MMM D, YYYY h:mm A");
@@ -24,7 +22,7 @@ export default function EventCard({ event }: Props) {
 
   return (
     <li className="flex flex-col gap-y-4">
-      <EventImage event={event} />
+      <EventImage />
 
       <div className="flex flex-col">
         <a className="group" href={event.url} target="_blank">

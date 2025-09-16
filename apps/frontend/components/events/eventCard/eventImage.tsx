@@ -1,10 +1,5 @@
-import type { Event } from "@/lib/events/types";
 import { tv } from "tailwind-variants";
 import { EventVariant, useEvent } from "../eventContext";
-
-type Props = Readonly<{
-  event: Event;
-}>;
 
 const eventImage = tv({
   slots: {
@@ -29,8 +24,8 @@ const eventImage = tv({
   },
 });
 
-export default function EventImage({ event }: Props) {
-  const { variant } = useEvent();
+export default function EventImage() {
+  const { event, variant } = useEvent();
 
   return (
     <div className={eventImage({ variant }).wrapper()}>
