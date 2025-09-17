@@ -29,10 +29,10 @@ export default function Board({
   return (
     <section className={board({ variant })}>
       {variant === "base" ? (
-        <h3 className="font-title font-semibold px-8 uppercase">{title}</h3>
+        <h3 className="font-semibold px-8 uppercase">{title}</h3>
       ) : (
         <header className="text-center space-y-2 mb-8">
-          <h3 className="font-title font-bold text-2xl">{title}</h3>
+          <h3 className="font-bold text-2xl">{title}</h3>
           {description && <p className="text-lg">{description}</p>}
         </header>
       )}

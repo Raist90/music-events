@@ -1,15 +1,10 @@
 import type { Metadata } from "next";
-import { Reddit_Mono, Space_Grotesk } from "next/font/google";
+import { Reddit_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 
 const redditMono = Reddit_Mono({
   variable: "--font-reddit-mono",
-  subsets: ["latin"],
-});
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
   subsets: ["latin"],
 });
 
@@ -25,9 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${redditMono.variable} ${spaceGrotesk.variable} font-mono antialiased dark`}
-      >
+      <body className={`${redditMono.variable} font-mono antialiased dark`}>
         <Providers>{children}</Providers>
       </body>
     </html>
