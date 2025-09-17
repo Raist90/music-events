@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
-import Fallback from "../public/banner.jpg";
 import { StaticImageData } from "next/image";
+import Fallback from "../public/banner.jpg";
+import { cn } from "@/lib/utils";
 
 type Props = Readonly<{
   className?: string;

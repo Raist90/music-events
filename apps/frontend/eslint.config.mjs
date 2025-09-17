@@ -1,5 +1,6 @@
 import { FlatCompat } from "@eslint/eslintrc";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+import { importX } from "eslint-plugin-import-x";
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
@@ -7,12 +8,12 @@ const compat = new FlatCompat({
 
 /** @type {import('eslint').Linter.Config[]} */
 const eslintConfig = [
-  // ...compat.extends("next/core-web-vitals", "next/typescript"),
   ...compat.config({
     extends: ["next/core-web-vitals", "next/typescript", "prettier"],
   }),
   {
     files: ["**/*.{js,mjs,cjs,ts,tsx}"],
+    plugins: { importX },
     rules: {
       "prettier/prettier": [
         "error",
@@ -22,6 +23,10 @@ const eslintConfig = [
           semi: true,
           singleQuote: false,
         },
+      ],
+      "importX/order": [
+        "warn",
+        { alphabetize: { order: "asc", caseInsensitive: false } },
       ],
     },
   },

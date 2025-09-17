@@ -3,11 +3,11 @@ import {
   HydrationBoundary,
   dehydrate,
 } from "@tanstack/react-query";
-import Events from "@/components/events";
-import { getEvents } from "@/lib/events/getEvents";
 import { Suspense } from "react";
+import Events from "@/components/events";
 import EventsSkeleton from "@/components/events/skeleton";
 import Navigation from "@/components/navigation";
+import { getEvents } from "@/lib/events/getEvents";
 import { getParams } from "@/lib/events/searchParams";
 
 export default async function Search({

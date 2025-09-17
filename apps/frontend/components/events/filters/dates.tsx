@@ -1,5 +1,12 @@
 "use client";
 
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import { ChevronDownIcon } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { it } from "react-day-picker/locale";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -7,13 +14,6 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
-import { ChevronDownIcon } from "lucide-react";
-import { useSearchParams } from "next/navigation";
-import React from "react";
-import { it } from "react-day-picker/locale";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import { useRouter } from "next/navigation";
 
 export default function DatesFilter() {
   const router = useRouter();

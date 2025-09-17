@@ -1,8 +1,8 @@
 "use client";
 
+import { useRouter, useSearchParams } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { useRouter, useSearchParams } from "next/navigation";
 
 const deCities = ["Berlin", "Hamburg", "München"];
 

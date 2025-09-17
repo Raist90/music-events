@@ -1,14 +1,14 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { getEvents } from "@/lib/events/getEvents";
-import Pagination from "./pagination";
-import EventCard from "./eventCard";
 import { useSearchParams } from "next/navigation";
-import EventsSkeleton from "./skeleton";
-import { getReadonlyParams } from "@/lib/events/searchParams";
 import { tv } from "tailwind-variants";
+import EventCard from "./eventCard";
 import { EventProvider } from "./eventContext";
+import Pagination from "./pagination";
+import EventsSkeleton from "./skeleton";
+import { getEvents } from "@/lib/events/getEvents";
+import { getReadonlyParams } from "@/lib/events/searchParams";
 
 type Props = {
   className?: string;

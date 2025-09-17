@@ -3,15 +3,15 @@ import {
   HydrationBoundary,
   dehydrate,
 } from "@tanstack/react-query";
-import Events from "@/components/events";
-import { getEvents } from "@/lib/events/getEvents";
-import Banner from "@/components/banner";
-import { Suspense } from "react";
-import EventsSkeleton from "@/components/events/skeleton";
 import dayjs from "dayjs";
-import { Genre } from "@/lib/events/genres";
-import { translate } from "@/lib/translate";
+import { Suspense } from "react";
+import Banner from "@/components/banner";
 import Board from "@/components/board";
+import Events from "@/components/events";
+import EventsSkeleton from "@/components/events/skeleton";
+import { Genre } from "@/lib/events/genres";
+import { getEvents } from "@/lib/events/getEvents";
+import { translate } from "@/lib/translate";
 
 export default async function Home() {
   // TODO: Find a way to reuse this

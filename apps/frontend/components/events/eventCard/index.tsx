@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import EventImage from "./eventImage";
+import { useSearchParams } from "next/navigation";
 import { useEvent } from "../eventContext";
+import EventImage from "./eventImage";
 
 export default function EventCard() {
   const { event } = useEvent();

@@ -1,6 +1,6 @@
 "use client";
 
-import { getEvents } from "@/lib/events/getEvents";
+import { useSearchParams } from "next/navigation";
 import {
   Pagination as UIPagination,
   PaginationContent,
@@ -10,7 +10,7 @@ import {
   PaginationNext,
   PaginationEllipsis,
 } from "../ui/pagination";
-import { useSearchParams } from "next/navigation";
+import { getEvents } from "@/lib/events/getEvents";
 
 type Props = {
   pagination: Awaited<ReturnType<typeof getEvents>>["page"];

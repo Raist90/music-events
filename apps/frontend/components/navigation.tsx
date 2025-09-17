@@ -1,3 +1,9 @@
+import { Plus } from "lucide-react";
+import Link from "next/link";
+import Filters from "@/components/events/filters";
+import CitiesFilter from "@/components/events/filters/cities";
+import CountryFilter from "@/components/events/filters/country";
+import DatesFilter from "@/components/events/filters/dates";
 import {
   Drawer,
   DrawerContent,
@@ -6,12 +12,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Plus } from "lucide-react";
-import Filters from "@/components/events/filters";
-import CountryFilter from "@/components/events/filters/country";
-import CitiesFilter from "@/components/events/filters/cities";
-import DatesFilter from "@/components/events/filters/dates";
-import Link from "next/link";
 
 type Props = Readonly<{
   // TODO: Make make this one a `filters` object

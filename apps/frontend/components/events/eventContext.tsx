@@ -1,5 +1,5 @@
-import { Event } from "@/lib/events/types";
 import { createContext, useContext } from "react";
+import { Event } from "@/lib/events/types";
 
 export type EventVariant = "landscape" | "portrait" | "square";
 type Ctx = {
