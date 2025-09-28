@@ -4,7 +4,7 @@ export default function EventsSkeleton() {
   return (
     <div className="space-y-12">
       <div className="px-8">
-        <div className="grid lg:grid-cols-4 gap-12">
+        <div className="grid lg:grid-cols-4 gap-8">
           {Array.from({ length: 20 }).map((_, index) => (
             <div className="flex flex-col gap-y-4" key={index}>
               <div className="aspect-video w-full">

@@ -31,6 +31,7 @@ export default function EventCard() {
 
         <p className="text-xs mt-1">{format(event.dates.start.dateTime)}</p>
         <p className="text-sm mt-1">
+          {/* TODO: Sometimes city.name is missing */}
           {event._embedded.venues[0].city.name},{" "}
           {event._embedded.venues[0].name}
         </p>

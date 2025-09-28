@@ -40,7 +40,7 @@ export default function Board({
       {children}
 
       {variant === "featured" && (
-        <div className="absolute inset-0 bg-gradient-to-b via-blue-800 to-background to-90% opacity-10 -z-1" />
+        <div className="absolute inset-0 bg-gradient-to-b via-blue-800 to-background to-90% opacity-40 -z-1" />
       )}
     </section>
   );

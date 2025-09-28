@@ -24,7 +24,6 @@ export default async function Home() {
 
   const nextMonthQuery = {
     ...basicQuery,
-    size: "3",
     startDateTime: format(dayjs().add(1, "month")),
   };
 
@@ -80,8 +79,9 @@ export default async function Home() {
               <Events
                 paginated={false}
                 params={queries[board]}
-                cols={board === BoardEnum.NextMonth ? 3 : 6}
+                cols={board === BoardEnum.NextMonth ? 4 : 6}
                 variant={board === BoardEnum.NextMonth ? "portrait" : "square"}
+                {...(board === BoardEnum.NextMonth && { showCarousel: true })}
               />
             </Suspense>
           </Board>

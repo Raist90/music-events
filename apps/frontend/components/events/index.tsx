@@ -1,10 +1,11 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
+import { notFound, useSearchParams } from "next/navigation";
 import { tv } from "tailwind-variants";
 import EventCard from "./eventCard";
 import { EventProvider } from "./eventContext";
+import EventsCarousel from "./eventsCarousel";
 import Pagination from "./pagination";
 import EventsSkeleton from "./skeleton";
 import { getEvents } from "@/lib/events/getEvents";
@@ -15,11 +16,12 @@ type Props = {
   cols?: 3 | 4 | 5 | 6;
   paginated?: boolean;
   params?: Record<string, string | string[] | null>;
+  showCarousel?: boolean;
   variant?: "landscape" | "portrait" | "square";
 };
 
-const events = tv({
-  base: "grid gap-12",
+const eventsTv = tv({
+  base: "grid gap-8",
   variants: {
     cols: {
       3: "md:grid-cols-3",
@@ -44,29 +46,36 @@ export default function Events({
   paginated = true,
   params,
   variant = "landscape",
+  showCarousel = false,
 }: Props) {
   const searchParams = useSearchParams();
   const query = params || getReadonlyParams(searchParams);
 
-  // TODO: handle loading and error states
+  // TODO: Handle loading and error states
   const { data, isFetching } = useQuery({
     queryKey: ["events", query],
     queryFn: () => getEvents(query),
   });
 
+  // TODO: Add variants to skeletons
   if (isFetching) return <EventsSkeleton />;
+
+  const events = data?._embedded?.events ?? [];
+  if (!events.length) notFound();
 
   return (
     <section className="space-y-12">
       <div className="px-8">
-        {data?._embedded?.events.length && (
+        {showCarousel ? (
+          <EventsCarousel cols={cols} events={events} variant={variant} />
+        ) : (
           <ul
-            className={events({
+            className={eventsTv({
               cols,
               variant,
             })}
           >
-            {data._embedded.events.map((event) => (
+            {events.map((event) => (
               <div key={event.id}>
                 <EventProvider event={event} variant={variant}>
                   <EventCard />
