@@ -17,23 +17,23 @@ export default async function Home() {
   // TODO: Find a way to reuse this
   const format = (dateTime: ReturnType<typeof dayjs>) =>
     dayjs(dateTime).format("YYYY-MM-DDTHH:mm:ss[Z]");
-  const basicQuery = {
+  const baseQuery = {
     size: "6",
     country: "US",
   };
 
   const nextMonthQuery = {
-    ...basicQuery,
+    ...baseQuery,
     startDateTime: format(dayjs().add(1, "month")),
   };
 
   const popQuery = {
-    ...basicQuery,
+    ...baseQuery,
     genreId: Genre.Pop,
   };
 
   const rockQuery = {
-    ...basicQuery,
+    ...baseQuery,
     genreId: Genre.Rock,
   };
 
