@@ -21,7 +21,7 @@ export default function EventCard() {
   const params = `${cityParam}${countryParam}`;
 
   return (
-    <li className="flex flex-col gap-y-4">
+    <div className="flex flex-col gap-y-4">
       <EventImage />
 
       <div className="flex flex-col">
@@ -82,6 +82,6 @@ export default function EventCard() {
           </div>
         )}
       </div>
-    </li>
+    </div>
   );
 }

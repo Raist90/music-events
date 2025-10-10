@@ -3,9 +3,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { notFound, useSearchParams } from "next/navigation";
 import { tv } from "tailwind-variants";
+import List from "../list";
 import EventCard from "./eventCard";
 import { EventProvider } from "./eventContext";
-import EventsCarousel from "./eventsCarousel";
 import Pagination from "./pagination";
 import EventsSkeleton from "./skeleton";
 import { getEvents } from "@/lib/events/getEvents";
@@ -66,24 +66,20 @@ export default function Events({
   return (
     <section className="space-y-12">
       <div className="px-8">
-        {showCarousel ? (
-          <EventsCarousel cols={cols} events={events} variant={variant} />
-        ) : (
-          <ul
-            className={eventsTv({
-              cols,
-              variant,
-            })}
-          >
-            {events.map((event) => (
-              <div key={event.id}>
-                <EventProvider event={event} variant={variant}>
-                  <EventCard />
-                </EventProvider>
-              </div>
-            ))}
-          </ul>
-        )}
+        <List
+          className={
+            showCarousel
+              ? "md:basis-1/3 lg:basis-1/4"
+              : eventsTv({ cols, variant })
+          }
+          items={events}
+          renderItem={(event) => (
+            <EventProvider event={event} variant={variant}>
+              <EventCard />
+            </EventProvider>
+          )}
+          {...(showCarousel && { showCarousel: true })}
+        />
       </div>
 
       {data?.page && paginated && (
