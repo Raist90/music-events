@@ -1,6 +1,6 @@
 import { FlatCompat } from "@eslint/eslintrc";
-import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 import { importX } from "eslint-plugin-import-x";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
