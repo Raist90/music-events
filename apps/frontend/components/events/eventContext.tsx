@@ -2,23 +2,23 @@ import { createContext, useContext } from "react";
 import { Event } from "@/lib/events/types";
 
 export type EventVariant = "landscape" | "portrait" | "square";
-type Ctx = {
+
+type EventContextProps = {
   event: Event;
   variant: EventVariant;
 };
 
-const EventContext = createContext<Partial<Ctx>>({
-  variant: "landscape",
-});
-export const useEvent = (): Ctx => {
-  const ctx = useContext(EventContext);
-  if (!ctx.event) {
+const EventContext = createContext<EventContextProps | null>(null);
+
+export const useEvent = (): EventContextProps => {
+  const context = useContext(EventContext);
+  if (!context) {
     throw "useEvent must be used within an EventProvider";
   }
 
   return {
-    event: ctx.event,
-    variant: ctx.variant || "landscape",
+    event: context.event,
+    variant: context.variant,
   };
 };
 

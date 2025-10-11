@@ -2,7 +2,6 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { notFound, useSearchParams } from "next/navigation";
-import { tv } from "tailwind-variants";
 import List from "../list";
 import EventCard from "./eventCard";
 import { EventProvider } from "./eventContext";
@@ -11,38 +10,15 @@ import EventsSkeleton from "./skeleton";
 import { getEvents } from "@/lib/events/getEvents";
 import { getReadonlyParams } from "@/lib/events/searchParams";
 
-type Props = {
+type Props = Readonly<{
   className?: string;
-  cols?: 3 | 4 | 5 | 6;
   paginated?: boolean;
   params?: Record<string, string | string[] | null>;
   showCarousel?: boolean;
   variant?: "landscape" | "portrait" | "square";
-};
-
-const eventsTv = tv({
-  base: "grid gap-8",
-  variants: {
-    cols: {
-      3: "md:grid-cols-3",
-      4: "lg:grid-cols-4",
-      5: "lg:grid-cols-5",
-      6: "md:grid-cols-3 lg:grid-cols-6",
-    },
-    variant: {
-      landscape: "",
-      portrait: "lg:w-2/3 md:mx-auto",
-      square: "",
-    },
-  },
-  defaultVariants: {
-    cols: 4,
-    variant: "landscape",
-  },
-});
+}>;
 
 export default function Events({
-  cols = 4,
   paginated = true,
   params,
   variant = "landscape",
@@ -70,7 +46,7 @@ export default function Events({
           className={
             showCarousel
               ? "md:basis-1/3 lg:basis-1/4"
-              : eventsTv({ cols, variant })
+              : "md:grid-cols-3 lg:grid-cols-6"
           }
           items={events}
           renderItem={(event) => (

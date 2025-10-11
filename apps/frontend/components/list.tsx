@@ -37,8 +37,6 @@ function CarouselList<T extends { id?: string }>({
   items,
   renderItem,
 }: Props<T>) {
-  console.log(className);
-
   return (
     <Carousel>
       <CarouselContent className="-ml-8 pr-24">

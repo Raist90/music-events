@@ -17,9 +17,9 @@ export default async function Home() {
   // TODO: Find a way to reuse this
   const format = (dateTime: ReturnType<typeof dayjs>) =>
     dayjs(dateTime).format("YYYY-MM-DDTHH:mm:ss[Z]");
+
   const baseQuery = {
     size: "6",
-    country: "US",
   };
 
   const nextMonthQuery = {
@@ -79,7 +79,6 @@ export default async function Home() {
               <Events
                 paginated={false}
                 params={queries[board]}
-                cols={board === BoardEnum.NextMonth ? 4 : 6}
                 variant={board === BoardEnum.NextMonth ? "portrait" : "square"}
                 {...(board === BoardEnum.NextMonth && { showCarousel: true })}
               />
