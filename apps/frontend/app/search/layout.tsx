@@ -1,5 +1,3 @@
-export const experimental_ppr = true;
-
 export default function SearchLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {

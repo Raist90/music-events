@@ -1,16 +1,14 @@
-import { FlatCompat } from "@eslint/eslintrc";
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
+import prettier from "eslint-config-prettier/flat";
 import { importX } from "eslint-plugin-import-x";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
-const compat = new FlatCompat({
-  baseDirectory: import.meta.dirname,
-});
-
-/** @type {import('eslint').Linter.Config[]} */
-const eslintConfig = [
-  ...compat.config({
-    extends: ["next/core-web-vitals", "next/typescript", "prettier"],
-  }),
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  ...nextTs,
+  prettier,
   {
     files: ["**/*.{js,mjs,cjs,ts,tsx}"],
     plugins: { importX },
@@ -28,9 +26,17 @@ const eslintConfig = [
         "warn",
         { alphabetize: { order: "asc", caseInsensitive: false } },
       ],
+      "@typescript-eslint/no-explicit-any": "warn",
     },
   },
   eslintPluginPrettierRecommended,
-];
+  globalIgnores([
+    // Default ignores of eslint-config-next:
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+  ]),
+]);
 
 export default eslintConfig;

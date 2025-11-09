@@ -10,7 +10,7 @@ import (
 )
 
 type data struct {
-	Data model.TicketmasterResponse `json:"events"`
+	Data model.Ticketmaster `json:"events"`
 }
 
 func GetEvents(w http.ResponseWriter, r *http.Request) {

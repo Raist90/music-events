@@ -10,10 +10,10 @@ import {
   PaginationNext,
   PaginationEllipsis,
 } from "../ui/pagination";
-import { getEvents } from "@/lib/events/getEvents";
+import { Page } from "@/lib/types";
 
 type Props = {
-  pagination: Awaited<ReturnType<typeof getEvents>>["page"];
+  pagination: Page;
 };
 
 export default function Pagination({ pagination }: Props) {

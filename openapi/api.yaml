@@ -1,0 +1,362 @@
+openapi: 3.0.0
+info:
+  title: Events API
+  version: 1.0.0
+  description: API for retrieving and managing events.
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+paths:
+  /events:
+    get:
+      summary: List all events
+      operationId: listEvents
+      parameters:
+        - in: query
+          name: attractionId
+          schema:
+            type: string
+          required: false
+          description: Filter events by attraction ID
+        - in: query
+          name: classificationName
+          schema:
+            type: string
+          required: false
+          description: Filter events by classification name
+        - in: query
+          name: countryCode
+          schema:
+            type: string
+          required: false
+          description: Filter events by country code
+        - in: query
+          name: locale
+          schema:
+            type: string
+          required: false
+          description: Filter events by locale
+        - in: query
+          name: city
+          schema:
+            type: string
+          required: false
+          description: Filter events by city
+        - in: query
+          name: startDateTime
+          schema:
+            type: string
+            format: date-time
+          required: false
+          description: Filter events starting from this date and time
+        - in: query
+          name: endDateTime
+          schema:
+            type: string
+            format: date-time
+          required: false
+          description: Filter events ending by this date and time
+        - in: query
+          name: sort
+          schema:
+            type: string
+          required: false
+          description: Sort order of the events
+        - in: query
+          name: genreId
+          schema:
+            type: string
+          required: false
+          description: Filter events by genre ID
+        - in: query
+          name: page
+          schema:
+            type: string
+          required: false
+          description: Page number for pagination
+        - in: query
+          name: size
+          schema:
+            type: string
+          required: false
+          description: Number of items per page
+      responses:
+        "200":
+          description: A list of events
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ticketmaster"
+components:
+  schemas:
+    Ticketmaster:
+      type: object
+      properties:
+        _embedded:
+          type: object
+          properties:
+            events:
+              type: array
+              items:
+                $ref: "#/components/schemas/Event"
+          required:
+            - events
+        page:
+          type: object
+          properties:
+            size:
+              type: integer
+            totalElements:
+              type: integer
+            totalPages:
+              type: integer
+            number:
+              type: integer
+          required:
+            - size
+            - totalElements
+            - totalPages
+            - number
+      required:
+        - _embedded
+        - page
+    Event:
+      type: object
+      properties:
+        dates:
+          $ref: "#/components/schemas/Dates"
+        _embedded:
+          $ref: "#/components/schemas/EventEmbedded"
+        id:
+          type: string
+        images:
+          type: array
+          items:
+            $ref: "#/components/schemas/Image"
+        name:
+          type: string
+        url:
+          type: string
+      required:
+        - dates
+        - _embedded
+        - id
+        - images
+        - name
+        - url
+    EventEmbedded:
+      type: object
+      properties:
+        attractions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Attraction"
+        venues:
+          type: array
+          items:
+            $ref: "#/components/schemas/Venue"
+      required:
+        - attractions
+        - venues
+    Attraction:
+      type: object
+      properties:
+        classifications:
+          type: array
+          items:
+            $ref: "#/components/schemas/Classification"
+        id:
+          type: string
+        images:
+          type: array
+          items:
+            $ref: "#/components/schemas/Image"
+        locale:
+          type: string
+        name:
+          type: string
+        test:
+          type: boolean
+        type:
+          type: string
+        url:
+          type: string
+      required:
+        - classifications
+        - id
+        - images
+        - locale
+        - name
+        - test
+        - type
+        - url
+    Classification:
+      type: object
+      properties:
+        genre:
+          $ref: "#/components/schemas/IdName"
+        family:
+          type: boolean
+        primary:
+          type: boolean
+        segment:
+          $ref: "#/components/schemas/IdName"
+        subgenre:
+          $ref: "#/components/schemas/IdName"
+        subtype:
+          $ref: "#/components/schemas/IdName"
+        type:
+          $ref: "#/components/schemas/IdName"
+      required:
+        - genre
+        - family
+        - primary
+        - segment
+        - subgenre
+        - subtype
+        - type
+    IdName:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      required:
+        - id
+        - name
+    Venue:
+      type: object
+      properties:
+        address:
+          type: object
+          properties:
+            line1:
+              type: string
+          required:
+            - line1
+        city:
+          type: object
+          properties:
+            name:
+              type: string
+          required:
+            - name
+        country:
+          type: object
+          properties:
+            countryCode:
+              type: string
+            name:
+              type: string
+          required:
+            - countryCode
+            - name
+        id:
+          type: string
+        locale:
+          type: string
+        location:
+          type: object
+          properties:
+            latitude:
+              type: string
+            longitude:
+              type: string
+          required:
+            - latitude
+            - longitude
+        name:
+          type: string
+        postalCode:
+          type: string
+        state:
+          type: object
+          properties:
+            country:
+              $ref: "#/components/schemas/Country"
+          required:
+            - country
+        test:
+          type: boolean
+        timezone:
+          type: string
+        type:
+          type: string
+        url:
+          type: string
+      required:
+        - address
+        - city
+        - country
+        - id
+        - locale
+        - location
+        - name
+        - postalCode
+        - state
+        - test
+        - timezone
+        - type
+        - url
+    Country:
+      type: object
+      properties:
+        countryCode:
+          type: string
+        name:
+          type: string
+      required:
+        - countryCode
+        - name
+    Dates:
+      type: object
+      properties:
+        start:
+          type: object
+          properties:
+            dateTBA:
+              type: boolean
+            dateTBD:
+              type: boolean
+            dateTime:
+              type: string
+              format: date-time
+            localDate:
+              type: string
+              format: date
+            localTime:
+              type: string
+            noSpecificTime:
+              type: boolean
+            timeTBA:
+              type: boolean
+          required:
+            - dateTBA
+            - dateTBD
+            - dateTime
+            - localDate
+            - localTime
+            - noSpecificTime
+            - timeTBA
+      required:
+        - start
+    Image:
+      type: object
+      properties:
+        fallback:
+          type: boolean
+        height:
+          type: integer
+        width:
+          type: integer
+        ratio:
+          type: string
+        url:
+          type: string
+      required:
+        - fallback
+        - height
+        - width
+        - ratio
+        - url
