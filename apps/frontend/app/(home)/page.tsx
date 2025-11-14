@@ -77,6 +77,7 @@ export default async function Home() {
           >
             <Suspense fallback={<EventsSkeleton />}>
               <Events
+                className="md:grid-cols-3 lg:grid-cols-6"
                 paginated={false}
                 params={queries[board]}
                 variant={board === BoardEnum.NextMonth ? "portrait" : "square"}

@@ -30,7 +30,7 @@ export default async function Search({
       />
 
       <Suspense fallback={<EventsSkeleton />}>
-        <Events />
+        <Events showSearchBoard />
       </Suspense>
     </HydrationBoundary>
   );

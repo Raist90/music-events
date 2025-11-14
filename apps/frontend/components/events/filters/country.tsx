@@ -10,19 +10,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { countriesMap } from "@/lib/events/countries";
 
 type Props = Readonly<{
   initialValue?: string;
 }>;
-
-const countriesMap: { [key: string]: string } = {
-  DE: "Germania",
-  ES: "Spagna",
-  FR: "Francia",
-  GB: "Regno Unito",
-  IT: "Italia",
-  US: "Stati Uniti",
-};
 
 const countries: string[] = ["DE", "ES", "FR", "GB", "IT", "US"];
 

@@ -46,7 +46,7 @@ export default function EventCard() {
                   .filter((_, index) => index < 2)
                   .map(({ id, name }) => (
                     <Link
-                      href={`/search?${params}&attractionId=${id}`}
+                      href={`/search?attractionId=${id}`}
                       className="uppercase font-semibold hover:text-blue-300 hover:underline block"
                       key={id}
                     >

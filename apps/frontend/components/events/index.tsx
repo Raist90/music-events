@@ -6,23 +6,28 @@ import List from "../list";
 import EventCard from "./eventCard";
 import { EventProvider } from "./eventContext";
 import Pagination from "./pagination";
+import SearchBoard from "./searchBoard";
 import EventsSkeleton from "./skeleton";
 import { getEvents } from "@/lib/events/getEvents";
 import { getReadonlyParams } from "@/lib/events/searchParams";
+import { Event } from "@/lib/types";
 
 type Props = Readonly<{
   className?: string;
   paginated?: boolean;
   params?: Record<string, string | string[] | null>;
   showCarousel?: boolean;
+  showSearchBoard?: boolean;
   variant?: "landscape" | "portrait" | "square";
 }>;
 
 export default function Events({
+  className,
   paginated = true,
   params,
-  variant = "landscape",
   showCarousel = false,
+  showSearchBoard = false,
+  variant = "landscape",
 }: Props) {
   const searchParams = useSearchParams();
   const query = params || getReadonlyParams(searchParams);
@@ -37,26 +42,27 @@ export default function Events({
   if (isFetching) return <EventsSkeleton />;
 
   const events = data?._embedded?.events ?? [];
-  if (!events.length) notFound();
+  if (!data || !events.length) notFound();
 
   return (
     <section className="space-y-12">
-      <div className="px-8">
-        <List
-          className={
-            showCarousel
-              ? "md:basis-1/3 lg:basis-1/4"
-              : "md:grid-cols-3 lg:grid-cols-6"
-          }
-          items={events}
-          renderItem={(event) => (
-            <EventProvider event={event} variant={variant}>
-              <EventCard />
-            </EventProvider>
-          )}
-          {...(showCarousel && { showCarousel: true })}
+      {showSearchBoard ? (
+        <SearchBoard results={data}>
+          <EventList
+            className={className}
+            events={events}
+            showCarousel={showCarousel}
+            variant={variant}
+          />
+        </SearchBoard>
+      ) : (
+        <EventList
+          className={className}
+          events={events}
+          showCarousel={showCarousel}
+          variant={variant}
         />
-      </div>
+      )}
 
       {data?.page && paginated && (
         <footer className="border-t p-4">
@@ -64,5 +70,27 @@ export default function Events({
         </footer>
       )}
     </section>
+  );
+}
+
+function EventList({
+  className,
+  events,
+  variant = "landscape",
+  showCarousel = false,
+}: Props & Readonly<{ events: Event[] }>) {
+  return (
+    <div className="px-8">
+      <List
+        className={showCarousel ? "md:basis-1/3 lg:basis-1/4" : className}
+        items={events}
+        renderItem={(event) => (
+          <EventProvider event={event} variant={variant}>
+            <EventCard />
+          </EventProvider>
+        )}
+        {...(showCarousel && { showCarousel: true })}
+      />
+    </div>
   );
 }

@@ -31,9 +31,9 @@ export default function Board({
       {variant === "base" ? (
         <h3 className="font-semibold px-8 uppercase">{title}</h3>
       ) : (
-        <header className="text-center space-y-2 mb-8">
+        <header className="text-center space-y-2 px-2 pb-8">
           <h3 className="font-bold text-2xl">{title}</h3>
-          {description && <p className="text-lg">{description}</p>}
+          {description && <p>{description}</p>}
         </header>
       )}
 

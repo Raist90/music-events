@@ -27,7 +27,8 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 		p = page
 	}
 
-	city := r.URL.Query().Get("city")
+	cities := r.URL.Query()["city"]
+	city := strings.Join(cities, ",")
 
 	country := r.URL.Query().Get("country")
 	if country == "" {
