@@ -10,7 +10,7 @@ import SearchBoard from "./searchBoard";
 import EventsSkeleton from "./skeleton";
 import { getEvents } from "@/lib/events/getEvents";
 import { getReadonlyParams } from "@/lib/events/searchParams";
-import { Event } from "@/lib/types";
+import { Ticketmaster } from "@/lib/types";
 
 type Props = Readonly<{
   className?: string;
@@ -37,25 +37,17 @@ export default function Events({
     queryFn: () => getEvents(query),
   });
   if (isFetching) return <EventsSkeleton />;
-
-  const events = data?._embedded?.events ?? [];
-  if (!data || !events.length) notFound();
-
-  let list = (
-    <EventList
-      className={className}
-      events={events}
-      showCarousel={showCarousel}
-      variant={variant}
-    />
-  );
-  if (showSearchBoard) {
-    list = <SearchBoard results={data}>{list}</SearchBoard>;
-  }
+  if (!data) notFound();
 
   return (
     <section className="space-y-12">
-      {list}
+      <EventList
+        className={className}
+        data={data}
+        variant={variant}
+        showCarousel={showCarousel}
+        showSearchBoard={showSearchBoard}
+      />
 
       {data?.page && paginated && (
         <footer className="border-t p-4">
@@ -68,11 +60,14 @@ export default function Events({
 
 function EventList({
   className,
-  events,
+  data: searchResult,
   variant = "landscape",
-  showCarousel = false,
-}: Props & Readonly<{ events: Event[] }>) {
-  return (
+  showCarousel,
+  showSearchBoard,
+}: Props & Readonly<{ data: Ticketmaster }>) {
+  const { events } = searchResult._embedded;
+
+  let EventList = (
     <div className="px-8">
       <List
         className={showCarousel ? "md:basis-1/3 lg:basis-1/4" : className}
@@ -86,4 +81,12 @@ function EventList({
       />
     </div>
   );
+
+  if (showSearchBoard) {
+    EventList = (
+      <SearchBoard searchResult={searchResult}>{EventList}</SearchBoard>
+    );
+  }
+
+  return EventList;
 }

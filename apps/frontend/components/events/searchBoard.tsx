@@ -9,10 +9,10 @@ import type { Ticketmaster } from "@/lib/types";
 
 type Props = Readonly<{
   children: React.ReactNode;
-  results: Ticketmaster;
+  searchResult: Ticketmaster;
 }>;
 
-export default function SearchBoard({ children, results: data }: Props) {
+export default function SearchBoard({ children, searchResult: data }: Props) {
   const searchParams = useSearchParams();
   const query = getReadonlyParams(searchParams);
 
