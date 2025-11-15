@@ -32,37 +32,30 @@ export default function Events({
   const searchParams = useSearchParams();
   const query = params || getReadonlyParams(searchParams);
 
-  // TODO: Handle loading and error states
   const { data, isFetching } = useSuspenseQuery({
     queryKey: ["events", query],
     queryFn: () => getEvents(query),
   });
-
-  // TODO: Add variants to skeletons
   if (isFetching) return <EventsSkeleton />;
 
   const events = data?._embedded?.events ?? [];
   if (!data || !events.length) notFound();
 
+  let list = (
+    <EventList
+      className={className}
+      events={events}
+      showCarousel={showCarousel}
+      variant={variant}
+    />
+  );
+  if (showSearchBoard) {
+    list = <SearchBoard results={data}>{list}</SearchBoard>;
+  }
+
   return (
     <section className="space-y-12">
-      {showSearchBoard ? (
-        <SearchBoard results={data}>
-          <EventList
-            className={className}
-            events={events}
-            showCarousel={showCarousel}
-            variant={variant}
-          />
-        </SearchBoard>
-      ) : (
-        <EventList
-          className={className}
-          events={events}
-          showCarousel={showCarousel}
-          variant={variant}
-        />
-      )}
+      {list}
 
       {data?.page && paginated && (
         <footer className="border-t p-4">
