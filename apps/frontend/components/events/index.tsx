@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { notFound, useSearchParams } from "next/navigation";
 import List from "../list";
 import EventCard from "./eventCard";
@@ -33,7 +33,7 @@ export default function Events({
   const query = params || getReadonlyParams(searchParams);
 
   // TODO: Handle loading and error states
-  const { data, isFetching } = useQuery({
+  const { data, isFetching } = useSuspenseQuery({
     queryKey: ["events", query],
     queryFn: () => getEvents(query),
   });
