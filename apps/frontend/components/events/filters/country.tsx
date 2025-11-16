@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Select,
   SelectContent,
@@ -19,26 +19,27 @@ type Props = Readonly<{
 const countries: string[] = ["DE", "ES", "FR", "GB", "IT", "US"];
 
 export default function CountryFilter({ initialValue }: Props) {
-  const router = useRouter();
-  const onSelect = async (val: string) => {
-    router.prefetch(`/search?country=${val}&page=0`);
-    router.push(`/search?country=${val}&page=0`);
-  };
+  const params = useSearchParams();
+  const selectedCountry = params.get("country");
 
+  const router = useRouter();
   return (
-    <Select onValueChange={onSelect}>
+    <Select
+      value={initialValue}
+      onValueChange={(val) => router.push(`/search?country=${val}&page=0`)}
+    >
       <SelectTrigger className="min-w-40">
-        <SelectValue
-          placeholder={
-            initialValue ? countriesMap[initialValue] : "Seleziona nazione"
-          }
-        />
+        <SelectValue placeholder="Seleziona nazione" />
       </SelectTrigger>
       <SelectContent className="w-40">
         <SelectGroup>
           <SelectLabel>Nazione</SelectLabel>
           {countries.map((country) => (
-            <SelectItem key={country} value={country}>
+            <SelectItem
+              disabled={country === selectedCountry}
+              key={country}
+              value={country}
+            >
               {countriesMap[country]}
             </SelectItem>
           ))}

@@ -5,7 +5,6 @@ import utc from "dayjs/plugin/utc";
 import { ChevronDownIcon } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import React from "react";
 import { it } from "react-day-picker/locale";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -20,36 +19,28 @@ export default function DatesFilter() {
   const searchParams = useSearchParams();
   dayjs.extend(utc);
 
-  const _start = searchParams.get("startDateTime");
-  const _end = searchParams.get("endDateTime");
-  const [start, setStart] = React.useState<Date | undefined>(
-    _start ? dayjs(_start).toDate() : undefined,
-  );
-  const [end, setEnd] = React.useState<Date | undefined>(
-    _end ? dayjs(_end).toDate() : undefined,
-  );
+  const startParam = searchParams.get("startDateTime");
+  const endParam = searchParams.get("endDateTime");
+  const start = startParam ? dayjs(startParam).toDate() : undefined;
+  const end = endParam ? dayjs(endParam).toDate() : undefined;
 
   // TODO: Find a way to reuse this
   const format = (dateTime: Date) =>
     dayjs(dateTime).format("YYYY-MM-DDTHH:mm:ss[Z]");
 
-  const onSelectStart = (start: Date) => {
-    setStart(start);
+  function onSelectStart(start: Date) {
     const params = new URLSearchParams(searchParams);
     params.set("page", "0");
     params.set("startDateTime", format(start));
-    router.prefetch(`/search?${params.toString()}`);
     router.push(`/search?${params.toString()}`, { scroll: false });
-  };
+  }
 
-  const onSelectEnd = (end: Date) => {
-    setEnd(end);
+  function onSelectEnd(end: Date) {
     const params = new URLSearchParams(searchParams);
     params.set("page", "0");
     params.set("endDateTime", format(end));
-    router.prefetch(`/search?${params.toString()}`);
     router.push(`/search?${params.toString()}`, { scroll: false });
-  };
+  }
 
   return (
     <div className="flex gap-x-4">
