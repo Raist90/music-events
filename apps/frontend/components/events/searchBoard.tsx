@@ -1,10 +1,10 @@
 "use client";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import Board from "../board";
+import { useEvents } from "./eventsContext";
 import { countriesMap } from "@/lib/events/countries";
-import { getEvents } from "@/lib/events/getEvents";
+import { Genre } from "@/lib/events/genres";
 import { getReadonlyParams } from "@/lib/events/searchParams";
 import { translate } from "@/lib/translate";
 
@@ -13,12 +13,10 @@ type Props = Readonly<{
 }>;
 
 export default function EventsSearchBoard({ children }: Props) {
+  const { data } = useEvents();
+
   const searchParams = useSearchParams();
   const query = getReadonlyParams(searchParams);
-  const { data } = useSuspenseQuery({
-    queryKey: ["events", query],
-    queryFn: () => getEvents(query),
-  });
 
   function getSearchSummary(
     query: Record<string, string | string[] | null>,
@@ -34,8 +32,9 @@ export default function EventsSearchBoard({ children }: Props) {
     }
     if (query?.genreId) {
       summaryItems.push(
-        data._embedded.events[0]?._embedded?.attractions?.[0]
-          .classifications?.[0].genre?.name,
+        Object.keys(Genre).find(
+          (key) => Genre[key as keyof typeof Genre] === query.genreId,
+        ),
       );
     }
     if (Array.isArray(query?.city)) {
