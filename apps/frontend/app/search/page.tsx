@@ -4,7 +4,9 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import { Suspense } from "react";
-import Events, { EventsList, EventsPagination } from "@/components/events";
+import Events from "@/components/events";
+import EventsList from "@/components/events/list";
+import EventsPagination from "@/components/events/pagination";
 import SearchBoard from "@/components/events/searchBoard";
 import EventsSkeleton from "@/components/events/skeleton";
 import Navigation from "@/components/navigation";

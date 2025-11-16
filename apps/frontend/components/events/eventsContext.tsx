@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext } from "react";
 import React from "react";
 import { Ticketmaster } from "@/lib/types";
