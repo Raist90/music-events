@@ -4,7 +4,8 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import { Suspense } from "react";
-import Events from "@/components/events";
+import Events, { EventsList, EventsPagination } from "@/components/events";
+import SearchBoard from "@/components/events/searchBoard";
 import EventsSkeleton from "@/components/events/skeleton";
 import Navigation from "@/components/navigation";
 import { getEvents } from "@/lib/events/getEvents";
@@ -30,7 +31,12 @@ export default async function Search({
       />
 
       <Suspense fallback={<EventsSkeleton />}>
-        <Events showSearchBoard />
+        <SearchBoard>
+          <Events className="space-y-12">
+            <EventsList />
+            <EventsPagination />
+          </Events>
+        </SearchBoard>
       </Suspense>
     </HydrationBoundary>
   );

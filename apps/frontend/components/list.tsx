@@ -5,24 +5,13 @@ type Props<T> = Readonly<{
   className?: string;
   items: T[];
   renderItem: (item: T) => React.ReactNode;
-  showCarousel?: boolean;
 }>;
 
 export default function List<T extends { id?: string }>({
   className = "md:grid-cols-3 lg:grid-cols-5",
   items,
   renderItem,
-  showCarousel = false,
 }: Props<T>) {
-  if (showCarousel)
-    return (
-      <CarouselList
-        className={className}
-        items={items}
-        renderItem={renderItem}
-      />
-    );
-
   return (
     <ul className={cn("grid gap-8", className)}>
       {items.map((item, index) => (
@@ -32,7 +21,7 @@ export default function List<T extends { id?: string }>({
   );
 }
 
-function CarouselList<T extends { id?: string }>({
+export function CarouselList<T extends { id?: string }>({
   className,
   items,
   renderItem,

@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import { Suspense } from "react";
 import Banner from "@/components/banner";
 import Board from "@/components/board";
-import Events from "@/components/events";
+import Events, { EventsCarouselList, EventsList } from "@/components/events";
 import EventsSkeleton from "@/components/events/skeleton";
 import { Genre } from "@/lib/events/genres";
 import { getEvents } from "@/lib/events/getEvents";
@@ -76,13 +76,16 @@ export default async function Home() {
             variant={board === BoardEnum.NextMonth ? "featured" : "base"}
           >
             <Suspense fallback={<EventsSkeleton />}>
-              <Events
-                className="md:grid-cols-3 lg:grid-cols-6"
-                paginated={false}
-                params={queries[board]}
-                variant={board === BoardEnum.NextMonth ? "portrait" : "square"}
-                {...(board === BoardEnum.NextMonth && { showCarousel: true })}
-              />
+              <Events params={queries[board]}>
+                {board === BoardEnum.NextMonth ? (
+                  <EventsCarouselList variant="portrait" />
+                ) : (
+                  <EventsList
+                    className="md:grid-cols-3 lg:grid-cols-6"
+                    variant="square"
+                  />
+                )}
+              </Events>
             </Suspense>
           </Board>
         ))}

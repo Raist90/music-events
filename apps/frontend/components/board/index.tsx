@@ -15,7 +15,7 @@ const board = tv({
         title: "font-semibold px-8 uppercase",
       },
       featured: {
-        wrapper: "py-12 relative",
+        wrapper: "pt-12 relative",
         title: "font-bold text-2xl",
         overlay:
           "absolute inset-0 bg-gradient-to-b via-blue-800 to-background to-90% opacity-40 -z-1",

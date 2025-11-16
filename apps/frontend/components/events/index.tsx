@@ -2,91 +2,102 @@
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { notFound, useSearchParams } from "next/navigation";
-import List from "../list";
+import { createContext, useContext } from "react";
+import List, { CarouselList } from "../list";
 import EventCard from "./eventCard";
 import { EventProvider } from "./eventContext";
 import Pagination from "./pagination";
-import SearchBoard from "./searchBoard";
 import EventsSkeleton from "./skeleton";
 import { getEvents } from "@/lib/events/getEvents";
 import { getReadonlyParams } from "@/lib/events/searchParams";
 import { Ticketmaster } from "@/lib/types";
 
 type Props = Readonly<{
+  children: React.ReactNode;
   className?: string;
-  paginated?: boolean;
   params?: Record<string, string | string[] | null>;
-  showCarousel?: boolean;
-  showSearchBoard?: boolean;
   variant?: "landscape" | "portrait" | "square";
 }>;
 
-export default function Events({
-  className,
-  paginated = true,
-  params,
-  showCarousel = false,
-  showSearchBoard = false,
-  variant = "landscape",
-}: Props) {
+const EventsContext = createContext<{ data: Ticketmaster } | null>(null);
+function useEvents() {
+  const context = useContext(EventsContext);
+  if (!context)
+    throw new Error("useEvents must be used within Events component");
+  return context;
+}
+
+export default function Events({ children, className, params }: Props) {
   const searchParams = useSearchParams();
   const query = params || getReadonlyParams(searchParams);
-
   const { data, isFetching } = useSuspenseQuery({
     queryKey: ["events", query],
     queryFn: () => getEvents(query),
   });
+
   if (isFetching) return <EventsSkeleton />;
   if (!data) notFound();
 
   return (
-    <section className="space-y-12">
-      <EventList
-        className={className}
-        data={data}
-        variant={variant}
-        showCarousel={showCarousel}
-        showSearchBoard={showSearchBoard}
-      />
+    <EventsContext.Provider value={{ data }}>
+      <div className={className}>{children}</div>
+    </EventsContext.Provider>
+  );
+}
 
-      {data?.page && paginated && (
-        <footer className="border-t p-4">
-          <Pagination pagination={data.page} />
-        </footer>
-      )}
+export function EventsList({
+  className,
+  variant = "landscape",
+}: Pick<Props, "className" | "variant">) {
+  const { data } = useEvents();
+  return (
+    <section>
+      <div className="px-8">
+        <List
+          className={className}
+          items={data._embedded.events}
+          renderItem={(event) => (
+            <EventProvider event={event} variant={variant}>
+              <EventCard />
+            </EventProvider>
+          )}
+        />
+      </div>
     </section>
   );
 }
 
-function EventList({
+export function EventsCarouselList({
   className,
-  data: searchResult,
   variant = "landscape",
-  showCarousel,
-  showSearchBoard,
-}: Props & Readonly<{ data: Ticketmaster }>) {
-  const { events } = searchResult._embedded;
-
-  let EventList = (
-    <div className="px-8">
-      <List
-        className={showCarousel ? "md:basis-1/3 lg:basis-1/4" : className}
-        items={events}
-        renderItem={(event) => (
-          <EventProvider event={event} variant={variant}>
-            <EventCard />
-          </EventProvider>
-        )}
-        {...(showCarousel && { showCarousel: true })}
-      />
-    </div>
+}: Pick<Props, "className" | "variant">) {
+  const {
+    data: {
+      _embedded: { events },
+    },
+  } = useEvents();
+  return (
+    <section>
+      <div className="px-8">
+        <CarouselList
+          items={events}
+          renderItem={(event) => (
+            <EventProvider event={event} variant={variant ?? "landscape"}>
+              <EventCard />
+            </EventProvider>
+          )}
+          className={className ?? "md:basis-1/3 lg:basis-1/4"}
+        />
+      </div>
+    </section>
   );
+}
 
-  if (showSearchBoard) {
-    EventList = (
-      <SearchBoard searchResult={searchResult}>{EventList}</SearchBoard>
-    );
-  }
-
-  return EventList;
+export function EventsPagination() {
+  const { data } = useEvents();
+  return (
+    <footer className="border-t p-4">
+      <Pagination pagination={data.page} />
+    </footer>
+  );
 }

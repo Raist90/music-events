@@ -1,20 +1,24 @@
 "use client";
 
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import Board from "../board";
 import { countriesMap } from "@/lib/events/countries";
+import { getEvents } from "@/lib/events/getEvents";
 import { getReadonlyParams } from "@/lib/events/searchParams";
 import { translate } from "@/lib/translate";
-import type { Ticketmaster } from "@/lib/types";
 
 type Props = Readonly<{
   children: React.ReactNode;
-  searchResult: Ticketmaster;
 }>;
 
-export default function SearchBoard({ children, searchResult: data }: Props) {
+export default function SearchBoard({ children }: Props) {
   const searchParams = useSearchParams();
   const query = getReadonlyParams(searchParams);
+  const { data } = useSuspenseQuery({
+    queryKey: ["events", query],
+    queryFn: () => getEvents(query),
+  });
 
   function getSearchSummary(
     query: Record<string, string | string[] | null>,
