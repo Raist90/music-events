@@ -2,15 +2,14 @@
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { notFound, useSearchParams } from "next/navigation";
-import { createContext, useContext } from "react";
 import List, { CarouselList } from "../list";
 import EventCard from "./eventCard";
 import { EventProvider } from "./eventContext";
+import { EventsProvider, useEvents } from "./eventsContext";
 import Pagination from "./pagination";
 import EventsSkeleton from "./skeleton";
 import { getEvents } from "@/lib/events/getEvents";
 import { getReadonlyParams } from "@/lib/events/searchParams";
-import { Ticketmaster } from "@/lib/types";
 
 type Props = Readonly<{
   children: React.ReactNode;
@@ -18,14 +17,6 @@ type Props = Readonly<{
   params?: Record<string, string | string[] | null>;
   variant?: "landscape" | "portrait" | "square";
 }>;
-
-const EventsContext = createContext<{ data: Ticketmaster } | null>(null);
-function useEvents() {
-  const context = useContext(EventsContext);
-  if (!context)
-    throw new Error("useEvents must be used within Events component");
-  return context;
-}
 
 export default function Events({ children, className, params }: Props) {
   const searchParams = useSearchParams();
@@ -39,9 +30,9 @@ export default function Events({ children, className, params }: Props) {
   if (!data) notFound();
 
   return (
-    <EventsContext.Provider value={{ data }}>
+    <EventsProvider data={data}>
       <div className={className}>{children}</div>
-    </EventsContext.Provider>
+    </EventsProvider>
   );
 }
 
