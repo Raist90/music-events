@@ -64,7 +64,7 @@ export default function CitiesFilter() {
   const cities = searchParams.getAll("city");
 
   const router = useRouter();
-  const onChecked = (city: string, checked: boolean) => {
+  function onChecked(city: string, checked: boolean) {
     const params = new URLSearchParams(searchParams);
 
     if (checked) params.append("city", city);
@@ -74,9 +74,8 @@ export default function CitiesFilter() {
     }
 
     params.set("page", "0");
-    router.prefetch(`/search?${params.toString()}`);
     router.push(`/search?${params.toString()}`, { scroll: false });
-  };
+  }
 
   return (
     <div className="flex flex-wrap gap-2">

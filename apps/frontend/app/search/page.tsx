@@ -5,6 +5,9 @@ import {
 } from "@tanstack/react-query";
 import { Suspense } from "react";
 import Events from "@/components/events";
+import EventsList from "@/components/events/list";
+import EventsPagination from "@/components/events/pagination";
+import EventsSearchBoard from "@/components/events/searchBoard";
 import EventsSkeleton from "@/components/events/skeleton";
 import Navigation from "@/components/navigation";
 import { getEvents } from "@/lib/events/getEvents";
@@ -30,7 +33,13 @@ export default async function Search({
       />
 
       <Suspense fallback={<EventsSkeleton />}>
-        <Events />
+        <Events className="space-y-12">
+          <EventsSearchBoard>
+            <EventsList />
+          </EventsSearchBoard>
+
+          <EventsPagination />
+        </Events>
       </Suspense>
     </HydrationBoundary>
   );

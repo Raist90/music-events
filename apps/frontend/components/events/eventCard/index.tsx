@@ -1,3 +1,5 @@
+"use client";
+
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import Link from "next/link";
@@ -16,7 +18,7 @@ export default function EventCard() {
   const city = searchParams.getAll("city");
   const country = searchParams.get("country");
 
-  const cityParam = city.length ? city.map((c) => `city=${c}`).join("") : "";
+  const cityParam = city.length ? city.map((c) => `city=${c}`).join("&") : "";
   const countryParam = country ? `&country=${country}` : "";
   const params = `${cityParam}${countryParam}`;
 
@@ -46,7 +48,7 @@ export default function EventCard() {
                   .filter((_, index) => index < 2)
                   .map(({ id, name }) => (
                     <Link
-                      href={`/search?${params}&attractionId=${id}`}
+                      href={`/search?attractionId=${id}${countryParam}`}
                       className="uppercase font-semibold hover:text-blue-300 hover:underline block"
                       key={id}
                     >

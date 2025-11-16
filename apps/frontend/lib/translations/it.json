@@ -3,7 +3,7 @@
     "banner": "Trova il tuo prossimo evento",
     "boards": {
       "nextMonth": {
-        "description": "Scopri gli eventi in programma il prossimo mese.",
+        "description": "Scopri gli eventi in programma il prossimo mese",
         "title": "Prossimi eventi"
       },
       "pop": {
@@ -12,6 +12,12 @@
       "rock": {
         "title": "Eventi Rock"
       }
+    }
+  },
+  "search": {
+    "board": {
+      "description": "{count} eventi disponibili per: {query}",
+      "title": "Risultati della ricerca"
     }
   }
 }
