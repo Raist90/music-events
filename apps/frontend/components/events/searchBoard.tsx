@@ -12,7 +12,7 @@ type Props = Readonly<{
   children: React.ReactNode;
 }>;
 
-export default function SearchBoard({ children }: Props) {
+export default function EventsSearchBoard({ children }: Props) {
   const searchParams = useSearchParams();
   const query = getReadonlyParams(searchParams);
   const { data } = useSuspenseQuery({

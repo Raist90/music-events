@@ -63,7 +63,7 @@ function Header({
     Header = (
       <header className={header({ variant })}>
         <h3 className={title({ variant })}>{titleProp}</h3>
-        {description && <p>{description}</p>}
+        {description && <p className="text-sm">{description}</p>}
       </header>
     );
   }

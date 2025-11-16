@@ -7,7 +7,7 @@ import { Suspense } from "react";
 import Events from "@/components/events";
 import EventsList from "@/components/events/list";
 import EventsPagination from "@/components/events/pagination";
-import SearchBoard from "@/components/events/searchBoard";
+import EventsSearchBoard from "@/components/events/searchBoard";
 import EventsSkeleton from "@/components/events/skeleton";
 import Navigation from "@/components/navigation";
 import { getEvents } from "@/lib/events/getEvents";
@@ -33,12 +33,13 @@ export default async function Search({
       />
 
       <Suspense fallback={<EventsSkeleton />}>
-        <SearchBoard>
-          <Events className="space-y-12">
+        <Events className="space-y-12">
+          <EventsSearchBoard>
             <EventsList />
-            <EventsPagination />
-          </Events>
-        </SearchBoard>
+          </EventsSearchBoard>
+
+          <EventsPagination />
+        </Events>
       </Suspense>
     </HydrationBoundary>
   );

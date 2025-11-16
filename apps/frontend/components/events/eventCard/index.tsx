@@ -18,7 +18,7 @@ export default function EventCard() {
   const city = searchParams.getAll("city");
   const country = searchParams.get("country");
 
-  const cityParam = city.length ? city.map((c) => `city=${c}`).join("") : "";
+  const cityParam = city.length ? city.map((c) => `city=${c}`).join("&") : "";
   const countryParam = country ? `&country=${country}` : "";
   const params = `${cityParam}${countryParam}`;
 
