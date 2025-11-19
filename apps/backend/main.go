@@ -1,12 +1,21 @@
 package main
 
 import (
+	"log"
 	"md-api/api/server"
-	"md-api/config"
+
+	"github.com/joho/godotenv"
 )
 
+func mustLoadEnvs() error {
+	return godotenv.Load(".env")
+}
+
 func main() {
-	config.MustLoad()
+	err := mustLoadEnvs()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	server.Listen()
 }

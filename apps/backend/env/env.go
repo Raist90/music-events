@@ -1,17 +1,28 @@
 package env
 
-import "os"
+import (
+	"os"
+)
 
-func MustGetenv(key string) string {
-	val, ok := os.LookupEnv(key)
+type envVar string
 
+func (key envVar) Get() string {
+	val, ok := os.LookupEnv(string(key))
 	if !ok {
-		panic(key + " env variable is not set")
+		panic(string(key) + " env variable is not set")
 	}
 
 	if val == "" {
-		panic(key + " env variable is empty")
+		panic(string(key) + " env variable is empty")
 	}
 
-	return val
+	return os.Getenv(string(key))
 }
+
+const (
+	Environment           envVar = "ENVIRONMENT"
+	Port                  envVar = "PORT"
+	TicketMasterApiUrl    envVar = "TICKETMASTER_API_URL"
+	TicketMasterApiKey    envVar = "TICKETMASTER_API_KEY"
+	TicketMasterApiSecret envVar = "TICKETMASTER_API_SECRET"
+)

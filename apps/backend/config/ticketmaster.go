@@ -10,8 +10,8 @@ type Ticketmaster struct {
 
 func newTicketmaster() *Ticketmaster {
 	return &Ticketmaster{
-		URL:    env.MustGetenv("TICKETMASTER_API_URL"),
-		Key:    env.MustGetenv("TICKETMASTER_API_KEY"),
-		Secret: env.MustGetenv("TICKETMASTER_API_SECRET"),
+		URL:    env.TicketMasterApiUrl.Get(),
+		Key:    env.TicketMasterApiKey.Get(),
+		Secret: env.TicketMasterApiSecret.Get(),
 	}
 }

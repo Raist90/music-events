@@ -23,7 +23,7 @@ func MustLoad() *config {
 
 	return &config{
 		Api:         *newApi(),
-		Environment: mustEnvironment(env.MustGetenv("ENVIRONMENT")),
-		Port:        env.MustGetenv("PORT"),
+		Environment: env.Environment.Get(),
+		Port:        env.Port.Get(),
 	}
 }

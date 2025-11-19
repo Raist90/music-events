@@ -21,6 +21,8 @@ func Cors(next http.HandlerFunc) http.HandlerFunc {
 
 type middleware func(http.HandlerFunc) http.HandlerFunc
 
+// Chain applies multiple middleware functions to a final http.HandlerFunc.
+// The middleware are applied in the order they are provided.
 func Chain(mw ...middleware) middleware {
 	return func(final http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
