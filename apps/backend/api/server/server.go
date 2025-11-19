@@ -20,8 +20,16 @@ func Listen() {
 
 func create() *http.Server {
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /", middleware.Chain(middleware.Logger, middleware.Cors)(handler.Root))
-	mux.HandleFunc("GET /events", middleware.Chain(middleware.Logger, middleware.Cors)(handler.GetEvents))
+
+	mux.HandleFunc("GET /", middleware.Chain(
+		middleware.Logger,
+		middleware.Cors,
+	)(handler.Root))
+
+	mux.HandleFunc("GET /events", middleware.Chain(
+		middleware.Logger,
+		middleware.Cors,
+	)(handler.GetEvents))
 
 	return &http.Server{
 		Addr:           port,
