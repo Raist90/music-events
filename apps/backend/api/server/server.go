@@ -4,14 +4,12 @@ import (
 	"log"
 	"md-api/api/handler"
 	"md-api/api/middleware"
-	"md-api/config"
+	"md-api/env"
 	"net/http"
 	"time"
 )
 
 const MB = 1 << 20
-
-var port = config.Config.Port
 
 func Listen() {
 	s := create()
@@ -32,7 +30,7 @@ func create() *http.Server {
 	)(handler.GetEvents))
 
 	return &http.Server{
-		Addr:           port,
+		Addr:           env.Port.Get(),
 		Handler:        mux,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,

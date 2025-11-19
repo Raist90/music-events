@@ -2,7 +2,7 @@ package service
 
 import (
 	"fmt"
-	"md-api/config"
+	"md-api/env"
 	"strings"
 )
 
@@ -23,10 +23,10 @@ func MusicEvents(s Service, _opts opts) ([]byte, error) {
 		}
 	}
 
-	url := config.Config.Api.Ticketmaster.URL + "/events.json?" + opts + "&apikey=" + config.Config.Api.Ticketmaster.Key
+	url := env.TicketMasterApiUrl.Get() + "/events.json?" + opts + "&apikey=" + env.TicketMasterApiKey.Get()
 	res, err := s.Fetch(url, fetchOpts{
 		Headers: map[string]string{
-			"Authorization": "Bearer " + config.Config.Api.Ticketmaster.Key,
+			"Authorization": "Bearer " + env.TicketMasterApiKey.Get(),
 		},
 	})
 	if err != nil {
