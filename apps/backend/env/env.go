@@ -20,8 +20,9 @@ func (key envVar) Get() string {
 }
 
 const (
-	Environment           envVar = "ENVIRONMENT"
-	Port                  envVar = "PORT"
+	Environment envVar = "ENVIRONMENT"
+	Port        envVar = "PORT"
+
 	TicketMasterApiUrl    envVar = "TICKETMASTER_API_URL"
 	TicketMasterApiKey    envVar = "TICKETMASTER_API_KEY"
 	TicketMasterApiSecret envVar = "TICKETMASTER_API_SECRET"
