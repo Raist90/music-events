@@ -22,6 +22,7 @@ export default function Events({ children, className, params }: Props) {
   });
 
   if (isFetching) return <EventsSkeleton />;
+  // TODO: We should return a 500 here
   if (!data) notFound();
 
   return (

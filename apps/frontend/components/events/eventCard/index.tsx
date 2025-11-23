@@ -16,11 +16,11 @@ export default function EventCard() {
 
   const searchParams = useSearchParams();
   const city = searchParams.getAll("city");
-  const country = searchParams.get("country");
+  const countryCode = searchParams.get("countryCode") ?? "IT";
 
   const cityParam = city.length ? city.map((c) => `city=${c}`).join("&") : "";
-  const countryParam = country ? `&country=${country}` : "";
-  const params = `${cityParam}${countryParam}`;
+  const countryCodeParam = countryCode ? `&countryCode=${countryCode}` : "";
+  const params = `${cityParam}${countryCodeParam}`;
 
   return (
     <div className="flex flex-col gap-y-4">
@@ -48,7 +48,7 @@ export default function EventCard() {
                   .filter((_, index) => index < 2)
                   .map(({ id, name }) => (
                     <Link
-                      href={`/search?attractionId=${id}${countryParam}`}
+                      href={`/search?attractionId=${id}${countryCodeParam}`}
                       className="uppercase font-semibold hover:text-blue-300 hover:underline block"
                       key={id}
                     >

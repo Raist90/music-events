@@ -15,7 +15,7 @@ import {
 
 type Props = Readonly<{
   // TODO: Make make this one a `filters` object
-  country?: string;
+  countryCode?: string;
 }>;
 
 const links: Record<"href" | "label", string>[] = [
@@ -23,7 +23,7 @@ const links: Record<"href" | "label", string>[] = [
   { href: "/search", label: "Esplora" },
 ];
 
-export default function Navigation({ country }: Props) {
+export default function Navigation({ countryCode }: Props) {
   return (
     <div
       className={
@@ -60,7 +60,9 @@ export default function Navigation({ country }: Props) {
 
             <div className="flex flex-col lg:flex-row gap-x-8 gap-y-4 lg:items-center">
               <CountryFilter
-                {...(typeof country === "string" && { initialValue: country })}
+                {...(typeof countryCode === "string" && {
+                  initialValue: countryCode,
+                })}
               />
               <CitiesFilter />
             </div>

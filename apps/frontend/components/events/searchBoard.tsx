@@ -24,11 +24,11 @@ export default function EventsSearchBoard({ children }: Props) {
     const summaryItems = [];
     if (query?.attractionId) {
       summaryItems.push(
-        data._embedded.events[0]._embedded?.attractions[0]?.name,
+        data._embedded?.events?.[0]._embedded?.attractions[0]?.name,
       );
     }
-    if (query?.country) {
-      summaryItems.push(countriesMap[String(query.country).toUpperCase()]);
+    if (query?.countryCode) {
+      summaryItems.push(countriesMap[String(query.countryCode).toUpperCase()]);
     }
     if (query?.genreId) {
       summaryItems.push(

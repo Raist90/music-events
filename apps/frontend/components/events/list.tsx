@@ -15,6 +15,8 @@ export default function EventsList({
   variant = "landscape",
 }: Props) {
   const { data } = useEvents();
+
+  if (!data._embedded?.events.length) return;
   return (
     <section>
       <div className="px-8">

@@ -29,7 +29,9 @@ export default async function Search({
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Navigation
-        {...(typeof params.country === "string" && { country: params.country })}
+        {...(typeof params.countryCode === "string" && {
+          countryCode: params.countryCode,
+        })}
       />
 
       <Suspense fallback={<EventsSkeleton />}>

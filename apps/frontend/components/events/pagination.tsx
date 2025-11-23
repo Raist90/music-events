@@ -19,21 +19,24 @@ export default function EventsPagination() {
 
   const searchParams = useSearchParams();
   const city = searchParams.getAll("city");
-  const country = searchParams.get("country");
+  const countryCode = searchParams.get("countryCode");
   const attractionId = searchParams.get("attractionId");
   const startDateTime = searchParams.get("startDateTime");
   const endDateTime = searchParams.get("endDateTime");
   const genreId = searchParams.get("genreId");
 
   const cityParam = city.length ? city.map((c) => `city=${c}`).join("&") : "";
-  const countryParam = country ? `&country=${country}` : "";
+  const countryCodeParam = countryCode ? `&countryCode=${countryCode}` : "";
   const attractionIdParam = attractionId ? `&attractionId=${attractionId}` : "";
   const startDateTimeParam = startDateTime
     ? `&startDateTime=${startDateTime}`
     : "";
   const endDateTimeParam = endDateTime ? `&endDateTime=${endDateTime}` : "";
   const genreIdParam = genreId ? `&genreId=${genreId}` : "";
-  const params = `${cityParam}${countryParam}${attractionIdParam}${startDateTimeParam}${endDateTimeParam}${genreIdParam}`;
+  const params = `${cityParam}${countryCodeParam}${attractionIdParam}${startDateTimeParam}${endDateTimeParam}${genreIdParam}`;
+
+  if (pagination.totalPages <= 1) return;
+
   return (
     <footer className="border-t p-4">
       <UIPagination>
@@ -89,7 +92,7 @@ export default function EventsPagination() {
           {!(pagination.number === pagination.totalPages - 1) && (
             <PaginationItem>
               <PaginationNext
-                href={`/search?${cityParam}${countryParam}&page=${pagination.number + 1}`}
+                href={`/search?${cityParam}${countryCodeParam}&page=${pagination.number + 1}`}
               />
             </PaginationItem>
           )}

@@ -3,22 +3,41 @@ import { apiClient } from "../client";
 type Opts = Record<string, string | string[] | null>;
 
 export async function getEvents(opts: Opts) {
-  if (Array.isArray(opts?.city)) {
-    // Replace spaces with plus signs for URL encoding
-    opts.city = opts.city.map((c) => c.replace(" ", "+"));
-  }
-
   try {
-    const { data } = await apiClient.GET("/events", {
+    const { data, error } = await apiClient.GET("/events", {
       params: {
-        query: opts,
+        query: {
+          attractionId: formatQuery(opts.attractionId),
+          city: formatQuery(opts.city),
+          classificationName: "music",
+          countryCode: formatQuery(opts.countryCode) || "IT",
+          endDateTime: formatQuery(opts.endDateTime),
+          genreId: formatQuery(opts.genreId),
+          locale:
+            formatQuery(opts.countryCode) === "GB" ||
+            formatQuery(opts.countryCode) === "US"
+              ? "en"
+              : formatQuery(opts.countryCode || "IT")?.toLowerCase(),
+          page: formatQuery(opts.page) || "0",
+          size: formatQuery(opts.size) || "20",
+          sort: "date,asc",
+          startDateTime: formatQuery(opts.startDateTime),
+        },
       },
     });
-    if (!data) {
-      throw new Error("No data returned from API");
-    }
+    if (error) throw error;
     return data;
   } catch (err) {
     throw new Error("fetching events", { cause: err });
   }
+}
+
+function formatQuery(param: string | string[] | null): string | undefined {
+  if (param === null) return;
+
+  if (Array.isArray(param)) {
+    return param.join(",").replace(/ /g, "+");
+  }
+
+  return param;
 }

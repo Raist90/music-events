@@ -20,13 +20,13 @@ const countries: string[] = ["DE", "ES", "FR", "GB", "IT", "US"];
 
 export default function CountryFilter({ initialValue }: Props) {
   const params = useSearchParams();
-  const selectedCountry = params.get("country");
+  const selectedCountryCode = params.get("countryCode");
 
   const router = useRouter();
   return (
     <Select
       value={initialValue}
-      onValueChange={(val) => router.push(`/search?country=${val}&page=0`)}
+      onValueChange={(val) => router.push(`/search?countryCode=${val}&page=0`)}
     >
       <SelectTrigger className="min-w-40">
         <SelectValue placeholder="Seleziona nazione" />
@@ -36,7 +36,7 @@ export default function CountryFilter({ initialValue }: Props) {
           <SelectLabel>Nazione</SelectLabel>
           {countries.map((country) => (
             <SelectItem
-              disabled={country === selectedCountry}
+              disabled={country === selectedCountryCode}
               key={country}
               value={country}
             >

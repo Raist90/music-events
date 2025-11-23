@@ -60,12 +60,17 @@ const citiesMap: Record<string, string[]> = {
 
 export default function CitiesFilter() {
   const searchParams = useSearchParams();
-  const country = searchParams.get("country");
+  const countryCode = searchParams.get("countryCode");
   const cities = searchParams.getAll("city");
+  const attractionId = searchParams.get("attractionId");
 
   const router = useRouter();
   function onChecked(city: string, checked: boolean) {
     const params = new URLSearchParams(searchParams);
+
+    if (attractionId) {
+      params.delete("attractionId");
+    }
 
     if (checked) params.append("city", city);
     else {
@@ -79,9 +84,9 @@ export default function CitiesFilter() {
 
   return (
     <div className="flex flex-wrap gap-2">
-      {country &&
-        citiesMap[country]?.length &&
-        citiesMap[country].map((city) => (
+      {countryCode &&
+        citiesMap[countryCode]?.length &&
+        citiesMap[countryCode].map((city) => (
           <div className="flex gap-x-2 items-center" key={city}>
             <Checkbox
               checked={cities.includes(city.toLowerCase())}

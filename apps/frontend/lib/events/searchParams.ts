@@ -7,7 +7,7 @@ export function getParams(
 ): Record<string, string | string[] | null> {
   const {
     page,
-    country,
+    countryCode,
     city,
     attractionId,
     startDateTime,
@@ -17,7 +17,7 @@ export function getParams(
 
   return {
     city: Array.isArray(city) ? city : city ? [city] : [],
-    country: country || null,
+    countryCode: countryCode || null,
     page: page || "0",
     attractionId: attractionId || null,
     startDateTime: startDateTime || null,
@@ -30,7 +30,7 @@ export function getReadonlyParams(
   searchParams: ReadonlyURLSearchParams,
 ): Record<string, string | string[] | null> {
   const city = searchParams.getAll("city");
-  const country = searchParams.get("country");
+  const countryCode = searchParams.get("countryCode");
   const page = searchParams.get("page") || "0";
   const attractionId = searchParams.get("attractionId");
   const startDateTime = searchParams.get("startDateTime");
@@ -39,7 +39,7 @@ export function getReadonlyParams(
 
   return {
     city,
-    country,
+    countryCode,
     page,
     attractionId,
     startDateTime,
