@@ -3,7 +3,6 @@ package service
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"md-api/env"
 	"md-api/model"
 	"net/url"
