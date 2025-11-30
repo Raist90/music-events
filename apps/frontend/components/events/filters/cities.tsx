@@ -60,7 +60,7 @@ const citiesMap: Record<string, string[]> = {
 
 export default function CitiesFilter() {
   const searchParams = useSearchParams();
-  const countryCode = searchParams.get("countryCode");
+  const countryCode = searchParams.get("countryCode") ?? "IT";
   const cities = searchParams.getAll("city");
   const attractionId = searchParams.get("attractionId");
 
@@ -83,21 +83,25 @@ export default function CitiesFilter() {
   }
 
   return (
-    <div className="flex flex-wrap gap-2">
-      {countryCode &&
-        citiesMap[countryCode]?.length &&
-        citiesMap[countryCode].map((city) => (
-          <div className="flex gap-x-2 items-center" key={city}>
-            <Checkbox
-              checked={cities.includes(city.toLowerCase())}
-              onCheckedChange={(checked) =>
-                onChecked(city.toLowerCase(), checked as boolean)
-              }
-              id={city}
-            />
-            <Label htmlFor={city}>{city}</Label>
-          </div>
-        ))}
+    <div className="flex flex-col gap-y-2">
+      <span className="text-xs font-bold uppercase">Città</span>
+
+      <div className="flex flex-wrap gap-2">
+        {countryCode &&
+          citiesMap[countryCode]?.length &&
+          citiesMap[countryCode].map((city) => (
+            <div className="flex gap-x-2 items-center" key={city}>
+              <Checkbox
+                checked={cities.includes(city.toLowerCase())}
+                onCheckedChange={(checked) =>
+                  onChecked(city.toLowerCase(), checked as boolean)
+                }
+                id={city}
+              />
+              <Label htmlFor={city}>{city}</Label>
+            </div>
+          ))}
+      </div>
     </div>
   );
 }

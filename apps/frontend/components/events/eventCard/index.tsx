@@ -2,87 +2,50 @@
 
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useEvent } from "../eventContext";
 import EventImage from "./eventImage";
+import { translate } from "@/lib/translate";
+import { cn } from "@/lib/utils";
 
-export default function EventCard() {
+type Props = Readonly<{
+  className?: string;
+}>;
+
+export default function EventCard({ className }: Props) {
   const { event } = useEvent();
 
   dayjs.extend(utc);
   const format = (dateTime: string) =>
-    dayjs(dateTime).utc().format("MMM D, YYYY h:mm A");
+    dayjs(dateTime).utc().format("DD.MM.YYYY");
 
-  const searchParams = useSearchParams();
-  const city = searchParams.getAll("city");
-  const countryCode = searchParams.get("countryCode") ?? "IT";
-
-  const cityParam = city.length ? city.map((c) => `city=${c}`).join("&") : "";
-  const countryCodeParam = countryCode ? `&countryCode=${countryCode}` : "";
-  const params = `${cityParam}${countryCodeParam}`;
+  const { t } = translate("it");
 
   return (
-    <div className="flex flex-col gap-y-4">
+    <div className={cn("flex flex-col gap-y-4", className)}>
       <EventImage />
 
       <div className="flex flex-col">
-        <a className="group" href={event.url} target="_blank">
-          <h2 className="font-bold group-hover:underline">{event.name}</h2>
+        <div className="space-y-1">
+          <p className="text-sm font-bold">
+            {format(event.dates.start.dateTime)}
+          </p>
+
+          <h2 className="font-bold">{event.name}</h2>
+
+          <p className="text-sm">
+            {/* TODO: Sometimes city.name is missing */}
+            {event._embedded.venues[0].city.name},{" "}
+            {event._embedded.venues[0].name}
+          </p>
+        </div>
+
+        <a
+          href={event.url}
+          target="_blank"
+          className="w-fit py-1 px-3 mt-3 border bg-input/50 font-semibold rounded text-sm cursor-pointer"
+        >
+          {t("card.buy_tickets")}
         </a>
-
-        <p className="text-xs mt-1">{format(event.dates.start.dateTime)}</p>
-        <p className="text-sm mt-1">
-          {/* TODO: Sometimes city.name is missing */}
-          {event._embedded.venues[0].city.name},{" "}
-          {event._embedded.venues[0].name}
-        </p>
-
-        {event._embedded?.attractions?.length && (
-          <div className="flex justify-between mt-2 pt-2 border-t">
-            {event._embedded?.attractions?.length && (
-              <div className="text-xs">
-                <p>Feat</p>
-
-                {event._embedded.attractions
-                  .filter((_, index) => index < 2)
-                  .map(({ id, name }) => (
-                    <Link
-                      href={`/search?attractionId=${id}${countryCodeParam}`}
-                      className="uppercase font-semibold hover:text-blue-300 hover:underline block"
-                      key={id}
-                    >
-                      {name}
-                    </Link>
-                  ))}
-
-                {event._embedded.attractions.length > 2 && (
-                  <p>
-                    e altri {event._embedded.attractions.length - 2} artisti
-                  </p>
-                )}
-              </div>
-            )}
-
-            {event._embedded.attractions?.[0].classifications?.[0].genre
-              ?.name &&
-              event._embedded.attractions?.[0].classifications[0].genre.name !==
-                "Undefined" && (
-                <div>
-                  <p className="text-xs">Genere</p>
-                  <Link
-                    href={`/search?${params}&genreId=${event._embedded.attractions[0].classifications[0].genre.id}`}
-                    className="text-xs hover:text-blue-300 hover:underline uppercase font-semibold"
-                  >
-                    {
-                      event._embedded.attractions[0].classifications[0].genre
-                        .name
-                    }
-                  </Link>
-                </div>
-              )}
-          </div>
-        )}
       </div>
     </div>
   );

@@ -29,6 +29,8 @@ export default function EventsSearchBoard({ children }: Props) {
     }
     if (query?.countryCode) {
       summaryItems.push(countriesMap[String(query.countryCode).toUpperCase()]);
+    } else {
+      summaryItems.push("italia");
     }
     if (query?.genreId) {
       summaryItems.push(

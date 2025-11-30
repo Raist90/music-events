@@ -37,8 +37,11 @@ export default async function Search({
       <Suspense fallback={<EventsSkeleton />}>
         <Events className="space-y-12">
           <EventsSearchBoard>
-            <EventsList />
+            <EventsList variant="square" />
           </EventsSearchBoard>
+
+          {/* DIVIDER */}
+          <div className="mb-12" />
 
           <EventsPagination />
         </Events>

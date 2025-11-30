@@ -27,7 +27,7 @@ export default function Navigation({ countryCode }: Props) {
   return (
     <div
       className={
-        "bg-background/85 backdrop-blur-md border-b border-input h-14 flex gap-x-4 items-center px-8 py-4 text-sm sticky top-0 z-[1]"
+        "bg-background/85 backdrop-blur-md h-14 flex gap-x-4 items-center px-4 md:px-8 py-4 text-sm sticky top-0 z-[1]"
       }
     >
       {links?.length && (
@@ -56,15 +56,10 @@ export default function Navigation({ countryCode }: Props) {
             </DrawerDescription>
           </DrawerHeader>
           <Filters>
-            <DatesFilter />
-
-            <div className="flex flex-col lg:flex-row gap-x-8 gap-y-4 lg:items-center">
-              <CountryFilter
-                {...(typeof countryCode === "string" && {
-                  initialValue: countryCode,
-                })}
-              />
+            <div className="flex flex-col lg:flex-row gap-x-8 gap-y-4">
+              <CountryFilter />
               <CitiesFilter />
+              <DatesFilter />
             </div>
           </Filters>
         </DrawerContent>

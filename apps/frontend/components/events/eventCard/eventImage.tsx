@@ -4,7 +4,7 @@ import { EventVariant, useEvent } from "../eventContext";
 const eventImage = tv({
   slots: {
     wrapper: "w-full",
-    img: "size-full rounded-md",
+    img: "size-full",
   },
   variants: {
     variant: {

@@ -43,17 +43,23 @@ export default function DatesFilter() {
   }
 
   return (
-    <div className="flex gap-x-4">
+    <>
       <Popover>
         <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            id="dates"
-            className="w-40 font-normal rounded-none"
-          >
-            {start ? `${start.toLocaleDateString()}` : "A partire da"}
-            <ChevronDownIcon />
-          </Button>
+          <div className="flex flex-col gap-y-2">
+            <span className="text-xs font-bold uppercase">A partire da</span>
+
+            <Button
+              variant="outline"
+              id="dates"
+              className="w-full flex justify-between md:w-40 font-normal rounded-none"
+            >
+              {start
+                ? `${start.toLocaleDateString()}`
+                : dayjs().toDate().toLocaleDateString()}
+              <ChevronDownIcon className="opacity-50" />
+            </Button>
+          </div>
         </PopoverTrigger>
         <PopoverContent
           className="w-auto overflow-hidden p-0 rounded-none"
@@ -73,14 +79,20 @@ export default function DatesFilter() {
 
       <Popover>
         <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            id="dates"
-            className="w-40 font-normal rounded-none"
-          >
-            {end ? `${end.toLocaleDateString()}` : "Fino a"}
-            <ChevronDownIcon />
-          </Button>
+          <div className="flex flex-col gap-y-2">
+            <span className="text-xs font-bold uppercase">Fino a</span>
+
+            <Button
+              variant="outline"
+              id="dates"
+              className="w-full flex justify-between md:w-40 font-normal rounded-none"
+            >
+              {end
+                ? `${end.toLocaleDateString()}`
+                : dayjs().add(6, "month").toDate().toLocaleDateString()}
+              <ChevronDownIcon className="opacity-50" />
+            </Button>
+          </div>
         </PopoverTrigger>
         <PopoverContent
           className="w-auto overflow-hidden p-0 rounded-none"
@@ -97,6 +109,6 @@ export default function DatesFilter() {
           />
         </PopoverContent>
       </Popover>
-    </div>
+    </>
   );
 }

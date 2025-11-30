@@ -12,10 +12,10 @@ const board = tv({
     variant: {
       base: {
         wrapper: "space-y-4",
-        title: "font-semibold px-8 uppercase",
+        title: "font-semibold px-4 md:px-8 uppercase",
       },
       featured: {
-        wrapper: "pt-12 relative",
+        wrapper: "pt-4 relative",
         title: "font-bold text-2xl",
         overlay:
           "absolute inset-0 bg-gradient-to-b via-blue-800 to-background to-90% opacity-40 -z-1",
@@ -27,7 +27,7 @@ const board = tv({
   },
   slots: {
     wrapper: "",
-    header: "text-center space-y-2 px-2 pb-8",
+    header: "space-y-2 px-4 md:px-8 pb-8",
     title: "",
     overlay: "",
   },

@@ -21,12 +21,12 @@ export default function EventsCarouselList({
   } = useEvents();
   return (
     <section>
-      <div className="px-8">
+      <div className="px-4 md:px-8">
         <CarouselList
           items={events}
           renderItem={(event) => (
             <EventProvider event={event} variant={variant ?? "landscape"}>
-              <EventCard />
+              <EventCard className="mb-4" />
             </EventProvider>
           )}
           className={className ?? "md:basis-1/3 lg:basis-1/4"}

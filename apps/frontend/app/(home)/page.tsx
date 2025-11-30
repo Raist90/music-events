@@ -3,94 +3,49 @@ import {
   HydrationBoundary,
   dehydrate,
 } from "@tanstack/react-query";
-import dayjs from "dayjs";
 import { Suspense } from "react";
 import Banner from "@/components/banner";
 import Board from "@/components/board";
 import Events from "@/components/events";
-import EventsCarouselList from "@/components/events/carouselList";
 import EventsList from "@/components/events/list";
 import EventsSkeleton from "@/components/events/skeleton";
-import { Genre } from "@/lib/events/genres";
 import { getEvents } from "@/lib/events/getEvents";
 import { translate } from "@/lib/translate";
 
 export default async function Home() {
-  // TODO: Find a way to reuse this
-  const format = (dateTime: ReturnType<typeof dayjs>) =>
-    dayjs(dateTime).format("YYYY-MM-DDTHH:mm:ss[Z]");
-
-  const baseQuery = {
-    size: "6",
-  };
-
-  const nextMonthQuery = {
-    ...baseQuery,
-    startDateTime: format(dayjs().add(1, "month")),
-  };
-
-  const popQuery = {
-    ...baseQuery,
-    genreId: Genre.Pop,
-  };
-
-  const rockQuery = {
-    ...baseQuery,
-    genreId: Genre.Rock,
-  };
-
-  enum BoardEnum {
-    NextMonth = "nextMonth",
-    PopEvents = "pop",
-    RockEvents = "rock",
-  }
-
-  const queries: Record<BoardEnum, Record<string, string>> = {
-    [BoardEnum.NextMonth]: nextMonthQuery,
-    [BoardEnum.PopEvents]: popQuery,
-    [BoardEnum.RockEvents]: rockQuery,
+  const params = {
+    size: "20",
   };
 
   const queryClient = new QueryClient();
-  await Promise.all(
-    Object.values(queries).map((query) =>
-      queryClient.prefetchQuery({
-        queryKey: ["events", query],
-        queryFn: () => getEvents(query),
-      }),
-    ),
-  );
+  await queryClient.prefetchQuery({
+    queryKey: ["events", params],
+    queryFn: () => getEvents(params),
+  });
 
   const { t } = translate("it");
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Banner title={t("home.banner")} />
+      <section className="m-4 md:m-8">
+        <Banner title="" />
+      </section>
 
       <div className="space-y-12 my-12">
-        {Object.values(BoardEnum).map((board) => (
-          <Board
-            key={board}
-            {...(board === BoardEnum.NextMonth && {
-              description: t("home.boards.nextMonth.description"),
-            })}
-            title={t(`home.boards.${board}.title`)}
-            variant={board === BoardEnum.NextMonth ? "featured" : "base"}
-          >
-            <Suspense fallback={<EventsSkeleton />}>
-              <Events params={queries[board]}>
-                {board === BoardEnum.NextMonth ? (
-                  <EventsCarouselList variant="portrait" />
-                ) : (
-                  <EventsList
-                    className="md:grid-cols-3 lg:grid-cols-6"
-                    variant="square"
-                  />
-                )}
-              </Events>
-            </Suspense>
-          </Board>
-        ))}
+        <Board
+          description={t("home.board.description")}
+          title={t("home.board.title")}
+          variant={"featured"}
+        >
+          <Suspense fallback={<EventsSkeleton />}>
+            <Events params={params}>
+              <EventsList
+                className="md:grid-cols-4 lg:grid-cols-5"
+                variant="square"
+              />
+            </Events>
+          </Suspense>
+        </Board>
       </div>
     </HydrationBoundary>
   );

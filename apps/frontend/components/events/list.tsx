@@ -19,7 +19,7 @@ export default function EventsList({
   if (!data._embedded?.events.length) return;
   return (
     <section>
-      <div className="px-8">
+      <div className="px-4 md:px-8">
         <List
           className={className}
           items={data._embedded.events}
