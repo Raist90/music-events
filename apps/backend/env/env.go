@@ -23,6 +23,8 @@ const (
 	Environment envVar = "ENVIRONMENT"
 	Port        envVar = "PORT"
 
+	JWTSecret envVar = "JWT_SECRET"
+
 	TicketMasterApiUrl    envVar = "TICKETMASTER_API_URL"
 	TicketMasterApiKey    envVar = "TICKETMASTER_API_KEY"
 	TicketMasterApiSecret envVar = "TICKETMASTER_API_SECRET"

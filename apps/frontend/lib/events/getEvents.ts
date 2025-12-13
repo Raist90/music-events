@@ -1,10 +1,32 @@
+"use server";
+
+import { SignJWT } from "jose";
 import { apiClient } from "../client";
 
 type Opts = Record<string, string | string[] | null>;
 
+async function getJwtToken() {
+  const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+  if (!secret) throw new Error("JWT secret not defined");
+  const alg = "HS256";
+
+  return await new SignJWT({ app: "its-my-live-frontend" })
+    .setProtectedHeader({ alg })
+    .setIssuedAt()
+    .setIssuer("its-my-live-backend")
+    .setAudience("its-my-live-audience")
+    .setExpirationTime("1h")
+    .sign(secret);
+}
+
 export async function getEvents(opts: Opts) {
   try {
+    const token = await getJwtToken();
+
     const { data, error } = await apiClient.GET("/events", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       params: {
         query: {
           attractionId: formatQuery(opts.attractionId),
