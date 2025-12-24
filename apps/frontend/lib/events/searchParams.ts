@@ -13,6 +13,7 @@ export function getParams(
     startDateTime,
     endDateTime,
     genreId,
+    keyword,
   } = searchParams;
 
   return {
@@ -23,6 +24,7 @@ export function getParams(
     startDateTime: startDateTime || null,
     endDateTime: endDateTime || null,
     genreId: genreId || null,
+    keyword: keyword || null,
   };
 }
 
@@ -36,6 +38,7 @@ export function getReadonlyParams(
   const startDateTime = searchParams.get("startDateTime");
   const endDateTime = searchParams.get("endDateTime");
   const genreId = searchParams.get("genreId");
+  const keyword = searchParams.get("keyword");
 
   return {
     city,
@@ -45,5 +48,6 @@ export function getReadonlyParams(
     startDateTime,
     endDateTime,
     genreId,
+    keyword,
   };
 }

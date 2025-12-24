@@ -156,6 +156,8 @@ export interface operations {
         page?: string;
         /** @description Number of items per page */
         size?: string;
+        /** @description Keyword to search in events */
+        keyword?: string;
       };
       header?: never;
       path?: never;

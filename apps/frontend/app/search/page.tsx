@@ -28,16 +28,12 @@ export default async function Search({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Navigation
-        {...(typeof params.countryCode === "string" && {
-          countryCode: params.countryCode,
-        })}
-      />
+      <Navigation />
 
       <Suspense fallback={<EventsSkeleton />}>
         <Events className="space-y-12">
           <EventsSearchBoard>
-            <EventsList variant="square" />
+            <EventsList />
           </EventsSearchBoard>
 
           {/* DIVIDER */}

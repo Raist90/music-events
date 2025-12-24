@@ -39,10 +39,7 @@ export default async function Home() {
         >
           <Suspense fallback={<EventsSkeleton />}>
             <Events params={params}>
-              <EventsList
-                className="md:grid-cols-4 lg:grid-cols-5"
-                variant="square"
-              />
+              <EventsList className="md:grid-cols-4 lg:grid-cols-5" />
             </Events>
           </Suspense>
         </Board>

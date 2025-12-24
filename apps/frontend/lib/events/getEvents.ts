@@ -23,7 +23,7 @@ export async function getEvents(opts: Opts) {
   try {
     const token = await getJwtToken();
 
-    const { data, error } = await apiClient.GET("/events", {
+    const { data, error, response } = await apiClient.GET("/events", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -35,6 +35,7 @@ export async function getEvents(opts: Opts) {
           countryCode: formatQuery(opts.countryCode) || "IT",
           endDateTime: formatQuery(opts.endDateTime),
           genreId: formatQuery(opts.genreId),
+          keyword: formatQuery(opts.keyword),
           locale:
             formatQuery(opts.countryCode) === "GB" ||
             formatQuery(opts.countryCode) === "US"
@@ -47,6 +48,7 @@ export async function getEvents(opts: Opts) {
         },
       },
     });
+    console.log(response.url);
     if (error) throw error;
     return data;
   } catch (err) {
@@ -58,6 +60,7 @@ function formatQuery(param: string | string[] | null): string | undefined {
   if (param === null) return;
 
   if (Array.isArray(param)) {
+    if (param.length === 0) return;
     return param.join(",").replace(/ /g, "+");
   }
 

@@ -3,8 +3,7 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { ChevronDownIcon } from "lucide-react";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { it } from "react-day-picker/locale";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";

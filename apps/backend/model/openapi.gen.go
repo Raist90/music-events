@@ -158,4 +158,7 @@ type ListEventsParams struct {
 
 	// Size Number of items per page
 	Size *string `form:"size,omitempty" json:"size,omitempty"`
+
+	// Keyword Keyword to search in events
+	Keyword *string `form:"keyword,omitempty" json:"keyword,omitempty"`
 }
