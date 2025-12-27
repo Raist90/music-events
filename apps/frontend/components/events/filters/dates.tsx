@@ -20,20 +20,25 @@ export default function DatesFilter() {
 
   const startParam = searchParams.get("startDateTime");
   const endParam = searchParams.get("endDateTime");
-  const start = startParam ? dayjs(startParam).toDate() : undefined;
-  const end = endParam ? dayjs(endParam).toDate() : undefined;
+  const start = startParam ? dayjs(startParam).toDate() : dayjs().toDate();
+  const end = endParam
+    ? dayjs(endParam).toDate()
+    : dayjs().add(6, "month").toDate();
 
   // TODO: Find a way to reuse this
   const format = (dateTime: Date) =>
     dayjs(dateTime).format("YYYY-MM-DDTHH:mm:ss[Z]");
 
+  // TODO: Refactor this with nuqs
   function onSelectStart(start: Date) {
     const params = new URLSearchParams(searchParams);
     params.set("page", "0");
     params.set("startDateTime", format(start));
+    params.set("endDateTime", format(dayjs(start).add(6, "months").toDate()));
     router.push(`/search?${params.toString()}`, { scroll: false });
   }
 
+  // TODO: Refactor this with nuqs
   function onSelectEnd(end: Date) {
     const params = new URLSearchParams(searchParams);
     params.set("page", "0");
@@ -72,6 +77,7 @@ export default function DatesFilter() {
             locale={it}
             onSelect={(date) => date && onSelectStart(date)}
             startMonth={new Date()}
+            endMonth={dayjs().add(6, "month").toDate()}
           />
         </PopoverContent>
       </Popover>
@@ -104,7 +110,8 @@ export default function DatesFilter() {
             captionLayout="dropdown"
             locale={it}
             onSelect={(date) => date && onSelectEnd(date)}
-            startMonth={start || new Date()}
+            startMonth={end}
+            endMonth={dayjs().add(1, "year").toDate()}
           />
         </PopoverContent>
       </Popover>

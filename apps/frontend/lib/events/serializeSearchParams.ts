@@ -14,7 +14,7 @@ const searchParamsSchema = {
   genreId: parseAsString,
   keyword: parseAsString.withDefault(""),
   page: parseAsInteger.withDefault(0),
-  size: parseAsString.withDefault("20"),
+  size: parseAsInteger.withDefault(20),
   startDateTime: parseAsIsoDateTime,
 };
 

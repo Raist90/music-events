@@ -11,6 +11,7 @@ import {
   PaginationEllipsis,
 } from "../ui/pagination";
 import { useEvents } from "./eventsContext";
+import { serializeSearchParams } from "@/lib/events/serializeSearchParams";
 
 export default function EventsPagination() {
   const {
@@ -18,22 +19,9 @@ export default function EventsPagination() {
   } = useEvents();
 
   const searchParams = useSearchParams();
-  const city = searchParams.getAll("city");
-  const countryCode = searchParams.get("countryCode");
-  const attractionId = searchParams.get("attractionId");
-  const startDateTime = searchParams.get("startDateTime");
-  const endDateTime = searchParams.get("endDateTime");
-  const genreId = searchParams.get("genreId");
-
-  const cityParam = city.length ? city.map((c) => `city=${c}`).join("&") : "";
-  const countryCodeParam = countryCode ? `&countryCode=${countryCode}` : "";
-  const attractionIdParam = attractionId ? `&attractionId=${attractionId}` : "";
-  const startDateTimeParam = startDateTime
-    ? `&startDateTime=${startDateTime}`
-    : "";
-  const endDateTimeParam = endDateTime ? `&endDateTime=${endDateTime}` : "";
-  const genreIdParam = genreId ? `&genreId=${genreId}` : "";
-  const params = `${cityParam}${countryCodeParam}${attractionIdParam}${startDateTimeParam}${endDateTimeParam}${genreIdParam}`;
+  function getPageUrl(page: number) {
+    return `/search${serializeSearchParams(searchParams, { page })}`;
+  }
 
   if (pagination.totalPages <= 1) return;
 
@@ -43,17 +31,13 @@ export default function EventsPagination() {
         <PaginationContent>
           {pagination.number !== 0 && (
             <PaginationItem>
-              <PaginationPrevious
-                href={`/search?${params}&page=${pagination.number - 1}`}
-              />
+              <PaginationPrevious href={getPageUrl(pagination.number - 1)} />
             </PaginationItem>
           )}
 
           {pagination.number - 1 > 0 && (
             <PaginationItem>
-              <PaginationLink href={`/search?${params}&page=0`}>
-                0
-              </PaginationLink>
+              <PaginationLink href={getPageUrl(0)}>0</PaginationLink>
             </PaginationItem>
           )}
           {pagination.number - 2 > 0 && <PaginationEllipsis />}
@@ -66,7 +50,7 @@ export default function EventsPagination() {
                 return (
                   <PaginationItem key={index}>
                     <PaginationLink
-                      href={`/search?${params}&page=${index}`}
+                      href={getPageUrl(index)}
                       isActive={pagination.number === index}
                     >
                       {index}
@@ -81,9 +65,7 @@ export default function EventsPagination() {
           )}
           {pagination.number < pagination.totalPages - 2 && (
             <PaginationItem>
-              <PaginationLink
-                href={`/search?${params}&page=${pagination.totalPages - 1}`}
-              >
+              <PaginationLink href={getPageUrl(pagination.totalPages - 1)}>
                 {pagination.totalPages - 1}
               </PaginationLink>
             </PaginationItem>
@@ -91,9 +73,7 @@ export default function EventsPagination() {
 
           {!(pagination.number === pagination.totalPages - 1) && (
             <PaginationItem>
-              <PaginationNext
-                href={`/search?${cityParam}${countryCodeParam}&page=${pagination.number + 1}`}
-              />
+              <PaginationNext href={getPageUrl(pagination.number + 1)} />
             </PaginationItem>
           )}
         </PaginationContent>

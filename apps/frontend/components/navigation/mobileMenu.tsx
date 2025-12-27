@@ -129,7 +129,7 @@ export default function MobileMenu() {
                     scale: 0.95,
                   }}
                   transition={{ duration: 0.2, ease: "easeInOut" }}
-                  className="p-4 space-y-2"
+                  className="p-4 space-y-2 text-sm uppercase font-semibold"
                 >
                   {links.map(({ href, label }) => (
                     <li key={href}>
