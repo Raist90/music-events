@@ -1,0 +1,43 @@
+# Default ignore for Dockerfile
+Dockerfile
+.dockerignore
+.docker-compose*
+
+# Environment files
+.env*
+
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Vendor (if using Go modules, you may want to keep vendor/)
+# /vendor/
+
+# Git
+.git
+.gitignore
+
+# Dependency directories
+Gopkg.lock
+Gopkg.toml
+
+# IDE/editor files
+*.swp
+*.swo
+*.DS_Store
+.idea/
+.vscode/
+
+# Test data
+**/testdata/
+
+# Build output
+bin/
+dist/
+build/
+coverage.out

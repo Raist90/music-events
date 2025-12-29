@@ -3,12 +3,16 @@ package main
 import (
 	"log"
 	"md-api/api/server"
+	"os"
 
 	"github.com/joho/godotenv"
 )
 
 func mustLoadEnvs() error {
-	return godotenv.Load(".env")
+	if _, err := os.Stat(".env"); err == nil {
+		return godotenv.Load(".env")
+	}
+	return nil
 }
 
 func main() {

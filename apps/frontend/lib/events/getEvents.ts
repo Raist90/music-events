@@ -23,7 +23,7 @@ export async function getEvents(opts: Opts) {
   try {
     const token = await getJwtToken();
 
-    const { data, error, response } = await apiClient.GET("/events", {
+    const { data, error } = await apiClient.GET("/events", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -48,7 +48,6 @@ export async function getEvents(opts: Opts) {
         },
       },
     });
-    console.log(response.url);
     if (error) throw error;
     return data;
   } catch (err) {

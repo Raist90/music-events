@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Navigation from "@/components/navigation";
 
 export default function HomeLayout({
@@ -7,7 +8,10 @@ export default function HomeLayout({
 }>) {
   return (
     <div>
-      <Navigation />
+      {/* FIXME: We should remove Suspense */}
+      <Suspense>
+        <Navigation />
+      </Suspense>
 
       {children}
     </div>

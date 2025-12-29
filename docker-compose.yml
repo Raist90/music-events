@@ -1,0 +1,32 @@
+services:
+  backend:
+    container_name: backend
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./apps/backend/.env
+    restart: unless-stopped
+    networks:
+      - app-network
+  frontend:
+    container_name: frontend
+    build:
+      context: ./apps/frontend
+      dockerfile: dev.Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./apps/frontend/.env
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8080
+    restart: always
+    depends_on:
+      - backend
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge

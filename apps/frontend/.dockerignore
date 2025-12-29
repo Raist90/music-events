@@ -1,0 +1,13 @@
+# Default ignore for Dockerfile
+*Dockerfile
+.dockerignore
+.docker-compose*
+
+node_modules
+npm-debug.log
+README.md
+.next
+.git
+
+# Environment files
+.env*
