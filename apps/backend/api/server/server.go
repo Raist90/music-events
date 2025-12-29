@@ -19,13 +19,18 @@ func Listen() {
 func create() *http.Server {
 	mux := http.NewServeMux()
 
+	// Initialize rate limiter and start cleanup goroutine
+	middleware.StartRateLimiterCleanup()
+
 	mux.HandleFunc("GET /", middleware.Chain(
+		middleware.RateLimit,
 		middleware.JWTAuth,
 		middleware.Logger,
 		middleware.Cors,
 	)(handler.Root))
 
 	mux.HandleFunc("GET /events", middleware.Chain(
+		middleware.RateLimit,
 		middleware.JWTAuth,
 		middleware.Logger,
 		middleware.Cors,

@@ -24,9 +24,16 @@ md-api/
 go run main.go                           # Run server
 go build -o bin/api                      # Build binary
 go test ./...                            # Run all tests
-go test ./api/handler -v                 # Run tests for specific package
+go test ./...  -cover                    # Run tests with coverage
+go test ./api/middleware -v              # Run tests for specific package
 go test -run TestFunctionName ./...      # Run single test by name
+go test -bench=. ./...                   # Run benchmark tests
 go generate                              # Generate OpenAPI types
+
+# Coverage Reports
+go test ./... -coverprofile=coverage.out
+go tool cover -html=coverage.out         # View coverage in browser
+go tool cover -func=coverage.out         # View coverage by function
 
 # Linting
 go fmt ./...                             # Format code
@@ -238,6 +245,141 @@ const { data, error, response } = await apiClient.GET("/events", {
 - Always run `./generate-types.sh` after modifying `openapi/api.yaml`
 - Backend uses standard library HTTP server (no framework)
 - Frontend uses Next.js App Router with Server Actions
-- No test infrastructure configured yet - consider adding
 - Use `pnpm` for frontend package management
 - Backend uses Go 1.24.5 with modules
+
+## Testing Guidelines
+
+### Backend Testing (Go)
+
+**Test Structure:**
+- Test files end with `_test.go`
+- Place test files next to the code they test
+- Use `testutil` package for shared test utilities
+- Current test coverage: **89.2%** for middleware
+
+**Test Utilities:**
+```go
+import "md-api/testutil"
+
+// JWT Token Generation
+token, _ := testutil.GenerateTestToken(secret, 24*time.Hour)
+expiredToken, _ := testutil.GenerateExpiredToken(secret)
+invalidAudToken, _ := testutil.GenerateInvalidAudienceToken(secret)
+
+// HTTP Testing Helpers
+req := testutil.CreateTestRequest("GET", "/path", &token)
+req := testutil.CreateTestRequestWithIP("GET", "/", "192.168.1.1:8080", &token)
+rr := testutil.CreateTestResponseRecorder()
+
+// Assertions
+testutil.AssertStatusCode(t, rr, http.StatusOK)
+testutil.AssertHeader(t, rr, "Content-Type", "application/json")
+testutil.AssertHeaderExists(t, rr, "X-RateLimit-Limit")
+testutil.AssertBodyContains(t, rr, "expected text")
+
+// Environment Setup
+testutil.SetupTestEnv(t)  // Sets up all required env vars for tests
+```
+
+**Testing Patterns:**
+
+```go
+// Unit Test Pattern
+func TestFunctionName(t *testing.T) {
+    // Arrange
+    input := "test"
+    
+    // Act
+    result := FunctionToTest(input)
+    
+    // Assert
+    assert.Equal(t, "expected", result)
+}
+
+// Table-Driven Tests
+func TestMultipleCases(t *testing.T) {
+    tests := []struct {
+        name     string
+        input    string
+        expected string
+    }{
+        {"case1", "input1", "output1"},
+        {"case2", "input2", "output2"},
+    }
+    
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            result := Function(tt.input)
+            assert.Equal(t, tt.expected, result)
+        })
+    }
+}
+
+// Middleware Testing Pattern
+func TestMiddleware(t *testing.T) {
+    handlerCalled := false
+    handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        handlerCalled = true
+        w.WriteHeader(http.StatusOK)
+    })
+    
+    middleware := YourMiddleware(handler)
+    
+    req := testutil.CreateTestRequest("GET", "/", nil)
+    rr := testutil.CreateTestResponseRecorder()
+    
+    middleware.ServeHTTP(rr, req)
+    
+    assert.True(t, handlerCalled)
+    testutil.AssertStatusCode(t, rr, http.StatusOK)
+}
+```
+
+**Coverage Goals:**
+- Critical security code (auth, rate limiting): **90%+**
+- Business logic: **80%+**
+- Utilities: **70%+**
+- Total project: **80%+**
+
+**Testing Checklist:**
+- ✅ Test happy path (success cases)
+- ✅ Test error cases (validation failures, auth failures)
+- ✅ Test edge cases (empty input, nil values, boundaries)
+- ✅ Test concurrency (if code uses goroutines)
+- ✅ Test middleware chains work correctly
+- ✅ Use table-driven tests for multiple similar cases
+
+**Generate JWT Tokens for Testing:**
+```bash
+# CLI tool for generating test tokens
+cd apps/backend
+go run tools/generate-token.go
+```
+
+**Benchmark Tests:**
+```go
+func BenchmarkFunctionName(b *testing.B) {
+    for i := 0; i < b.N; i++ {
+        FunctionToTest()
+    }
+}
+```
+
+**Mock External Dependencies:**
+- Use interfaces for external dependencies
+- Create mock implementations for testing
+- Use `testutil` for common mocks (JWT tokens, HTTP requests)
+
+### Current Test Suite
+
+**Test Files:**
+- `testutil/auth_test.go` - JWT token generation tests (6 tests)
+- `api/middleware/ratelimiter_test.go` - Rate limiter unit & integration tests (24 tests)
+- `api/middleware/middlewares_test.go` - JWT, Logger, Cors, Chain tests (21 tests)
+
+**Total: 51 tests across all packages**
+
+**Package Coverage:**
+- `api/middleware`: **89.2%** ✅
+- `testutil`: **30.8%** (utilities package)

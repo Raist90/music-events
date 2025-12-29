@@ -56,6 +56,24 @@ func Cors(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
+func RateLimit(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		ip := getClientIP(r)
+		limiter := rateLimiterInstance.getLimiter(ip)
+
+		if !limiter.Allow() {
+			setRateLimitHeaders(w, limiter)
+			w.Header().Set("Retry-After", "1")
+			log.Printf("Rate limit exceeded for IP: %s", ip)
+			http.Error(w, "Too Many Requests", http.StatusTooManyRequests)
+			return
+		}
+
+		setRateLimitHeaders(w, limiter)
+		next.ServeHTTP(w, r)
+	}
+}
+
 type middleware func(http.HandlerFunc) http.HandlerFunc
 
 // Chain applies multiple middleware functions to a final http.HandlerFunc.
