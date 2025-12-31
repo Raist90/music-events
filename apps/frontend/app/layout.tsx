@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Reddit_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
+import Navigation from "@/components/navigation";
 
 const redditMono = Reddit_Mono({
   variable: "--font-reddit-mono",
@@ -21,7 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${redditMono.variable} font-mono antialiased dark`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Navigation />
+
+          {children}
+        </Providers>
       </body>
     </html>
   );

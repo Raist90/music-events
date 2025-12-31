@@ -14,5 +14,8 @@
   },
   "card": {
     "buy_tickets": "Acquista biglietti"
+  },
+  "navigation": {
+    "search_placeholder": "Cerca eventi, artisti o generi"
   }
 }

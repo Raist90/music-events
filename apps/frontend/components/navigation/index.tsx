@@ -2,9 +2,11 @@
 
 import { ListFilter } from "lucide-react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import MobileMenu from "./mobileMenu";
+import MobileMenuSkeleton from "./mobileMenu/skeleton";
 import SearchInput from "./searchInput";
+import SearchInputSkeleton from "./searchInput/skeleton";
 import Filters from "@/components/events/filters";
 import CitiesFilter from "@/components/events/filters/cities";
 import CountryFilter from "@/components/events/filters/country";
@@ -17,7 +19,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { serializeSearchParams } from "@/lib/events/serializeSearchParams";
 
 const links: Record<"href" | "label", string>[] = [
   { href: "/", label: "LOGO" },
@@ -25,16 +26,6 @@ const links: Record<"href" | "label", string>[] = [
 ];
 
 export default function Navigation() {
-  const router = useRouter();
-  const params = useSearchParams();
-
-  function onHandleSearch(query: string) {
-    const url = serializeSearchParams(`/search?${params.toString()}`, {
-      keyword: query || null,
-    });
-    router.push(url, { scroll: false });
-  }
-
   return (
     <>
       <div
@@ -43,7 +34,7 @@ export default function Navigation() {
         }
       >
         {links?.length && (
-          <ul className="flex gap-x-4 ">
+          <ul className="flex gap-x-4">
             {links.map(({ href, label }) => (
               <li key={href} className="hover:text-blue-300">
                 <Link href={href} className="font-bold">
@@ -55,7 +46,9 @@ export default function Navigation() {
         )}
 
         <div className="flex items-center gap-x-4">
-          <SearchInput handleSearch={onHandleSearch} />
+          <Suspense fallback={<SearchInputSkeleton />}>
+            <SearchInput />
+          </Suspense>
 
           <Drawer>
             <DrawerTrigger asChild>
@@ -80,7 +73,9 @@ export default function Navigation() {
         </div>
       </div>
 
-      <MobileMenu />
+      <Suspense fallback={<MobileMenuSkeleton />}>
+        <MobileMenu />
+      </Suspense>
     </>
   );
 }

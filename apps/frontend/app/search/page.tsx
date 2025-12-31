@@ -9,7 +9,6 @@ import EventsList from "@/components/events/list";
 import EventsPagination from "@/components/events/pagination";
 import EventsSearchBoard from "@/components/events/searchBoard";
 import EventsSkeleton from "@/components/events/skeleton";
-import Navigation from "@/components/navigation";
 import { getEvents } from "@/lib/events/getEvents";
 import { getParams } from "@/lib/events/searchParams";
 
@@ -28,10 +27,8 @@ export default async function Search({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Navigation />
-
       <Suspense fallback={<EventsSkeleton />}>
-        <Events className="space-y-12">
+        <Events className="space-y-12 mt-20 lg:mt-8">
           <EventsSearchBoard>
             <EventsList />
           </EventsSearchBoard>

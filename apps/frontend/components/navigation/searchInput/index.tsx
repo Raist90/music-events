@@ -1,25 +1,33 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { useDebounce } from "rooks";
-import { Label } from "../ui/label";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { serializeSearchParams } from "@/lib/events/serializeSearchParams";
+import { translate } from "@/lib/translate";
 
-type Props = Readonly<{
-  handleSearch: (query: string) => void;
-}>;
-
-export default function SearchInput({ handleSearch }: Props) {
+export default function SearchInput() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [query, setQuery] = React.useState(searchParams.get("keyword") || "");
-  const debouncedHandleSearch = useDebounce(handleSearch, 250);
+  const debouncedHandleSearch = useDebounce(handleSearch, 500);
+
+  function handleSearch(query: string) {
+    const url = serializeSearchParams(`/search?${searchParams.toString()}`, {
+      keyword: query || null,
+    });
+    router.push(url, { scroll: false });
+  }
+
+  const { t } = translate("it");
   return (
     <>
       {/* DESKTOP */}
       <Label
         htmlFor="search"
-        className="hidden lg:block border border-input dark:bg-input/30 focus-within:border-white w-72"
+        className="hidden lg:block border border-input dark:bg-input/30 focus-within:border-white w-72 h-9.5"
       >
         <Input
           autoComplete="off"
@@ -28,7 +36,7 @@ export default function SearchInput({ handleSearch }: Props) {
           type="text"
           name="search"
           id="search"
-          placeholder="Cerca eventi, artisti o generi"
+          placeholder={t("navigation.search_placeholder")}
           value={query}
           onChange={(e) => {
             const value = e.currentTarget.value;

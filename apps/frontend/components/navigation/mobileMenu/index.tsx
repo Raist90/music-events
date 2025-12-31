@@ -1,9 +1,9 @@
 import { ListFilter, Menu, Search } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import React from "react";
-import SearchInput from "./searchInput";
+import SearchInput from "../searchInput";
 import Filters from "@/components/events/filters";
 import CitiesFilter from "@/components/events/filters/cities";
 import CountryFilter from "@/components/events/filters/country";
@@ -16,7 +16,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { serializeSearchParams } from "@/lib/events/serializeSearchParams";
 
 const links: Record<"href" | "label", string>[] = [
   { href: "/", label: "Home" },
@@ -30,7 +29,6 @@ enum MenuState {
 }
 
 export default function MobileMenu() {
-  const router = useRouter();
   const params = useSearchParams();
 
   const [state, setState] = React.useState(
@@ -43,13 +41,6 @@ export default function MobileMenu() {
       return;
     }
     setState(type);
-  }
-
-  function onHandleSearch(query: string) {
-    const url = serializeSearchParams(`/search?${params.toString()}`, {
-      keyword: query || null,
-    });
-    router.push(url, { scroll: false });
   }
 
   return (
@@ -158,7 +149,7 @@ export default function MobileMenu() {
                   transition={{ duration: 0.2, ease: "easeInOut" }}
                   className="p-4"
                 >
-                  <SearchInput handleSearch={onHandleSearch} />
+                  <SearchInput />
                 </motion.div>
               )}
             </AnimatePresence>
