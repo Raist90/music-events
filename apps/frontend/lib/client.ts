@@ -2,5 +2,5 @@ import createClient from "openapi-fetch";
 import type { paths } from "@/schema";
 
 export const apiClient = createClient<paths>({
-  baseUrl: "http://backend:8080",
+  baseUrl: process.env.NEXT_PUBLIC_API_URL,
 });

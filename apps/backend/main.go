@@ -9,8 +9,8 @@ import (
 )
 
 func mustLoadEnvs() error {
-	if _, err := os.Stat(".env"); err == nil {
-		return godotenv.Load(".env")
+	if _, err := os.Stat(".env.development.local"); err == nil {
+		return godotenv.Load(".env.development.local")
 	}
 	return nil
 }

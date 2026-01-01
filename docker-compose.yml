@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:8080"
     env_file:
-      - ./apps/backend/.env
+      - ./apps/backend/.env.development.docker
     restart: unless-stopped
     networks:
       - app-network
@@ -19,9 +19,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - ./apps/frontend/.env
-    environment:
-      - NEXT_PUBLIC_API_URL=http://backend:8080
+      - ./apps/frontend/.env.development.docker
     restart: always
     depends_on:
       - backend
