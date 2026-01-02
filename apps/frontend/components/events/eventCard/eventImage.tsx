@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { tv } from "tailwind-variants";
 import { EventVariant, useEvent } from "../eventContext";
 
@@ -26,18 +27,22 @@ const eventImage = tv({
 
 export default function EventImage() {
   const { event, variant } = useEvent();
+  const image = event.images.find(
+    ({ ratio, width }) => ratio === "16_9" && width > 1000,
+  );
+
+  if (!image) {
+    return null;
+  }
 
   return (
     <div className={eventImage({ variant }).wrapper()}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         className={eventImage({ variant }).img()}
-        src={
-          event.images.find(
-            ({ ratio, width }) => ratio === "16_9" && width > 1000,
-          )?.url
-        }
+        src={image.url}
         alt={event.name}
+        width={image.width}
+        height={image.height}
       />
     </div>
   );

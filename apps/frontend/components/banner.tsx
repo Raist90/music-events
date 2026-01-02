@@ -1,4 +1,4 @@
-import { StaticImageData } from "next/image";
+import Image, { StaticImageData } from "next/image";
 import Fallback from "../public/banner.jpg";
 
 type Props = Readonly<{
@@ -12,11 +12,10 @@ export default function Banner({ className, media: _media, title }: Props) {
 
   return (
     <div className={className}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src={media.src}
         alt="Home banner"
-        className="object-cover size-full shrink-0 h-[500px] md:h-[600px]"
+        className="object-cover size-full shrink-0 h-125 md:h-150"
       />
     </div>
   );
