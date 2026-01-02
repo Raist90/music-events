@@ -2,9 +2,9 @@ import it from "./translations/it.json";
 
 const locales = { it };
 
-export type Locale = keyof typeof locales;
+type Locale = keyof typeof locales;
 
-export function translate<T extends keyof typeof locales>(locale: T) {
+export function translate<T extends Locale>(locale: T) {
   const translations = locales[locale];
 
   if (!translations) {

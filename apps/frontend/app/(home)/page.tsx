@@ -28,7 +28,7 @@ export default async function Home() {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <section className="m-4 md:m-8">
-        <Banner title="" />
+        <Banner />
       </section>
 
       <div className="space-y-12 my-12">

@@ -1,3 +1,4 @@
+import { plugin as tanstackQuery } from "@tanstack/eslint-plugin-query";
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
@@ -11,17 +12,9 @@ const eslintConfig = defineConfig([
   prettier,
   {
     files: ["**/*.{js,mjs,cjs,ts,tsx}"],
-    plugins: { importX },
+    plugins: { importX, "@tanstack/query": tanstackQuery },
     rules: {
-      "prettier/prettier": [
-        "error",
-        {
-          trailingComma: "all",
-          tabWidth: 2,
-          semi: true,
-          singleQuote: false,
-        },
-      ],
+      ...tanstackQuery.configs.recommended.rules,
       "importX/order": [
         "warn",
         { alphabetize: { order: "asc", caseInsensitive: false } },

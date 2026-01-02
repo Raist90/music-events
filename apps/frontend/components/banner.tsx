@@ -4,10 +4,9 @@ import Fallback from "../public/banner.jpg";
 type Props = Readonly<{
   className?: string;
   media?: StaticImageData;
-  title: string;
 }>;
 
-export default function Banner({ className, media: _media, title }: Props) {
+export default function Banner({ className, media: _media }: Props) {
   const media = _media || Fallback;
 
   return (
