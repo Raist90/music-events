@@ -1,7 +1,5 @@
 {
   "ignoreDependencies": [
     "openapi-typescript"
-  ],
-  "next": true,
-  "prettier": true
+  ]
 }

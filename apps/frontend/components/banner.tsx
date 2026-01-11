@@ -15,6 +15,9 @@ export default function Banner({ className, media: _media }: Props) {
         src={media.src}
         alt="Home banner"
         className="object-cover size-full shrink-0 h-125 md:h-150"
+        width={1920}
+        height={600}
+        priority
       />
     </div>
   );

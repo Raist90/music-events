@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
         hostname: "*.ticketm.net",
         pathname: "/dam/**",
       },
+      {
+        protocol: "https",
+        hostname: "images.universe.com",
+        pathname: "/**",
+      },
     ],
   },
 };

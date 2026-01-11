@@ -121,3 +121,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+@utility mask-fade-x-* {
+  --mask-fade-offset: --spacing(--value(--spacing-*, integer));
+  mask-image: linear-gradient(90deg,
+      transparent,
+      #000 var(--mask-fade-offset),
+      #000 calc(100% - var(--mask-fade-offset)),
+      transparent);
+}

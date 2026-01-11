@@ -16,6 +16,22 @@
     "buy_tickets": "Acquista biglietti"
   },
   "navigation": {
+    "filters": {
+      "dates": {
+        "next_week": "Prossima settimana",
+        "next_month": "Prossimo mese",
+        "next_three_months": "Prossimi 3 mesi",
+        "next_six_months": "Prossimi 6 mesi",
+        "next_year": "Prossimo anno",
+        "all_dates": "Tutte le date"
+      },
+      "labels": {
+        "cities": "Città",
+        "country": "Paese",
+        "dates": "Date",
+        "reset": "Svuota filtri"
+      }
+    },
     "search_placeholder": "Cerca eventi, artisti o generi"
   }
 }
