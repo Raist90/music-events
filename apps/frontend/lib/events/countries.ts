@@ -6,3 +6,12 @@ export const countriesMap: { [key: string]: string } = {
   IT: "Italia",
   US: "Stati Uniti",
 };
+
+export enum CountryEnum {
+  DE = "DE",
+  ES = "ES",
+  FR = "FR",
+  GB = "GB",
+  IT = "IT",
+  US = "US",
+}

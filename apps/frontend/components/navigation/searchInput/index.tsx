@@ -15,7 +15,10 @@ export default function SearchInput() {
   const debouncedHandleSearch = useDebounce(handleSearch, 500);
 
   function handleSearch(query: string) {
-    const url = serializeSearchParams(`/search?${searchParams.toString()}`, {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", "0");
+
+    const url = serializeSearchParams(`/search?${params.toString()}`, {
       keyword: query || null,
     });
     router.push(url, { scroll: false });

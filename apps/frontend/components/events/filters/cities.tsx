@@ -1,8 +1,16 @@
 "use client";
 
+import { ChevronsUpDownIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuGroup,
+  DropdownMenuRadioGroup,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { translate } from "@/lib/translate";
 
 const deCities = ["Berlin", "Hamburg", "München"];
 
@@ -58,46 +66,80 @@ const citiesMap: Record<string, string[]> = {
   US: usCities,
 };
 
-export default function CitiesFilter() {
+export default function FilterCities() {
   const searchParams = useSearchParams();
   const countryCode = searchParams.get("countryCode") ?? "IT";
   const cities = searchParams.getAll("city");
-  const attractionId = searchParams.get("attractionId");
 
   const router = useRouter();
+
   function onChecked(city: string, checked: boolean) {
     const params = new URLSearchParams(searchParams);
 
-    if (attractionId) {
-      params.delete("attractionId");
-    }
-
-    if (checked) params.append("city", city);
-    else {
+    if (checked) {
+      params.append("city", city);
+    } else {
       params.delete("city");
       cities.filter((c) => c !== city).forEach((c) => params.append("city", c));
     }
 
     params.set("page", "0");
+    params.sort();
     router.push(`/search?${params.toString()}`, { scroll: false });
   }
 
+  const { t } = translate("it");
+
   return (
-    <div className="flex flex-wrap gap-2">
-      {countryCode &&
-        citiesMap[countryCode]?.length &&
-        citiesMap[countryCode].map((city) => (
-          <div className="flex gap-x-2 items-center" key={city}>
-            <Checkbox
-              checked={cities.includes(city.toLowerCase())}
-              onCheckedChange={(checked) =>
-                onChecked(city.toLowerCase(), checked as boolean)
-              }
-              id={city}
-            />
-            <Label htmlFor={city}>{city}</Label>
-          </div>
-        ))}
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={
+          <button className="w-fit flex gap-x-2 items-center py-1 px-3 border bg-input/50 font-semibold rounded text-sm">
+            <span className="capitalize">
+              {searchParams.getAll("city").length > 1
+                ? `${searchParams.get("city")} ${t("navigation.filters.cities.and_more", { count: String(searchParams.getAll("city").length - 1) })}`
+                : searchParams.get("city") ||
+                  t("navigation.filters.cities.select_cities")}
+            </span>
+
+            <ChevronsUpDownIcon size={14} />
+          </button>
+        }
+      ></DropdownMenuTrigger>
+      <DropdownMenuContent align="end" side="bottom" className="rounded">
+        <DropdownMenuGroup>
+          <DropdownMenuCheckboxItem
+            checked={cities.length === 0}
+            onCheckedChange={() => {
+              const params = new URLSearchParams(searchParams);
+              params.delete("city");
+              params.set("page", "0");
+              params.sort();
+              router.push(`/search?${params.toString()}`, {
+                scroll: false,
+              });
+            }}
+            onSelect={(e) => e.preventDefault()}
+          >
+            {t("navigation.filters.cities.all_cities")}
+          </DropdownMenuCheckboxItem>
+
+          <DropdownMenuRadioGroup>
+            {citiesMap[countryCode].map((city) => (
+              <DropdownMenuCheckboxItem
+                checked={cities.includes(city.toLowerCase())}
+                onCheckedChange={(checked) => {
+                  onChecked(city.toLowerCase(), checked as boolean);
+                }}
+                onSelect={(e) => e.preventDefault()}
+                key={city}
+              >
+                {city}
+              </DropdownMenuCheckboxItem>
+            ))}
+          </DropdownMenuRadioGroup>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

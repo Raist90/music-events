@@ -2,13 +2,17 @@
   "home": {
     "banner": "Trova il tuo prossimo evento",
     "board": {
+      "cta": "Visualizza tutti gli eventi",
       "description": "Scopri gli eventi in programma nei prossimi giorni",
       "title": "Prossimi eventi"
     }
   },
   "search": {
     "board": {
-      "description": "{count} eventi disponibili per: {query}",
+      "description": "Eventi disponibili {query}",
+      "for": "per",
+      "in": "a",
+      "no_results": "Non sono stati trovati eventi per la tua ricerca",
       "title": "Risultati della ricerca"
     }
   },
@@ -17,6 +21,11 @@
   },
   "navigation": {
     "filters": {
+      "cities": {
+        "all_cities": "Tutte",
+        "and_more": "(+{count})",
+        "select_cities": "Seleziona città"
+      },
       "dates": {
         "next_week": "Prossima settimana",
         "next_month": "Prossimo mese",

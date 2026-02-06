@@ -1,38 +1,61 @@
 "use client";
 
+import { ChevronsUpDownIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { countriesMap } from "@/lib/events/countries";
-import { cn } from "@/lib/utils";
-
-type Props = Readonly<{
-  initialValue?: string;
-}>;
 
 const countries: string[] = ["DE", "ES", "FR", "GB", "IT", "US"];
+const initialCountry = "IT";
 
-export default function CountryFilter({ initialValue = "IT" }: Props) {
-  const params = useSearchParams();
-  const selectedCountryCode = params.get("countryCode");
-
+export default function FilterCountry() {
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const selectedCountry = searchParams.get("countryCode") || initialCountry;
+
   return (
-    <div className="flex gap-2 text-sm overflow-auto mask-fade-x-4 px-4 -mx-4 [scrollbar-width:none]">
-      {countries
-        .sort((a, b) => countriesMap[a].localeCompare(countriesMap[b]))
-        .map((country) => (
-          <button
-            className={cn(
-              country === (selectedCountryCode || initialValue) &&
-                "text-blue-300",
-              "bg-input/50 rounded border font-semibold border-input py-1 px-2 flex items-center shrink-0",
-            )}
-            key={country}
-            disabled={country === selectedCountryCode}
-            onClick={() => router.push(`/search?countryCode=${country}&page=0`)}
-          >
-            {countriesMap[country]}
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={
+          <button className="w-fit flex gap-x-2 items-center py-1 px-3 border bg-input/50 font-semibold rounded text-sm">
+            {countriesMap[selectedCountry]}
+            <ChevronsUpDownIcon size={14} />
           </button>
-        ))}
-    </div>
+        }
+      ></DropdownMenuTrigger>
+      <DropdownMenuContent align="end" side="bottom" className="rounded w-60">
+        <DropdownMenuGroup>
+          <DropdownMenuRadioGroup value={selectedCountry}>
+            {countries
+              .sort((a, b) => countriesMap[a].localeCompare(countriesMap[b]))
+              .map((country) => (
+                <DropdownMenuRadioItem
+                  className={
+                    country === selectedCountry
+                      ? "text-blue-300 data-disabled:opacity-100"
+                      : ""
+                  }
+                  disabled={country === selectedCountry}
+                  onClick={() =>
+                    router.push(`/search?countryCode=${country}&page=0`)
+                  }
+                  value={country}
+                  key={country}
+                >
+                  {countriesMap[country]}
+                </DropdownMenuRadioItem>
+              ))}
+          </DropdownMenuRadioGroup>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

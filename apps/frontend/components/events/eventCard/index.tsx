@@ -42,7 +42,7 @@ export default function EventCard({ className }: Props) {
         <a
           href={event.url}
           target="_blank"
-          className="w-fit py-1 px-3 mt-3 border bg-input/50 font-semibold rounded text-sm cursor-pointer"
+          className="w-fit py-1 px-3 mt-3 border bg-input/50 font-semibold rounded text-sm"
         >
           {t("card.buy_tickets")}
         </a>

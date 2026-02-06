@@ -3,9 +3,11 @@ import {
   HydrationBoundary,
   dehydrate,
 } from "@tanstack/react-query";
+import Link from "next/link";
 import { Suspense } from "react";
 import Banner from "@/components/banner";
 import Board from "@/components/board";
+import BoardHeader from "@/components/board/header";
 import Events from "@/components/events";
 import EventsList from "@/components/events/list";
 import EventsSkeleton from "@/components/events/skeleton";
@@ -32,14 +34,19 @@ export default async function Home() {
       </section>
 
       <div className="space-y-12 my-12">
-        <Board
-          description={t("home.board.description")}
-          title={t("home.board.title")}
-          variant={"featured"}
-        >
+        <Board variant={"featured"}>
+          <BoardHeader title={t("home.board.title")}>
+            <Link
+              href="/search"
+              className="hidden lg:block w-fit font-semibold hover:text-blue-300"
+            >
+              {t("home.board.cta")}
+            </Link>
+          </BoardHeader>
+
           <Suspense fallback={<EventsSkeleton />}>
             <Events params={params}>
-              <EventsList className="md:grid-cols-4 lg:grid-cols-5" />
+              <EventsList />
             </Events>
           </Suspense>
         </Board>

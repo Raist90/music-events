@@ -2,9 +2,17 @@
 
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { ChevronsUpDownIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { translate } from "@/lib/translate";
-import { cn } from "@/lib/utils";
 
 const { t } = translate("it");
 const fastFilterOptions = [
@@ -40,16 +48,19 @@ const fastFilterOptions = [
   },
 ];
 
-export default function DatesFilter() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+const initialSelection = fastFilterOptions[0];
+
+export default function FilterDates() {
   dayjs.extend(utc);
+
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
 
   // TODO: Find a way to reuse this
   const format = (dateTime: Date) =>
     dayjs(dateTime).format("YYYY-MM-DDTHH:mm:ss[Z]");
 
-  const fallbackOption = fastFilterOptions[0];
   const selectedOption =
     fastFilterOptions.find((option) => {
       const start = searchParams.get("startDateTime");
@@ -63,28 +74,48 @@ export default function DatesFilter() {
         dayjs(option.dates[0]).isSame(start, "day") &&
         dayjs(option.dates[1]).isSame(end, "day")
       );
-    }) || fallbackOption;
+    }) || initialSelection;
 
   return (
-    <div className="flex gap-2 text-sm overflow-auto relative px-4 -mx-4 mask-fade-x-4 [scrollbar-width:none]">
-      {fastFilterOptions.map((option) => (
-        <button
-          className={cn(
-            option.dates === selectedOption.dates && "text-blue-300",
-            "bg-input/50 font-semibold rounded border border-input py-1 px-2 flex items-center shrink-0",
-          )}
-          key={option.value}
-          onClick={() => {
-            const params = new URLSearchParams(searchParams);
-            params.set("page", "0");
-            params.set("startDateTime", format(option.dates[0]));
-            params.set("endDateTime", format(option.dates[1]));
-            router.push(`/search?${params.toString()}`, { scroll: false });
-          }}
-        >
-          {option.label}
-        </button>
-      ))}
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={
+          <button className="w-fit flex gap-x-2 items-center py-1 px-3 border bg-input/50 font-semibold rounded text-sm">
+            {selectedOption.label}
+            <ChevronsUpDownIcon size={14} />
+          </button>
+        }
+      ></DropdownMenuTrigger>
+      <DropdownMenuContent align="end" side="bottom" className="rounded w-60">
+        <DropdownMenuGroup>
+          <DropdownMenuRadioGroup value={selectedOption.value}>
+            {fastFilterOptions.map((option) => (
+              <DropdownMenuRadioItem
+                className={
+                  option === selectedOption
+                    ? "text-blue-300 data-disabled:opacity-100"
+                    : ""
+                }
+                disabled={option === selectedOption}
+                onClick={() => {
+                  const params = new URLSearchParams(searchParams);
+                  params.set("page", "0");
+                  params.set("startDateTime", format(option.dates[0]));
+                  params.set("endDateTime", format(option.dates[1]));
+                  params.sort();
+                  router.push(`/search?${params.toString()}`, {
+                    scroll: false,
+                  });
+                }}
+                value={option.value}
+                key={option.value}
+              >
+                {option.label}
+              </DropdownMenuRadioItem>
+            ))}
+          </DropdownMenuRadioGroup>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

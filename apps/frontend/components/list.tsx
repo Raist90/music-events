@@ -7,7 +7,7 @@ type Props<T> = Readonly<{
 }>;
 
 export default function List<T extends { id?: string }>({
-  className = "md:grid-cols-3 lg:grid-cols-5",
+  className = "md:grid-cols-3 lg:grid-cols-4",
   items,
   renderItem,
 }: Props<T>) {
