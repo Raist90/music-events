@@ -1,4 +1,15 @@
 services:
+  db:
+    container_name: db
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    env_file:
+      - ./apps/backend/.env.development.docker
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
   backend:
     container_name: backend
     build:
@@ -9,6 +20,8 @@ services:
     env_file:
       - ./apps/backend/.env.development.docker
     restart: unless-stopped
+    depends_on:
+      - db
     networks:
       - app-network
   frontend:

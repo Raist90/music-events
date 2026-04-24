@@ -4,13 +4,13 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import { Suspense } from "react";
-import Events from "@/components/events";
-import EventsList from "@/components/events/list";
-import EventsPagination from "@/components/events/pagination";
-import EventsSearchBoard from "@/components/events/searchBoard";
-import EventsSkeleton from "@/components/events/skeleton";
-import { getEvents } from "@/lib/events/getEvents";
-import { getParams } from "@/lib/events/searchParams";
+import Events from "@/features/events/components/index";
+import EventsList from "@/features/events/components/list";
+import EventsPagination from "@/features/events/components/pagination";
+import EventsSearchBoard from "@/features/events/components/searchBoard";
+import EventsSkeleton from "@/features/events/components/skeleton";
+import { getEvents } from "@/features/events/getEvents";
+import { getParams } from "@/features/events/searchParams";
 
 export default async function Search({
   searchParams,

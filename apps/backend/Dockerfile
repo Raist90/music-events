@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Build stage
-FROM golang:1.24.5 AS builder
+FROM golang:1.25 AS builder
 WORKDIR /app
 
 # Copy dependency files and download dependencies

@@ -4,38 +4,27 @@ import (
 	"log"
 	"md-api/api/handler"
 	"md-api/api/middleware"
+	"md-api/auth"
 	"md-api/env"
 	"net/http"
 	"time"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 const MB = 1 << 20
 
-func Listen() {
-	s := create()
+var chain = middleware.Chain(middleware.Cors, middleware.RateLimit, middleware.Logger)
+
+func Listen(dbpool *pgxpool.Pool) {
+	s := create(dbpool)
 	log.Fatal(s.ListenAndServe())
 }
 
-func create() *http.Server {
+func create(dbpool *pgxpool.Pool) *http.Server {
 	mux := http.NewServeMux()
-
-	// Initialize rate limiter and start cleanup goroutine
 	middleware.StartRateLimiterCleanup()
-
-	mux.HandleFunc("GET /", middleware.Chain(
-		middleware.RateLimit,
-		middleware.JWTAuth,
-		middleware.Logger,
-		middleware.Cors,
-	)(handler.Root))
-
-	mux.HandleFunc("GET /events", middleware.Chain(
-		middleware.RateLimit,
-		middleware.JWTAuth,
-		middleware.Logger,
-		middleware.Cors,
-	)(handler.GetEvents))
-
+	registerRoutes(mux, dbpool)
 	return &http.Server{
 		Addr:           env.Port.Get(),
 		Handler:        mux,
@@ -43,4 +32,16 @@ func create() *http.Server {
 		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 2 * MB,
 	}
+}
+
+func registerRoutes(mux *http.ServeMux, dbpool *pgxpool.Pool) {
+	mux.HandleFunc("OPTIONS /", chain(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNoContent)
+	}))
+	mux.HandleFunc("GET /", chain(handler.Root))
+	mux.HandleFunc("GET /events", chain(handler.GetEvents))
+	mux.HandleFunc("POST /auth/login", chain(auth.Login(dbpool)))
+	mux.HandleFunc("DELETE /auth/logout", chain(auth.Logout(dbpool)))
+	mux.HandleFunc("POST /auth/register", chain(auth.Register(dbpool)))
+	mux.HandleFunc("POST /auth/refresh", chain(auth.Refresh(dbpool)))
 }

@@ -10,11 +10,13 @@ import (
 
 // CreateTestRequest creates an HTTP request for testing.
 // If token is provided, adds Authorization header.
+// Sets default Origin header for CORS middleware tests.
 func CreateTestRequest(method, path string, token *string) *http.Request {
 	req := httptest.NewRequest(method, path, nil)
 	if token != nil {
 		req.Header.Set("Authorization", "Bearer "+*token)
 	}
+	req.Header.Set("Origin", "http://localhost:3000")
 	return req
 }
 

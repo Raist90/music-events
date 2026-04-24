@@ -51,7 +51,35 @@ func Logger(next http.HandlerFunc) http.HandlerFunc {
 
 func Cors(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		origin := r.Header.Get("Origin")
+		// If no Origin header, it's likely a non-browser client - allow by default
+		if origin == "" {
+			next.ServeHTTP(w, r)
+			return
+		}
+
+		validOrigin := ""
+		allowedOrigins := []string{"http://localhost:3000"}
+		for _, ao := range allowedOrigins {
+			if origin == ao {
+				validOrigin = ao
+				break
+			}
+		}
+		if validOrigin == "" {
+			log.Printf("CORS: Origin %q not allowed (allowed: %v)", origin, allowedOrigins)
+			http.Error(w, "Origin not allowed", http.StatusForbidden)
+			return
+		}
+
+		w.Header().Set("Vary", "Origin")
+		w.Header().Set("Access-Control-Allow-Origin", validOrigin)
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers",
+			"Content-Type, Authorization, Accept, Accept-Language, Content-Language")
+		w.Header().Set("Access-Control-Expose-Headers", "Content-Length, Content-Type")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+
 		next.ServeHTTP(w, r)
 	}
 }

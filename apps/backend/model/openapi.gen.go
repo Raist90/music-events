@@ -124,6 +124,20 @@ type Venue struct {
 	Url      string `json:"url"`
 }
 
+// LoginUserJSONBody defines parameters for LoginUser.
+type LoginUserJSONBody struct {
+	Email    string  `json:"email"`
+	Password string  `json:"password"`
+	Username *string `json:"username,omitempty"`
+}
+
+// RegisterUserJSONBody defines parameters for RegisterUser.
+type RegisterUserJSONBody struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Username string `json:"username"`
+}
+
 // ListEventsParams defines parameters for ListEvents.
 type ListEventsParams struct {
 	// AttractionId Filter events by attraction ID
@@ -162,3 +176,9 @@ type ListEventsParams struct {
 	// Keyword Keyword to search in events
 	Keyword *string `form:"keyword,omitempty" json:"keyword,omitempty"`
 }
+
+// LoginUserJSONRequestBody defines body for LoginUser for application/json ContentType.
+type LoginUserJSONRequestBody LoginUserJSONBody
+
+// RegisterUserJSONRequestBody defines body for RegisterUser for application/json ContentType.
+type RegisterUserJSONRequestBody RegisterUserJSONBody

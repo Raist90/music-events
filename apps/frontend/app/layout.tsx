@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Reddit_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
-import Navigation from "@/components/navigation";
+import Navigation from "@/components/shared/navigation";
 
 const redditMono = Reddit_Mono({
   variable: "--font-reddit-mono",

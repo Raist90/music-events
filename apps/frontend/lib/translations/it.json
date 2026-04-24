@@ -1,4 +1,7 @@
 {
+  "card": {
+    "buy_tickets": "Acquista biglietti"
+  },
   "home": {
     "banner": "Trova il tuo prossimo evento",
     "board": {
@@ -7,19 +10,30 @@
       "title": "Prossimi eventi"
     }
   },
-  "search": {
-    "board": {
-      "description": "Eventi disponibili {query}",
-      "for": "per",
-      "in": "a",
-      "no_results": "Non sono stati trovati eventi per la tua ricerca",
-      "title": "Risultati della ricerca"
+  "loginForm": {
+    "no_account": "Non hai ancora un account?",
+    "remember_me": "Rimani connesso",
+    "errors": {
+      "invalid_email": "Indirizzo email non valido",
+      "invalid_password": "Password non valida"
     }
   },
-  "card": {
-    "buy_tickets": "Acquista biglietti"
+  "registerForm": {
+    "have_account": "Hai già un account?",
+    "login": "Accedi",
+    "errors": {
+      "invalid_email": "Indirizzo email non valido",
+      "invalid_username": "Nome utente non valido",
+      "invalid_password": "Password non valida"
+    }
   },
   "navigation": {
+    "auth": {
+      "login": "Accedi",
+      "logout": "Esci",
+      "profile": "Profilo",
+      "register": "Iscriviti"
+    },
     "filters": {
       "cities": {
         "all_cities": "Tutte",
@@ -42,5 +56,14 @@
       }
     },
     "search_placeholder": "Cerca eventi, artisti o generi"
+  },
+  "search": {
+    "board": {
+      "description": "Eventi disponibili {query}",
+      "for": "per",
+      "in": "a",
+      "no_results": "Non sono stati trovati eventi per la tua ricerca",
+      "title": "Risultati della ricerca"
+    }
   }
 }

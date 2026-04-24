@@ -3,13 +3,16 @@ info:
   title: Events API
   version: 1.0.0
   description: API for retrieving and managing events.
+
 servers:
   - url: http://localhost:8080
     description: Local development server
+
 paths:
   /events:
     get:
-      summary: List all events
+      summary: List all Ticketmaster events
+      description: Retrieve a list of events from Ticketmaster with optional filtering and pagination.
       operationId: listEvents
       parameters:
         - in: query
@@ -93,6 +96,105 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Ticketmaster"
+
+  /auth/register:
+    post:
+      summary: Register a new user
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                email:
+                  type: string
+              required:
+                - username
+                - password
+                - email
+      responses:
+        "201":
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+        "400":
+          description: Invalid input data
+
+  /auth/login:
+    post:
+      summary: Authenticate a user and return a token
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        "200":
+          description: Authentication successful, returns a token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+        "401":
+          description: Authentication failed
+
+  /auth/logout:
+    delete:
+      summary: Logout a user and invalidate the token
+      operationId: logoutUser
+      responses:
+        "200":
+          description: Logout successful
+        "400":
+          description: Invalid request
+        "401":
+          description: Invalid or missing token
+        "500":
+          description: Server error during logout
+
+  /auth/refresh:
+    post:
+      summary: Refresh an authentication token
+      operationId: refreshToken
+      responses:
+        "200":
+          description: Token refreshed successfully, returns a new token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+        "400":
+          description: Invalid refresh token
+
 components:
   schemas:
     Ticketmaster:

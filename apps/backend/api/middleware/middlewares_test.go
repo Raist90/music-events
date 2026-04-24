@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"log"
 	"net/http"
+	"net/http/httptest"
 	"os"
 	"testing"
 	"time"
@@ -288,6 +289,23 @@ func TestCors_PreservesOtherHeaders(t *testing.T) {
 
 	testutil.AssertHeader(t, rr, "Access-Control-Allow-Origin", "http://localhost:3000")
 	testutil.AssertHeader(t, rr, "Content-Type", "application/json")
+}
+
+func TestCors_RejectsInvalidOrigin(t *testing.T) {
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
+
+	middleware := Cors(handler)
+
+	req := httptest.NewRequest("GET", "/", nil)
+	req.Header.Set("Origin", "http://evil.com")
+	rr := testutil.CreateTestResponseRecorder()
+
+	middleware.ServeHTTP(rr, req)
+
+	testutil.AssertStatusCode(t, rr, http.StatusForbidden)
+	assert.Equal(t, "", rr.Header().Get("Access-Control-Allow-Origin"), "Should not set ACAO header")
 }
 
 // Middleware Chain Tests

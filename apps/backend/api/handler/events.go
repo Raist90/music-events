@@ -2,7 +2,7 @@ package handler
 
 import (
 	"fmt"
-	"md-api/service"
+	ticketmasterService "md-api/ticketmaster/service"
 	"net/http"
 	"net/url"
 )
@@ -19,8 +19,8 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	s := service.NewTicketmasterService()
-	events, err := s.GetEvents(service.ServiceRequest{
+	s := ticketmasterService.NewTicketmasterService()
+	events, err := s.GetEvents(ticketmasterService.TicketmasterRequest{
 		Endpoint: "/events.json",
 		Query:    q,
 	})
@@ -29,8 +29,8 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Content-Length", fmt.Sprintf("%d", len(events)))
+	w.WriteHeader(http.StatusOK)
 	w.Write(events)
 }

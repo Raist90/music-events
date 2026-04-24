@@ -5,13 +5,13 @@ import {
 } from "@tanstack/react-query";
 import Link from "next/link";
 import { Suspense } from "react";
-import Banner from "@/components/banner";
-import Board from "@/components/board";
-import BoardHeader from "@/components/board/header";
-import Events from "@/components/events";
-import EventsList from "@/components/events/list";
-import EventsSkeleton from "@/components/events/skeleton";
-import { getEvents } from "@/lib/events/getEvents";
+import Banner from "@/components/shared/banner";
+import Board from "@/components/shared/board";
+import BoardHeader from "@/components/shared/board/header";
+import Events from "@/features/events/components/index";
+import EventsList from "@/features/events/components/list";
+import EventsSkeleton from "@/features/events/components/skeleton";
+import { getEvents } from "@/features/events/getEvents";
 import { translate } from "@/lib/translate";
 
 export default async function Home() {
