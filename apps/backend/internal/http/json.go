@@ -13,11 +13,16 @@ func Json(w http.ResponseWriter) {
 	})
 }
 
-func JsonWithData(w http.ResponseWriter, data any) {
+// JsonWithData sends a JSON response with a "status": "success" field and any additional data provided in the input map.
+func JsonWithData(w http.ResponseWriter, data map[string]any) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]any{
+
+	resp := map[string]any{
 		"status": "success",
-		"data":   data,
-	})
+	}
+	for k, v := range data {
+		resp[k] = v
+	}
+	json.NewEncoder(w).Encode(resp)
 }
