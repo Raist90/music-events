@@ -74,7 +74,7 @@ func (r *Repository) ExistsByEmail(ctx context.Context, email string) (bool, err
 
 func (r *Repository) GetUserByRefreshToken(ctx context.Context, refreshToken string) (*User, error) {
 	var user User
-	err := r.db.QueryRow(ctx, `SELECT u.id, u.email, u.username, u.password_hash FROM users u JOIN sessions s ON u.id = s.user_id WHERE s.refresh_token = $1`, refreshToken).Scan(&user.ID, &user.Email, &user.Username, &user.PasswordHash)
+	err := r.db.QueryRow(ctx, `SELECT u.id, u.email, u.username, u.password_hash FROM users u JOIN sessions s ON u.id = s.user_id WHERE s.token = $1`, refreshToken).Scan(&user.ID, &user.Email, &user.Username, &user.PasswordHash)
 	if err != nil {
 		return nil, err
 	}
