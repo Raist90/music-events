@@ -8,7 +8,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func GetProfile(dbpool *pgxpool.Pool) http.HandlerFunc {
+func GetMe(dbpool *pgxpool.Pool) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
@@ -26,6 +26,8 @@ func GetProfile(dbpool *pgxpool.Pool) http.HandlerFunc {
 			http.Error(w, "failed to get user profile", http.StatusNotFound)
 			return
 		}
-		httpx.JsonWithData(w, user)
+		httpx.JsonWithData(w, map[string]any{
+			"user": user,
+		})
 	}
 }

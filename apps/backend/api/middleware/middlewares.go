@@ -31,12 +31,13 @@ func JWTAuth(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		if claims, ok := token.Claims.(jwt.MapClaims); ok {
-			if claims["aud"] != "its-my-live-audience" {
-				http.Error(w, "Invalid token audience", http.StatusUnauthorized)
-				return
-			}
-		}
+		// TODO: add this claim and uncomment this check
+		// if claims, ok := token.Claims.(jwt.MapClaims); ok {
+		// 	if claims["aud"] != "its-my-live-audience" {
+		// 		http.Error(w, "Invalid token audience", http.StatusUnauthorized)
+		// 		return
+		// 	}
+		// }
 
 		next.ServeHTTP(w, r)
 	}

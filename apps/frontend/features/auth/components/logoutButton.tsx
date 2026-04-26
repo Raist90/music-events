@@ -26,10 +26,7 @@ export function LogoutButton() {
   };
 
   return (
-    <button
-      onClick={onLogout}
-      className="lg:font-bold font-semibold uppercase lg:capitalize cursor-pointer hover:text-blue-300"
-    >
+    <button onClick={onLogout} className="cursor-pointer hover:text-blue-300">
       {t("navigation.auth.logout")}
     </button>
   );

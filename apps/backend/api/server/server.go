@@ -6,6 +6,7 @@ import (
 	"md-api/api/middleware"
 	"md-api/auth"
 	"md-api/env"
+	"md-api/user"
 	"net/http"
 	"time"
 
@@ -14,7 +15,10 @@ import (
 
 const MB = 1 << 20
 
-var chain = middleware.Chain(middleware.Cors, middleware.RateLimit, middleware.Logger)
+var (
+	chain     = middleware.Chain(middleware.Cors, middleware.RateLimit, middleware.Logger)
+	authChain = middleware.Chain(middleware.JWTAuth, middleware.Cors, middleware.RateLimit, middleware.Logger)
+)
 
 func Listen(dbpool *pgxpool.Pool) {
 	s := create(dbpool)
@@ -44,4 +48,5 @@ func registerRoutes(mux *http.ServeMux, dbpool *pgxpool.Pool) {
 	mux.HandleFunc("DELETE /auth/logout", chain(auth.Logout(dbpool)))
 	mux.HandleFunc("POST /auth/register", chain(auth.Register(dbpool)))
 	mux.HandleFunc("POST /auth/refresh", chain(auth.Refresh(dbpool)))
+	mux.HandleFunc("GET /user/me", authChain(user.GetMe(dbpool)))
 }

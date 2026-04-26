@@ -92,6 +92,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/user/me": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get the authenticated user's profile */
+    get: operations["getUserProfile"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -192,6 +209,11 @@ export interface components {
       width: number;
       ratio: string;
       url: string;
+    };
+    UserProfile: {
+      id: string;
+      email: string;
+      username: string;
     };
   };
   responses: never;
@@ -382,6 +404,36 @@ export interface operations {
       };
       /** @description Invalid refresh token */
       400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  getUserProfile: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description User profile retrieved successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            status?: string;
+            user?: components["schemas"]["UserProfile"];
+          };
+        };
+      };
+      /** @description Invalid or missing token */
+      401: {
         headers: {
           [name: string]: unknown;
         };

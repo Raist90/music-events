@@ -95,6 +95,13 @@ type Ticketmaster struct {
 	} `json:"page"`
 }
 
+// UserProfile defines model for UserProfile.
+type UserProfile struct {
+	Email    string `json:"email"`
+	Id       string `json:"id"`
+	Username string `json:"username"`
+}
+
 // Venue defines model for Venue.
 type Venue struct {
 	Address struct {

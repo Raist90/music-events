@@ -1,3 +1,4 @@
+import { QueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { Suspense } from "react";
 import MobileMenu from "./mobileMenu";
@@ -5,8 +6,9 @@ import MobileMenuSkeleton from "./mobileMenu/skeleton";
 import SearchInput from "./searchInput";
 import SearchInputSkeleton from "./searchInput/skeleton";
 import AuthDialog from "@/features/auth/components/dialog";
-import { LogoutButton } from "@/features/auth/components/logoutButton";
 import { getSession } from "@/features/auth/session";
+import UserMenu from "@/features/user/components/menu";
+import { getUserProfile } from "@/features/user/getUserProfile";
 
 const links: Record<"href" | "label", string>[] = [
   { href: "/", label: "LOGO" },
@@ -15,6 +17,12 @@ const links: Record<"href" | "label", string>[] = [
 
 export default async function Navigation() {
   const { isLoggedIn } = await getSession();
+
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ["userProfile"],
+    queryFn: () => getUserProfile,
+  });
 
   return (
     <>
@@ -36,7 +44,13 @@ export default async function Navigation() {
         )}
 
         <div className="flex items-center gap-x-4">
-          {isLoggedIn ? <LogoutButton /> : <AuthDialog />}
+          {isLoggedIn ? (
+            <Suspense>
+              <UserMenu />
+            </Suspense>
+          ) : (
+            <AuthDialog />
+          )}
 
           <Suspense fallback={<SearchInputSkeleton />}>
             <SearchInput />

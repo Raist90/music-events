@@ -4,6 +4,7 @@ import { components, operations } from "@/schema";
 type Schemas = components["schemas"];
 export type Ticketmaster = Schemas["Ticketmaster"];
 export type Event = Schemas["Event"];
+export type UserProfile = Schemas["UserProfile"];
 
 // Operations
 export type LoginRequest =
