@@ -21,7 +21,7 @@ func NewService(s *session.Repository, u *user.Repository) *authService {
 func generateAccessToken(user *user.User) (string, error) {
 	claims := jwt.MapClaims{
 		"sub":  user.ID,
-		"exp":  time.Now().Add(15 * time.Minute),
+		"exp":  time.Now().Add(15 * time.Minute).Unix(),
 		"type": "access",
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
