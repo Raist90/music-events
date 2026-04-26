@@ -67,17 +67,11 @@ func Logout(dbpool *pgxpool.Pool) http.HandlerFunc {
 		}
 
 		refreshCookie, err := r.Cookie("refresh_token")
-		if err != nil {
-			http.Error(w, "no refresh token cookie", http.StatusBadRequest)
-			return
+		if err == nil {
+			authSvc := NewService(session.NewRepository(dbpool), nil)
+			_ = authSvc.Logout(r.Context(), refreshCookie.Value)
 		}
 
-		authSvc := NewService(session.NewRepository(dbpool), nil)
-		err = authSvc.Logout(r.Context(), refreshCookie.Value)
-		if err != nil {
-			http.Error(w, "failed to logout", http.StatusInternalServerError)
-			return
-		}
 		httpx.SetAuthCookie(w, "") // Clear the cookie
 		httpx.Json(w)
 	}
